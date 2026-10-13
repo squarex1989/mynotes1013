@@ -1,0 +1,1918 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/workvivo-canvas-3ed797e8-27f4-4a9a-b31c-46aa5edfa686/colors_and_type.css">
+<script src="_ds/workvivo-canvas-3ed797e8-27f4-4a9a-b31c-46aa5edfa686/_ds_bundle.js"></script>
+<style>
+  [data-mode="zoom"] {
+    --wv-primary-50:#E7EFFF; --wv-primary-100:#CFDFFF; --wv-primary-200:#9EBEFF;
+    --wv-primary-500:#0B5CFF; --wv-primary-600:#094ACC; --wv-primary-700:#073899;
+  }
+  html, body { margin:0; padding:0; }
+  body { font-family:'Inter', -apple-system, system-ui, sans-serif; background:#fff; }
+  a { color:var(--wv-primary-500); text-decoration:none; }
+  a:hover { color:#073899; }
+  * { box-sizing:border-box; }
+  input, select, textarea, button { font-family:inherit; }
+  * { scrollbar-width:thin; scrollbar-color:transparent transparent; }
+  *:hover { scrollbar-color:#D8DAE0 transparent; }
+  ::-webkit-scrollbar { width:8px; height:8px; }
+  ::-webkit-scrollbar-track { background:transparent; }
+  ::-webkit-scrollbar-thumb { background:transparent; border-radius:8px; }
+  *:hover::-webkit-scrollbar-thumb { background:#D8DAE0; }
+  *::-webkit-scrollbar-thumb:hover { background:#BFC3CB; }
+
+  [data-mode="zoom"] > div:first-child { display:none !important; }
+  [data-mode="zoom"] > div:nth-child(2) > div:first-child { display:none !important; }
+  [data-mode="zoom"] > div:nth-child(2) > div:nth-child(2) > div { max-width:1200px !important; }
+</style>
+</helmet>
+<div data-mode="zoom" style="display:flex; flex-direction:column; height:100vh; overflow:hidden; background:#fff; color:#111827; font-family:'Inter',-apple-system,system-ui,sans-serif; font-size:14px">
+
+  <div style="flex:0 0 auto; display:flex; align-items:center; gap:10px; padding:10px 20px; border-bottom:1px solid #F0F1F3; background:#FBFBFC">
+    <span style="font-size:11px; font-weight:600; letter-spacing:0.06em; text-transform:uppercase; color:#9CA3AF; margin-right:4px">Scenario</span>
+    <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap">
+      <sc-for list="{{ scenes }}" as="sc" hint-placeholder-count="5">
+        <div onClick="{{ sc.go }}" style="padding:6px 14px; border-radius:24px; border:1px solid {{ sc.border }}; background:{{ sc.bg }}; color:{{ sc.ink }}; font-size:13px; font-weight:{{ sc.weight }}; cursor:pointer; white-space:nowrap" style-hover="border-color:#B9C6E8">{{ sc.label }}</div>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display:flex; flex:1; min-height:0; overflow:hidden">
+
+  <div style="width:256px; flex:0 0 256px; border-right:1px solid #F3F4F6; padding:20px 14px 12px 14px; display:flex; flex-direction:column; background:#fff; overflow:auto">
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:0 8px 18px 8px">
+      <div style="font-size:17px; font-weight:700; letter-spacing:-0.02em">My Notes</div>
+      <div style="width:30px; height:30px; border-radius:50%; background:var(--wv-primary-500); color:#fff; display:flex; align-items:center; justify-content:center; font-size:19px; line-height:1"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M12 5.5v13M5.5 12h13"></path></svg></div>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:2px">
+      <div style="display:flex; align-items:center; gap:12px; padding:9px 10px; border-radius:8px; color:#4B5563; cursor:pointer" style-hover="background:#F9FAFB"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 20px; display:block"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4 4"></path></svg><span>Search</span></div>
+      <div onClick="{{ goHome }}" style="display:flex; align-items:center; gap:12px; padding:9px 10px; border-radius:8px; background:{{ navHomeBg }}; font-weight:{{ navHomeWeight }}; color:#4B5563; cursor:pointer" style-hover="background:#F9FAFB"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 20px; display:block"><path d="M4 10.5L12 4l8 6.5V19a1.5 1.5 0 0 1-1.5 1.5H5.5A1.5 1.5 0 0 1 4 19z"></path><path d="M9.5 20.5v-6h5v6"></path></svg><span>Home</span></div>
+      <div onClick="{{ goAllNotes }}" style="display:flex; align-items:center; gap:12px; padding:9px 10px; border-radius:8px; background:{{ navAllBg }}; font-weight:{{ navAllWeight }}; color:#4B5563; cursor:pointer" style-hover="background:#F9FAFB"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 20px; display:block"><rect x="7" y="3.5" width="12.5" height="15" rx="2.5"></rect><path d="M16.5 21H7a2.5 2.5 0 0 1-2.5-2.5V7"></path></svg><span>All notes</span></div>
+      <div onClick="{{ goTemplates }}" style="display:flex; align-items:center; gap:12px; padding:9px 10px; border-radius:8px; background:{{ navTplBg }}; color:{{ navTplColor }}; font-weight:{{ navTplWeight }}; cursor:pointer" style-hover="background:#F9FAFB"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 20px; display:block"><rect x="3.5" y="3.5" width="7" height="7" rx="2"></rect><rect x="13.5" y="3.5" width="7" height="7" rx="2"></rect><rect x="3.5" y="13.5" width="7" height="7" rx="2"></rect><rect x="13.5" y="13.5" width="7" height="7" rx="2"></rect></svg><span>Templates</span></div>
+      <div onClick="{{ goSkills }}" style="display:flex; align-items:center; gap:12px; padding:9px 10px; border-radius:8px; background:{{ navSkillsBg }}; color:{{ navSkillsColor }}; font-weight:{{ navSkillsWeight }}; cursor:pointer">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 20px; display:block"><path d="M12 3.5l1.9 4.6 4.6 1.9-4.6 1.9L12 16.5l-1.9-4.6L5.5 10l4.6-1.9z"></path><path d="M18.5 16.5l.8 1.9 1.9.8-1.9.8-.8 1.9-.8-1.9-1.9-.8 1.9-.8z"></path></svg><span>Routines</span>
+        <span style="margin-left:auto; font-size:10px; font-weight:600; letter-spacing:0.04em; color:#fff; background:var(--wv-primary-500); padding:2px 7px; border-radius:20px">NEW</span>
+      </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px; padding:22px 10px 8px 10px; color:#6B7280; font-weight:600; font-size:13px">
+      <span>Tags</span><span style="opacity:0.6"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 16px; display:block"><path d="M6.5 9.5L12 15l5.5-5.5"></path></svg></span><span style="margin-left:auto; font-size:16px; color:#9CA3AF"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M12 5.5v13M5.5 12h13"></path></svg></span>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:1px">
+      <sc-for list="{{ tags }}" as="t" hint-placeholder-count="6">
+        <div onClick="{{ t.open }}" style="display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:8px; cursor:pointer; background:{{ t.bg }}; color:{{ t.color }}; font-size:13.5px" style-hover="background:#F9FAFB">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 17px; opacity:0.65; display:block"><path d="M11.5 4h6a2.5 2.5 0 0 1 2.5 2.5v6l-7.6 7.6a1.9 1.9 0 0 1-2.7 0l-6-6a1.9 1.9 0 0 1 0-2.7z"></path><circle cx="16.2" cy="7.8" r="1.2" fill="currentColor" stroke="none"></circle></svg>
+          <span style="flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ t.name }}</span>
+          <sc-if value="{{ t.hasSkill }}" hint-placeholder-val="{{ false }}">
+            <span style="color:var(--wv-primary-500); font-size:11px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M12 3.6l1.8 4.4 4.4 1.8-4.4 1.8L12 16l-1.8-4.4L5.8 9.8l4.4-1.8z"></path><path d="M18.4 15.8l.7 1.7 1.7.7-1.7.7-.7 1.7-.7-1.7-1.7-.7 1.7-.7z"></path></svg></span>
+          </sc-if>
+          <span style="color:#9CA3AF; font-size:12px">{{ t.count }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <div style="margin-top:auto; display:flex; gap:18px; padding:16px 10px 4px 10px; color:#9CA3AF"><span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 20px; display:block"><path d="M4 8h13l-3.5-3.5"></path><path d="M20 16H7l3.5 3.5"></path></svg></span><span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 20px; display:block"><path d="M4.5 7h15"></path><path d="M9.5 7V4.8h5V7"></path><path d="M6.5 7l1 12.2h9L17 7"></path></svg></span><span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 20px; display:block"><circle cx="12" cy="12" r="3"></circle><path d="M12 3.5v2.2M12 18.3v2.2M4.6 7.8l1.9 1.1M17.5 15.1l1.9 1.1M4.6 16.2l1.9-1.1M17.5 8.9l1.9-1.1"></path></svg></span></div>
+  </div>
+
+  <div style="flex:1; min-width:0; overflow:auto; background:#fff">
+    <div style="max-width:1100px; margin:0 auto; padding:34px 40px 90px 40px">
+
+      <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+        <div>
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:18px">
+            <h1 style="margin:0; font-size:26px; font-weight:700; letter-spacing:-0.02em">Upcoming</h1>
+            <div style="display:flex; gap:14px; color:#9CA3AF"><span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 20px; display:block"><path d="M14.5 6.5L9 12l5.5 5.5"></path></svg></span><span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M9.5 6.5L15 12l-5.5 5.5"></path></svg></span></div>
+          </div>
+          <div style="border:1px solid #F0F1F3; border-radius:16px; padding:24px; display:flex; gap:28px">
+            <div style="flex:0 0 110px; display:flex; align-items:flex-start; gap:12px">
+              <div style="font-size:30px; font-weight:700; line-height:1">3</div>
+              <div>
+                <div style="display:flex; align-items:center; gap:6px; font-weight:700">Today <span style="width:6px; height:6px; border-radius:50%; background:var(--wv-primary-500); display:block"></span></div>
+                <div style="color:#9CA3AF; font-size:13px">Thu</div>
+              </div>
+            </div>
+            <div style="flex:1; display:flex; flex-direction:column; gap:18px">
+              <sc-for list="{{ upcoming }}" as="e" hint-placeholder-count="5">
+                <div style="display:flex; gap:14px">
+                  <div style="width:3px; border-radius:2px; background:#10B981; flex:0 0 3px"></div>
+                  <div>
+                    <div style="font-weight:600">{{ e.title }}</div>
+                    <div style="display:flex; align-items:center; gap:8px; margin-top:5px; color:#6B7280; font-size:12.5px">
+                      <span style="width:16px; height:16px; border-radius:4px; background:var(--wv-primary-500); color:#fff; font-size:8px; font-weight:700; display:flex; align-items:center; justify-content:center">zm</span>
+                      <span>{{ e.time }}</span>
+                    </div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:22px; margin:42px 0 22px 0">
+            <sc-for list="{{ homeTabs }}" as="t" hint-placeholder-count="3">
+              <div onClick="{{ t.pick }}" style="font-size:17px; font-weight:{{ t.weight }}; color:{{ t.color }}; cursor:pointer">{{ t.label }}</div>
+            </sc-for>
+          </div>
+          <sc-for list="{{ noteGroups }}" as="g" hint-placeholder-count="2">
+            <div style="margin-bottom:26px">
+              <div style="color:#9CA3AF; font-size:12.5px; margin-bottom:10px">{{ g.label }}</div>
+              <div style="display:flex; flex-direction:column">
+                <sc-for list="{{ g.notes }}" as="n" hint-placeholder-count="5">
+                  <div onClick="{{ n.open }}" style="display:flex; gap:14px; padding:12px 8px; border-radius:10px; cursor:pointer" style-hover="background:#FAFAFB">
+                    <span style="color:var(--wv-primary-500)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M4 20l1-4.2L15.4 5.4a2 2 0 0 1 2.9 2.9L7.9 18.7z"></path><path d="M14 6.8l3.2 3.2"></path></svg></span>
+                    <div>
+                      <div style="font-weight:600">{{ n.title }}</div>
+                      <div style="color:#6B7280; font-size:12.5px; margin-top:4px">{{ n.meta }}</div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isAllNotes }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <div style="display:flex; justify-content:center; margin-bottom:26px">
+            <div style="display:flex; align-items:center; gap:12px; width:100%; max-width:720px; border:1px solid #E5E7EB; border-radius:28px; padding:13px 20px; color:#9CA3AF">
+              <span><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 20px; display:block"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4 4"></path></svg></span><span>Search keywords…</span>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:22px; margin-bottom:18px">
+            <sc-for list="{{ notesTabs }}" as="t" hint-placeholder-count="2">
+              <div onClick="{{ t.pick }}" style="font-size:19px; font-weight:{{ t.weight }}; color:{{ t.color }}; cursor:pointer">{{ t.label }}</div>
+            </sc-for>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:20px; flex-wrap:wrap">
+            <sc-for list="{{ notesFilters }}" as="f" hint-placeholder-count="3">
+              <div onClick="{{ f.pick }}" style="padding:8px 16px; border-radius:20px; font-size:13.5px; font-weight:600; cursor:pointer; background:{{ f.bg }}; color:{{ f.color }}">{{ f.label }}</div>
+            </sc-for>
+            <div style="width:1px; height:24px; background:#E5E7EB; margin:0 4px"></div>
+            <div style="display:flex; align-items:center; gap:8px; border:1px solid #E5E7EB; border-radius:20px; padding:8px 16px; font-size:13.5px; font-weight:600; color:#374151; cursor:pointer">Filter <span style="color:#9CA3AF"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 16px; display:block"><path d="M6.5 9.5L12 15l5.5-5.5"></path></svg></span></div>
+            <div style="display:flex; align-items:center; gap:8px; border:1px solid #E5E7EB; border-radius:20px; padding:8px 16px; font-size:13.5px; font-weight:600; color:#374151; cursor:pointer">Participants <span style="color:#9CA3AF"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 16px; display:block"><path d="M6.5 9.5L12 15l5.5-5.5"></path></svg></span></div>
+            <div style="display:flex; align-items:center; gap:8px; border:1px solid #E5E7EB; border-radius:20px; padding:8px 16px; font-size:13.5px; font-weight:600; color:#374151; cursor:pointer">Date <span style="color:#9CA3AF"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 16px; display:block"><path d="M6.5 9.5L12 15l5.5-5.5"></path></svg></span></div>
+          </div>
+          <div style="display:grid; grid-template-columns:1fr 200px 140px; gap:16px; padding:0 8px 12px 8px; border-bottom:1px solid #F0F1F3; color:#374151; font-size:13.5px; font-weight:600">
+            <div>Name</div><div>Participants</div><div><span style="display:inline-flex; align-items:center; gap:6px"><span>Last modified</span><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 13px; display:block"><path d="M12 5v14"></path><path d="M6.5 13.5L12 19l5.5-5.5"></path></svg></span></div>
+          </div>
+          <sc-for list="{{ noteGroups }}" as="g" hint-placeholder-count="2">
+            <div>
+              <div style="color:#9CA3AF; font-size:12.5px; padding:16px 8px 8px 8px">{{ g.label }}</div>
+              <sc-for list="{{ g.notes }}" as="n" hint-placeholder-count="5">
+                <div onClick="{{ n.open }}" style="display:grid; grid-template-columns:1fr 200px 140px; gap:16px; align-items:center; padding:14px 8px; border-bottom:1px solid #F6F7F8; cursor:pointer" style-hover="background:#FAFAFB">
+                  <div style="display:flex; align-items:center; gap:12px; min-width:0">
+                    <span style="color:var(--wv-primary-500)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M4 20l1-4.2L15.4 5.4a2 2 0 0 1 2.9 2.9L7.9 18.7z"></path><path d="M14 6.8l3.2 3.2"></path></svg></span>
+                    <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ n.title }}</span>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:4px">
+                    <sc-for list="{{ n.avatars }}" as="a" hint-placeholder-count="4">
+                      <span style="width:24px; height:24px; border-radius:50%; background:{{ a.color }}; color:#fff; font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center">{{ a.label }}</span>
+                    </sc-for>
+                    <span style="color:#6B7280; font-size:12px; margin-left:4px">{{ n.extra }}</span>
+                  </div>
+                  <div style="color:#6B7280; font-size:13px">{{ n.modified }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isNote }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:38px">
+            <div onClick="{{ goAllNotes }}" style="display:flex; align-items:center; gap:14px; color:#374151; cursor:pointer">
+              <span style="font-size:16px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M19 12H5"></path><path d="M10.5 6.5L5 12l5.5 5.5"></path></svg></span><span style="color:#E5E7EB">|</span><span style="font-size:13.5px; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ note.title }}</span><span style="color:#9CA3AF"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 16px; display:block"><path d="M6.5 9.5L12 15l5.5-5.5"></path></svg></span>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px">
+              <div style="background:var(--wv-primary-500); color:#fff; font-weight:600; padding:9px 18px; border-radius:20px; cursor:pointer" style-hover="background:var(--wv-primary-600)">Share</div>
+              <span style="color:#9CA3AF"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><circle cx="6" cy="12" r="1.4" fill="currentColor" stroke="none"></circle><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"></circle><circle cx="18" cy="12" r="1.4" fill="currentColor" stroke="none"></circle></svg></span>
+            </div>
+          </div>
+          <h1 style="margin:0 0 30px 0; font-size:34px; font-weight:700; letter-spacing:-0.02em; line-height:1.28; text-wrap:pretty">{{ note.title }}</h1>
+          <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:36px; font-size:14px">
+            <div style="display:flex; gap:32px"><div style="width:110px; color:#6B7280">Meeting</div><div>{{ note.meeting }}</div></div>
+            <div style="display:flex; gap:32px; align-items:center"><div style="width:110px; color:#6B7280">Participants</div>
+              <div style="display:flex; align-items:center; gap:4px">
+                <sc-for list="{{ note.avatars }}" as="a" hint-placeholder-count="4">
+                  <span style="width:26px; height:26px; border-radius:50%; background:{{ a.color }}; color:#fff; font-size:10.5px; font-weight:700; display:flex; align-items:center; justify-content:center">{{ a.label }}</span>
+                </sc-for>
+                <span style="color:#6B7280; font-size:12.5px; margin-left:4px">{{ note.extra }}</span>
+              </div>
+            </div>
+            <div style="display:flex; gap:32px"><div style="width:110px; color:#6B7280">Tags</div><div style="color:#6B7280; cursor:pointer"><span style="display:inline-flex; align-items:center; gap:8px"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 17px; display:block"><path d="M11.5 4h6a2.5 2.5 0 0 1 2.5 2.5v6l-7.6 7.6a1.9 1.9 0 0 1-2.7 0l-6-6a1.9 1.9 0 0 1 0-2.7z"></path><circle cx="16.2" cy="7.8" r="1.2" fill="currentColor" stroke="none"></circle></svg><span>Add tag</span></span></div></div>
+          </div>
+
+          <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #F0F1F3; margin-bottom:22px">
+            <div style="display:flex; gap:28px">
+              <sc-for list="{{ noteTabs }}" as="t" hint-placeholder-count="3">
+                <div onClick="{{ t.pick }}" style="padding:0 2px 12px 2px; margin-bottom:-1px; font-weight:600; cursor:pointer; color:{{ t.color }}; border-bottom:2px solid {{ t.line }}">{{ t.label }}</div>
+              </sc-for>
+            </div>
+            <div onClick="{{ openRunSkill }}" style="display:flex; align-items:center; gap:8px; border:1px solid #CFDFFF; background:#F5F8FF; color:var(--wv-primary-500); font-weight:600; font-size:13.5px; padding:9px 18px; border-radius:20px; cursor:pointer; margin-bottom:10px" style-hover="background:#EBF1FF"><span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M12 3.6l1.8 4.4 4.4 1.8-4.4 1.8L12 16l-1.8-4.4L5.8 9.8l4.4-1.8z"></path><path d="M18.4 15.8l.7 1.7 1.7.7-1.7.7-.7 1.7-.7-1.7-1.7-.7 1.7-.7z"></path></svg></span><span>New routine</span></div>
+          </div>
+
+          <sc-if value="{{ onNoteFollowups }}" hint-placeholder-val="{{ true }}">
+            <div>
+              <div style="display:flex; align-items:center; gap:16px; background:#FAFAFB; border-radius:14px; padding:18px 20px; margin-bottom:26px">
+                <span style="width:34px; height:34px; border-radius:10px; background:#EFF3FF; color:var(--wv-primary-500); display:flex; align-items:center; justify-content:center"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M12 3.6l1.8 4.4 4.4 1.8-4.4 1.8L12 16l-1.8-4.4L5.8 9.8l4.4-1.8z"></path><path d="M18.4 15.8l.7 1.7 1.7.7-1.7.7-.7 1.7-.7-1.7-1.7-.7 1.7-.7z"></path></svg></span>
+                <div style="flex:1; display:flex; align-items:center; gap:10px; flex-wrap:wrap">
+                  <span style="font-weight:600">Generate summary with</span>
+                  <span style="background:#F3F4F6; border-radius:8px; padding:6px 12px; font-size:13.5px">Short General Template</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px; background:#ECFDF5; color:#047857; font-weight:600; font-size:13.5px; padding:9px 16px; border-radius:20px; cursor:pointer">View result</div>
+              </div>
+              <sc-for list="{{ noteRuns }}" as="r" hint-placeholder-count="0">
+                <div style="display:flex; align-items:center; gap:16px; background:#FAFAFB; border-radius:14px; padding:18px 20px; margin-top:-14px; margin-bottom:26px">
+                  <span style="width:34px; height:34px; flex:0 0 34px; border-radius:10px; border:1px solid #EFF0F3; background:#fff url({{ r.appIcon }}) center/20px no-repeat; display:block"></span>
+                  <div style="flex:1; min-width:0">
+                    <div style="font-weight:600">{{ r.name }}</div>
+                    <div style="color:#6B7280; font-size:12.5px; margin-top:4px">{{ r.destLabel }}</div>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:8px; background:{{ r.btnBg }}; color:{{ r.btnColor }}; font-weight:600; font-size:13.5px; padding:9px 16px; border-radius:20px; cursor:pointer">{{ r.btnLabel }}</div>
+                </div>
+              </sc-for>
+              <div style="color:#9CA3AF; font-size:12.5px; margin-bottom:12px">Suggested</div>
+              <div style="display:flex; flex-direction:column; gap:12px">
+                <sc-for list="{{ followups }}" as="f" hint-placeholder-count="3">
+                  <div style="display:flex; align-items:center; gap:16px; border:1px solid #F0F1F3; border-radius:14px; padding:18px 20px">
+                    <span style="width:34px; height:34px; flex:0 0 34px; border-radius:50%; background:{{ f.tint }}; color:{{ f.ink }}; display:flex; align-items:center; justify-content:center"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M12 3.6l1.8 4.4 4.4 1.8-4.4 1.8L12 16l-1.8-4.4L5.8 9.8l4.4-1.8z"></path><path d="M18.4 15.8l.7 1.7 1.7.7-1.7.7-.7 1.7-.7-1.7-1.7-.7 1.7-.7z"></path></svg></span>
+                    <div style="flex:1; min-width:0; line-height:1.5">{{ f.text }}</div>
+                    <div style="display:flex; align-items:center; gap:8px; border:1px solid #E5E7EB; color:#374151; font-weight:600; font-size:13.5px; padding:9px 16px; border-radius:20px; cursor:pointer" style-hover="background:#F9FAFB">{{ f.action }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ onNoteNotes }}" hint-placeholder-val="{{ false }}">
+            <div style="color:#6B7280; line-height:1.75; max-width:720px">
+              <div style="font-weight:700; color:#111827; margin-bottom:8px">Summary</div>
+              <div>Reviewed the final scope for the first phase of chat notification. Agreed on the default state, the copy for the digest, and who signs off before the release.</div>
+              <div style="font-weight:700; color:#111827; margin:22px 0 8px 0">Decisions</div>
+              <div>Default notification stays on for direct mentions only. Digest ships behind a flag.</div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ onNoteTranscript }}" hint-placeholder-val="{{ false }}">
+            <div style="color:#6B7280; line-height:1.9; max-width:720px">Transcript is available for this recording. Open it to search by speaker or jump to a timestamp.</div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isHub }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:24px">
+            <div>
+              <h1 style="margin:0 0 6px 0; font-size:30px; font-weight:700; letter-spacing:-0.02em">Routines</h1>
+              <div style="color:#6B7280; max-width:640px; line-height:1.5">Turn what happens in your meetings into work that gets done. Start from a routine pack for your team, or build your own.</div>
+            </div>
+            <div onClick="{{ openChooser }}" style="flex:0 0 auto; background:var(--wv-primary-500); color:#fff; font-weight:600; padding:11px 20px; border-radius:24px; cursor:pointer; box-shadow:0 1px 2px rgba(0,0,0,0.05)" style-hover="background:var(--wv-primary-600)">Create a custom routine</div>
+          </div>
+
+          <div style="display:flex; gap:26px; border-bottom:1px solid #F3F4F6; margin:26px 0 24px 0">
+            <sc-for list="{{ hubTabs }}" as="t" hint-placeholder-count="3">
+              <div onClick="{{ t.pick }}" style="padding:0 2px 12px 2px; margin-bottom:-1px; cursor:pointer; font-weight:600; color:{{ t.color }}; border-bottom:2px solid {{ t.line }}">{{ t.label }}</div>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{ onBrowse }}" hint-placeholder-val="{{ true }}">
+            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px">
+              <sc-for list="{{ packs }}" as="p" hint-placeholder-count="6">
+                <div onClick="{{ p.open }}" style="position:relative; border:1px solid #E5E7EB; border-radius:12px; padding:18px; cursor:pointer; background:#fff; transition:box-shadow 150ms ease, border-color 150ms ease" style-hover="box-shadow:0 4px 12px rgba(17,24,39,0.07); border-color:#D1D5DB">
+                  <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px">
+                    <div style="width:38px; height:38px; border-radius:10px; background:{{ p.tint }}; display:flex; align-items:center; justify-content:center"><span style="width:22px; height:22px; display:block; flex:0 0 22px; background:url({{ p.icon }}) center/contain no-repeat"></span></div>
+                    <div style="font-weight:600; font-size:15px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ p.name }}</div>
+                    <div title="{{ p.tooltip }}" style="margin-left:auto; flex:0 0 auto; white-space:nowrap; display:flex; align-items:center; gap:5px; font-size:12px; font-weight:{{ p.usersWeight }}; color:{{ p.usersInk }}; background:{{ p.usersBg }}; padding:3px 9px; border-radius:20px; opacity:{{ p.usersOpacity }}">🔥 {{ p.users }}</div>
+                  </div>
+                  <div style="color:#6B7280; font-size:13px; line-height:1.5; min-height:39px">{{ p.desc }}</div>
+                  <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:14px; padding-top:14px; border-top:1px solid #F3F4F6">
+                    <div style="font-size:12px; color:#6B7280">{{ p.countLabel }}</div>
+                    <div onClick="{{ p.enableAll }}" style="font-size:12px; font-weight:600; color:var(--wv-primary-500); white-space:nowrap" style-hover="color:var(--wv-primary-700)">{{ p.enableLabel }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ onMine }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px">
+                <div style="border:1px solid #E5E7EB; border-radius:12px; padding:16px"><div style="font-size:12px; color:#6B7280; margin-bottom:6px">Active routines</div><div style="font-size:24px; font-weight:700">{{ activeTotal }}</div></div>
+                <div style="border:1px solid #E5E7EB; border-radius:12px; padding:16px"><div style="font-size:12px; color:#6B7280; margin-bottom:6px">Runs this month</div><div style="font-size:24px; font-weight:700">{{ runsTotal }}</div></div>
+                <div style="border:1px solid #E5E7EB; border-radius:12px; padding:16px"><div style="font-size:12px; color:#6B7280; margin-bottom:6px">Success rate</div><div style="font-size:24px; font-weight:700; color:#047857">{{ successRate }}</div></div>
+                <div style="border:1px solid #E5E7EB; border-radius:12px; padding:16px"><div style="font-size:12px; color:#6B7280; margin-bottom:6px">Needs attention</div><div style="font-size:24px; font-weight:700; color:#B91C1C">{{ failTotal }}</div></div>
+              </div>
+              <sc-if value="{{ noneActive }}" hint-placeholder-val="{{ false }}">
+                <div style="border:1px solid #E5E7EB; border-radius:12px; padding:44px; text-align:center; color:#6B7280">Nothing running yet. Enable a routine from a pack, or build your own.</div>
+              </sc-if>
+              <div style="border:1px solid #E5E7EB; border-radius:12px; overflow:hidden">
+                <sc-for list="{{ mySkills }}" as="s" hint-placeholder-count="4">
+                  <div style="border-bottom:1px solid #F3F4F6">
+                    <div onClick="{{ s.toggleExpand }}" style="display:flex; align-items:center; gap:14px; padding:16px 18px; cursor:pointer; opacity:{{ s.rowOpacity }}" style-hover="background:#FCFCFD">
+                      <div style="width:32px; height:32px; flex:0 0 32px; border-radius:8px; background:#fff; border:1px solid #EFF0F3; display:flex; align-items:center; justify-content:center"><span style="width:19px; height:19px; display:block; flex:0 0 19px; background:url({{ s.appIcon }}) center/contain no-repeat"></span></div>
+                      <div style="min-width:220px; flex:1">
+                        <div style="font-weight:600">{{ s.name }}</div>
+                        <div style="color:#6B7280; font-size:12.5px; margin-top:3px">{{ s.sub }}</div>
+                      </div>
+                      <div style="text-align:right; width:80px"><div style="font-weight:600">{{ s.runs }}</div><div style="color:#6B7280; font-size:12px">runs</div></div>
+                      <div style="text-align:right; width:90px"><div style="font-weight:600; color:{{ s.rateColor }}">{{ s.rate }}</div><div style="color:#6B7280; font-size:12px">success</div></div>
+                      <div style="text-align:right; width:150px; color:#6B7280; font-size:12.5px">{{ s.lastRun }}</div>
+                      <div onClick="{{ s.toggle }}" style="flex:0 0 auto; display:flex; align-items:center; gap:9px">
+                        <span style="width:42px; height:24px; border-radius:14px; background:{{ s.trackBg }}; position:relative; display:block; transition:background-color 150ms ease">
+                          <span style="position:absolute; top:2px; left:{{ s.knobX }}; width:20px; height:20px; border-radius:50%; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,0.2); transition:left 150ms ease"></span>
+                        </span>
+                      </div>
+                      <div style="position:relative; flex:0 0 auto">
+                        <div onClick="{{ s.openMenu }}" style="width:28px; height:28px; border-radius:50%; color:#9CA3AF; display:flex; align-items:center; justify-content:center; cursor:pointer" style-hover="background:#F3F4F6"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><circle cx="6" cy="12" r="1.4" fill="currentColor" stroke="none"></circle><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"></circle><circle cx="18" cy="12" r="1.4" fill="currentColor" stroke="none"></circle></svg></div>
+                        <sc-if value="{{ s.menuOpen }}" hint-placeholder-val="{{ false }}">
+                          <div style="position:absolute; top:32px; right:0; z-index:40; width:190px; background:#fff; border:1px solid #E5E7EB; border-radius:12px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1); padding:6px">
+                            <div onClick="{{ removeOpenRow }}" style="padding:9px 12px; border-radius:8px; cursor:pointer; font-size:13.5px; color:#B91C1C" style-hover="background:#FEF2F2">Remove from My routines</div>
+                          </div>
+                        </sc-if>
+                      </div>
+                      <div style="width:16px; color:#9CA3AF; transform:rotate({{ s.caretRot }}deg); transition:transform 150ms ease"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M6.5 9.5L12 15l5.5-5.5"></path></svg></div>
+                    </div>
+                    <sc-if value="{{ s.expanded }}" hint-placeholder-val="{{ false }}">
+                      <div style="background:#FAFAFB; border-top:1px solid #F3F4F6; padding:4px 18px 14px 18px">
+                        <div style="display:grid; grid-template-columns:165px 84px 104px 1fr 84px; gap:12px; padding:12px 6px; font-size:11.5px; letter-spacing:0.04em; text-transform:uppercase; color:#9CA3AF; font-weight:600"><div>Run time</div><div>Duration</div><div>Result</div><div>Detail</div><div></div></div>
+                        <sc-for list="{{ s.logs }}" as="l" hint-placeholder-count="3">
+                          <div style="display:grid; grid-template-columns:165px 84px 104px 1fr 84px; gap:12px; align-items:center; padding:11px 6px; border-top:1px solid #F0F1F3; font-size:13px">
+                            <div style="color:#374151">{{ l.time }}</div>
+                            <div style="color:#6B7280">{{ l.duration }}</div>
+                            <div><span style="font-size:11.5px; font-weight:600; padding:3px 10px; border-radius:20px; background:{{ l.tint }}; color:{{ l.ink }}">{{ l.status }}</span></div>
+                            <div style="color:#4B5563; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ l.detail }}</div>
+                            <div style="text-align:right"><span onClick="{{ l.act }}" style="font-size:12px; font-weight:600; color:var(--wv-primary-500); cursor:pointer">{{ l.actLabel }}</span></div>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ onActivity }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px; flex-wrap:wrap">
+                <sc-for list="{{ activityFilters }}" as="f" hint-placeholder-count="4">
+                  <div onClick="{{ f.pick }}" style="padding:7px 14px; border-radius:20px; font-size:13px; font-weight:600; cursor:pointer; border:1px solid {{ f.border }}; background:{{ f.bg }}; color:{{ f.color }}">{{ f.label }}</div>
+                </sc-for>
+              </div>
+              <div style="border:1px solid #E5E7EB; border-radius:12px; overflow:hidden">
+                <div style="display:grid; grid-template-columns:1fr 165px 84px 104px 84px; gap:12px; padding:13px 18px; background:#FAFAFB; border-bottom:1px solid #F3F4F6; font-size:11.5px; letter-spacing:0.04em; text-transform:uppercase; color:#9CA3AF; font-weight:600"><div>Routine</div><div>Run time</div><div>Duration</div><div>Result</div><div></div></div>
+                <sc-for list="{{ activityRows }}" as="r" hint-placeholder-count="8">
+                  <div style="display:grid; grid-template-columns:1fr 165px 84px 104px 84px; gap:12px; align-items:center; padding:13px 18px; border-bottom:1px solid #F3F4F6" style-hover="background:#FCFCFD">
+                    <div style="display:flex; align-items:center; gap:11px; min-width:0">
+                      <div style="width:26px; height:26px; flex:0 0 26px; border-radius:7px; background:#fff; border:1px solid #EFF0F3; display:flex; align-items:center; justify-content:center"><span style="width:16px; height:16px; display:block; flex:0 0 16px; background:url({{ r.appIcon }}) center/contain no-repeat"></span></div>
+                      <div style="min-width:0">
+                        <div style="font-weight:600; font-size:13.5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ r.name }}</div>
+                        <div style="color:#6B7280; font-size:12px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ r.detail }}</div>
+                      </div>
+                    </div>
+                    <div style="color:#374151; font-size:13px">{{ r.time }}</div>
+                    <div style="color:#6B7280; font-size:13px">{{ r.duration }}</div>
+                    <div><span style="font-size:11.5px; font-weight:600; padding:3px 10px; border-radius:20px; background:{{ r.tint }}; color:{{ r.ink }}">{{ r.status }}</span></div>
+                    <div style="text-align:right"><span onClick="{{ r.act }}" style="font-size:12px; font-weight:600; color:var(--wv-primary-500); cursor:pointer">{{ r.actLabel }}</span></div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isPack }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <div onClick="{{ goSkills }}" style="color:#6B7280; font-size:13px; cursor:pointer; margin-bottom:18px" style-hover="color:#111827"><span style="display:inline-flex; align-items:center; gap:8px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 16px; display:block"><path d="M19 12H5"></path><path d="M10.5 6.5L5 12l5.5 5.5"></path></svg><span>All routine packs</span></span></div>
+          <div style="display:flex; align-items:flex-start; gap:16px">
+            <div style="width:50px; height:50px; flex:0 0 50px; border-radius:12px; background:{{ pack.tint }}; display:flex; align-items:center; justify-content:center"><span style="width:28px; height:28px; display:block; flex:0 0 28px; background:url({{ pack.icon }}) center/contain no-repeat"></span></div>
+            <div style="flex:1; min-width:0">
+              <h1 style="margin:0 0 5px 0; font-size:24px; font-weight:700; letter-spacing:-0.02em">{{ pack.name }}</h1>
+              <div style="color:#6B7280">{{ pack.desc }}</div>
+            </div>
+            <div onClick="{{ pack.enableAll }}" style="flex:0 0 auto; background:var(--wv-primary-500); color:#fff; font-weight:600; padding:10px 18px; border-radius:24px; cursor:pointer" style-hover="background:var(--wv-primary-600)">{{ pack.enableLabel }}</div>
+          </div>
+          <div style="color:#6B7280; font-size:13px; margin:18px 0 14px 0">{{ pack.countLabel }} · Tap an app icon to send the output somewhere else.</div>
+          <div>
+            <sc-for list="{{ packSkills }}" as="s" hint-placeholder-count="5">
+              <div style="border-bottom:1px solid #F3F4F6; background:{{ s.rowBg }}">
+                <div style="display:flex; align-items:center; gap:16px; padding:18px 4px">
+                  <div style="position:relative; flex:0 0 auto">
+                    <div onClick="{{ s.openMenu }}" style="width:40px; height:40px; border-radius:10px; background:#fff; border:1px solid #EFF0F3; display:flex; align-items:center; justify-content:center; cursor:pointer; position:relative" style-hover="border-color:#D1D5DB">
+                      <span style="width:22px; height:22px; display:block; flex:0 0 22px; background:url({{ s.appIcon }}) center/contain no-repeat"></span>
+                      <span style="position:absolute; right:-4px; bottom:-4px; width:16px; height:16px; border-radius:50%; background:#fff; border:1px solid #E5E7EB; color:#6B7280; font-size:8px; display:flex; align-items:center; justify-content:center"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 12px; display:block"><path d="M6.5 9.5L12 15l5.5-5.5"></path></svg></span>
+                    </div>
+                    <sc-if value="{{ s.menuOpen }}" hint-placeholder-val="{{ false }}">
+                      <div style="position:absolute; top:48px; left:0; z-index:40; width:236px; background:#fff; border:1px solid #E5E7EB; border-radius:12px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1); padding:8px">
+                        <div style="font-size:11.5px; letter-spacing:0.04em; text-transform:uppercase; color:#9CA3AF; font-weight:600; padding:6px 8px 8px 8px">Switch app</div>
+                        <sc-for list="{{ s.alts }}" as="a" hint-placeholder-count="3">
+                          <div onClick="{{ a.pick }}" style="display:flex; align-items:center; gap:10px; padding:8px; border-radius:8px; cursor:pointer" style-hover="background:#F9FAFB">
+                            <span style="width:20px; height:20px; display:block; flex:0 0 20px; background:url({{ a.icon }}) center/contain no-repeat"></span>
+                            <div style="font-size:13.5px; flex:1">{{ a.name }}</div>
+                            <div style="color:var(--wv-primary-500); font-weight:700">{{ a.check }}</div>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                  </div>
+                  <div style="flex:1; min-width:0">
+                    <div style="font-weight:600; margin-bottom:6px">{{ s.name }}</div>
+                    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; color:#6B7280; font-size:12.5px">
+                      <span style="background:#F3F4F6; padding:3px 9px; border-radius:20px">When {{ s.trigger }}</span><span style="display:flex; align-items:center; color:#9CA3AF"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 15px; display:block"><path d="M5 12h14"></path><path d="M13.5 6.5L19 12l-5.5 5.5"></path></svg></span>
+                      <span style="background:#F3F4F6; padding:3px 9px; border-radius:20px">{{ s.action }}</span>
+                    </div>
+                  </div>
+                  <div style="flex:0 0 auto; display:flex; flex-direction:column; align-items:flex-end; gap:9px">
+                    <div onClick="{{ s.toggle }}" style="display:flex; align-items:center; gap:10px; cursor:pointer">
+                      <span style="font-size:12.5px; font-weight:600; color:{{ s.stateColor }}; width:54px; text-align:right">{{ s.stateLabel }}</span>
+                      <span style="width:42px; height:24px; border-radius:14px; background:{{ s.trackBg }}; position:relative; display:block; transition:background-color 150ms ease">
+                        <span style="position:absolute; top:2px; left:{{ s.knobX }}; width:20px; height:20px; border-radius:50%; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,0.2); transition:left 150ms ease"></span>
+                      </span>
+                    </div>
+                    <div onClick="{{ s.customize }}" style="color:#9CA3AF; font-weight:500; font-size:12px; cursor:pointer" style-hover="color:#4B5563">Customise</div>
+                  </div>
+                </div>
+                <sc-if value="{{ s.showCfg }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; align-items:center; gap:12px; padding:0 4px 18px 60px">
+                    <div style="font-size:12.5px; color:#6B7280; font-weight:600; width:96px">{{ s.cfgLabel }}</div>
+                    <div style="position:relative; flex:1; max-width:360px">
+                      <div onClick="{{ s.openCfg }}" style="display:flex; align-items:center; gap:10px; border:1px solid #E5E7EB; background:#fff; border-radius:10px; padding:9px 12px; cursor:pointer; font-size:13.5px" style-hover="border-color:#D1D5DB">
+                        <span style="flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ s.cfgValue }}</span>
+                        <span style="color:#9CA3AF; font-size:11px"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 12px; display:block"><path d="M6.5 9.5L12 15l5.5-5.5"></path></svg></span>
+                      </div>
+                      <sc-if value="{{ s.cfgOpen }}" hint-placeholder-val="{{ false }}">
+                        <div style="position:absolute; top:44px; left:0; z-index:40; width:100%; min-width:280px; background:#fff; border:1px solid #E5E7EB; border-radius:12px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1); padding:8px">
+                          <input value="{{ s.cfgQuery }}" onChange="{{ s.onCfgQuery }}" placeholder="Search…" style="width:100%; border:1px solid #E5E7EB; border-radius:8px; padding:8px 10px; font-size:13px; outline:none; margin-bottom:6px" style-focus="border-color:var(--wv-primary-500); box-shadow:0 0 0 3px var(--wv-primary-100)" />
+                          <sc-for list="{{ s.cfgOptions }}" as="o" hint-placeholder-count="3">
+                            <div onClick="{{ o.pick }}" style="display:flex; align-items:center; gap:10px; padding:9px 10px; border-radius:8px; cursor:pointer; font-size:13.5px" style-hover="background:#F9FAFB">
+                              <span style="flex:1">{{ o.label }}</span>
+                              <span style="color:var(--wv-primary-500); font-weight:700">{{ o.check }}</span>
+                            </div>
+                          </sc-for>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isTag }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <div style="text-align:center; padding:10px 0 6px 0">
+            <div style="width:56px; height:56px; margin:0 auto 18px auto; border-radius:16px; background:#F3F4F6; display:flex; align-items:center; justify-content:center"><span style="width:28px; height:28px; display:block; flex:0 0 28px; background:url({{ tag.icon }}) center/contain no-repeat"></span></div>
+            <h1 style="margin:0 0 8px 0; font-size:28px; font-weight:700; letter-spacing:-0.02em">{{ tag.name }}</h1>
+            <div style="color:#6B7280; margin-bottom:20px"><b style="color:#111827">{{ tag.count }}</b> Notes · Private</div>
+            <div style="display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap">
+              <div style="background:var(--wv-primary-500); color:#fff; font-weight:600; padding:10px 20px; border-radius:24px; cursor:pointer" style-hover="background:var(--wv-primary-600)">Tag notes</div>
+              <div style="border:1px solid #CFDFFF; background:#F5F8FF; color:var(--wv-primary-500); font-weight:600; padding:10px 18px; border-radius:24px; cursor:pointer">Auto-tag enabled</div>
+              <div onClick="{{ buildTagSkill }}" style="border:1px solid #DDD6FE; background:#fff; color:#6103ED; font-weight:600; padding:10px 18px; border-radius:24px; cursor:pointer; display:flex; align-items:center; gap:8px" style-hover="background:#F5F3FF"><span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M12 3.6l1.8 4.4 4.4 1.8-4.4 1.8L12 16l-1.8-4.4L5.8 9.8l4.4-1.8z"></path><path d="M18.4 15.8l.7 1.7 1.7.7-1.7.7-.7 1.7-.7-1.7-1.7-.7 1.7-.7z"></path></svg></span><span>Build routine</span></div>
+              <div style="border:1px solid #E5E7EB; background:#fff; color:#374151; font-weight:600; padding:10px 18px; border-radius:24px; cursor:pointer" style-hover="background:#F9FAFB">Share</div>
+              <div style="border:1px solid #E5E7EB; background:#fff; color:#6B7280; font-weight:600; padding:10px 16px; border-radius:24px; cursor:pointer" style-hover="background:#F9FAFB"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><circle cx="6" cy="12" r="1.4" fill="currentColor" stroke="none"></circle><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"></circle><circle cx="18" cy="12" r="1.4" fill="currentColor" stroke="none"></circle></svg></div>
+            </div>
+          </div>
+
+          <sc-if value="{{ tagHasSkills }}" hint-placeholder-val="{{ true }}">
+            <div style="margin-top:36px">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px">
+                <div style="font-size:18px; font-weight:700">Routines on this tag</div>
+                <div onClick="{{ buildTagSkill }}" style="font-size:13px; font-weight:600; color:var(--wv-primary-500); cursor:pointer">Build new routine</div>
+              </div>
+              <sc-for list="{{ tagSkills }}" as="s" hint-placeholder-count="1">
+                <div style="border:1px solid {{ s.border }}; border-radius:12px; padding:18px; margin-bottom:12px; background:{{ s.bg }}">
+                  <div style="display:flex; align-items:center; gap:14px">
+                    <div style="width:36px; height:36px; flex:0 0 36px; border-radius:9px; background:#fff; border:1px solid #EFF0F3; display:flex; align-items:center; justify-content:center"><span style="width:21px; height:21px; display:block; flex:0 0 21px; background:url({{ s.appIcon }}) center/contain no-repeat"></span></div>
+                    <div style="flex:1; min-width:0">
+                      <div style="display:flex; align-items:center; gap:10px">
+                        <div style="font-weight:600">{{ s.name }}</div>
+                        <span style="display:flex; align-items:center; gap:6px; font-size:11.5px; font-weight:600; padding:3px 10px; border-radius:20px; background:{{ s.statusTint }}; color:{{ s.statusInk }}">
+                          <span style="width:6px; height:6px; border-radius:50%; background:{{ s.statusInk }}; display:block"></span>{{ s.statusLabel }}
+                        </span>
+                      </div>
+                      <div style="color:#6B7280; font-size:12.5px; margin-top:5px">{{ s.sub }}</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px; flex:0 0 auto">
+                      <div onClick="{{ s.toggleLog }}" style="border:1px solid #E5E7EB; background:#fff; color:#374151; font-weight:600; font-size:12.5px; padding:8px 14px; border-radius:20px; cursor:pointer" style-hover="background:#F9FAFB">{{ s.logLabel }}</div>
+                      <div style="position:relative">
+                        <div onClick="{{ s.openMenu }}" style="border:1px solid #E5E7EB; background:#fff; color:#6B7280; font-weight:600; font-size:12.5px; padding:8px 13px; border-radius:20px; cursor:pointer" style-hover="background:#F9FAFB"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><circle cx="6" cy="12" r="1.4" fill="currentColor" stroke="none"></circle><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"></circle><circle cx="18" cy="12" r="1.4" fill="currentColor" stroke="none"></circle></svg></div>
+                        <sc-if value="{{ s.menuOpen }}" hint-placeholder-val="{{ false }}">
+                          <div style="position:absolute; top:40px; right:0; z-index:40; width:180px; background:#fff; border:1px solid #E5E7EB; border-radius:12px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1); padding:6px">
+                            <div onClick="{{ pauseOpenRow }}" style="padding:9px 12px; border-radius:8px; cursor:pointer; font-size:13.5px; color:#374151" style-hover="background:#F9FAFB">{{ s.pauseLabel }}</div>
+                            <div onClick="{{ removeOpenRow }}" style="padding:9px 12px; border-radius:8px; cursor:pointer; font-size:13.5px; color:#B91C1C" style-hover="background:#FEF2F2">Delete</div>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </div>
+                  </div>
+                  <sc-if value="{{ s.logOpen }}" hint-placeholder-val="{{ false }}">
+                    <div style="margin-top:16px; border-top:1px solid #F0F1F3; padding-top:6px">
+                      <div style="display:grid; grid-template-columns:165px 84px 104px 1fr; gap:12px; padding:10px 2px; font-size:11.5px; letter-spacing:0.04em; text-transform:uppercase; color:#9CA3AF; font-weight:600"><div>Run time</div><div>Duration</div><div>Result</div><div>Detail</div></div>
+                      <sc-for list="{{ s.logs }}" as="l" hint-placeholder-count="3">
+                        <div style="display:grid; grid-template-columns:165px 84px 104px 1fr; gap:12px; align-items:center; padding:11px 2px; border-top:1px solid #F0F1F3; font-size:13px">
+                          <div style="color:#374151">{{ l.time }}</div>
+                          <div style="color:#6B7280">{{ l.duration }}</div>
+                          <div><span style="font-size:11.5px; font-weight:600; padding:3px 10px; border-radius:20px; background:{{ l.tint }}; color:{{ l.ink }}">{{ l.status }}</span></div>
+                          <div style="color:#4B5563">{{ l.detail }}</div>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <div style="margin-top:36px">
+            <div style="font-size:18px; font-weight:700; margin-bottom:16px">Notes</div>
+            <div style="color:#9CA3AF; font-size:12.5px; margin-bottom:12px">Tagged this week</div>
+            <sc-for list="{{ tagNotes }}" as="n" hint-placeholder-count="3">
+              <div style="display:flex; gap:12px; padding:12px 0; cursor:pointer">
+                <span style="color:var(--wv-primary-500)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M4 20l1-4.2L15.4 5.4a2 2 0 0 1 2.9 2.9L7.9 18.7z"></path><path d="M14 6.8l3.2 3.2"></path></svg></span>
+                <div>
+                  <div style="font-weight:600">{{ n.title }}</div>
+                  <div style="color:#6B7280; font-size:12.5px; margin-top:4px">{{ n.meta }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isTemplates }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:24px; margin-bottom:30px">
+            <div>
+              <h1 style="margin:0 0 6px 0; font-size:30px; font-weight:700; letter-spacing:-0.02em">Templates</h1>
+              <div style="color:#6B7280">Use templates to structure notes for different meeting types</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:16px; flex:0 0 auto">
+              <div style="color:#374151; font-size:13.5px">Default template: <b>Short General Template</b> <span style="color:#9CA3AF"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 16px; display:block"><path d="M6.5 9.5L12 15l5.5-5.5"></path></svg></span></div>
+              <div style="background:var(--wv-primary-500); color:#fff; font-weight:600; padding:11px 20px; border-radius:24px; cursor:pointer" style-hover="background:var(--wv-primary-600)">+ Create</div>
+            </div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; font-size:17px; font-weight:700; margin-bottom:16px"><span style="color:#9CA3AF; font-size:13px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 16px; display:block"><path d="M6.5 9.5L12 15l5.5-5.5"></path></svg></span><span>Created by Zoom</span></div>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:18px">
+            <sc-for list="{{ templates }}" as="t" hint-placeholder-count="6">
+              <div onClick="{{ t.open }}" style="border:1px solid #F0F1F3; border-radius:14px; padding:20px; min-height:150px; cursor:pointer; background:#fff; transition:box-shadow 150ms ease, border-color 150ms ease" style-hover="box-shadow:0 4px 12px rgba(17,24,39,0.07); border-color:#E5E7EB">
+                <div style="width:38px; height:38px; border-radius:10px; background:{{ t.tint }}; display:flex; align-items:center; justify-content:center; margin-bottom:34px"><span style="width:22px; height:22px; display:block; flex:0 0 22px; background:url({{ t.icon }}) center/contain no-repeat"></span></div>
+                <div style="font-weight:700; font-size:15.5px; margin-bottom:6px">{{ t.name }}</div>
+                <div style="color:#6B7280; font-size:13.5px">{{ t.sub }}</div>
+                <sc-if value="{{ t.hasSkill }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:inline-flex; align-items:center; gap:6px; margin-top:14px; font-size:11.5px; font-weight:600; color:#047857; background:#ECFDF5; padding:3px 10px; border-radius:20px"><span style="width:6px; height:6px; border-radius:50%; background:#047857; display:block"></span>{{ t.skillLabel }}</div>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isTemplate }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <div onClick="{{ goTemplates }}" style="color:#6B7280; font-size:13px; cursor:pointer; margin-bottom:20px" style-hover="color:#111827"><span style="display:inline-flex; align-items:center; gap:8px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 16px; display:block"><path d="M19 12H5"></path><path d="M10.5 6.5L5 12l5.5 5.5"></path></svg><span>All templates</span></span></div>
+          <div style="display:flex; align-items:flex-start; gap:20px">
+            <div style="flex:1; min-width:0">
+              <h1 style="margin:0 0 6px 0; font-size:26px; font-weight:700; letter-spacing:-0.02em">{{ tpl.name }}</h1>
+              <div style="color:#6B7280; margin-bottom:14px">{{ tpl.sub }}</div>
+              <div style="display:flex; align-items:center; gap:8px; font-size:13.5px; color:#374151; margin-bottom:22px">
+                <span style="width:20px; height:20px; border-radius:50%; background:var(--wv-primary-500); color:#fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700">Z</span><span>Zoom</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap">
+                <div style="background:var(--wv-primary-500); color:#fff; font-weight:600; padding:10px 20px; border-radius:24px; cursor:pointer" style-hover="background:var(--wv-primary-600)">Preview with a note</div>
+                <div style="border:1px solid #E5E7EB; background:#fff; color:#374151; font-weight:600; padding:10px 18px; border-radius:24px; cursor:pointer" style-hover="background:#F9FAFB">Duplicate</div>
+                <div onClick="{{ buildTplSkill }}" style="border:1px solid #DDD6FE; background:#fff; color:var(--wvai-purple); font-weight:600; padding:10px 18px; border-radius:24px; cursor:pointer; display:flex; align-items:center; gap:8px" style-hover="background:#F5F3FF"><span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M12 3.6l1.8 4.4 4.4 1.8-4.4 1.8L12 16l-1.8-4.4L5.8 9.8l4.4-1.8z"></path><path d="M18.4 15.8l.7 1.7 1.7.7-1.7.7-.7 1.7-.7-1.7-1.7-.7 1.7-.7z"></path></svg></span><span>Build routine</span></div>
+              </div>
+            </div>
+            <div style="width:64px; height:64px; flex:0 0 64px; border-radius:16px; background:{{ tpl.tint }}; display:flex; align-items:center; justify-content:center"><span style="width:34px; height:34px; display:block; flex:0 0 34px; background:url({{ tpl.icon }}) center/contain no-repeat"></span></div>
+          </div>
+
+          <sc-if value="{{ tplHasSkills }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:32px">
+              <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px">
+                <div style="font-size:18px; font-weight:700">Routines on this template</div>
+                <div onClick="{{ buildTplSkill }}" style="font-size:13px; font-weight:600; color:var(--wv-primary-500); cursor:pointer">Build new routine</div>
+              </div>
+              <sc-for list="{{ tplSkills }}" as="s" hint-placeholder-count="1">
+                <div style="border:1px solid {{ s.border }}; border-radius:12px; padding:18px; margin-bottom:12px; background:{{ s.bg }}">
+                  <div style="display:flex; align-items:center; gap:14px">
+                    <div style="width:36px; height:36px; flex:0 0 36px; border-radius:9px; background:#fff; border:1px solid #EFF0F3; display:flex; align-items:center; justify-content:center"><span style="width:21px; height:21px; display:block; flex:0 0 21px; background:url({{ s.appIcon }}) center/contain no-repeat"></span></div>
+                    <div style="flex:1; min-width:0">
+                      <div style="display:flex; align-items:center; gap:10px">
+                        <div style="font-weight:600">{{ s.name }}</div>
+                        <span style="display:flex; align-items:center; gap:6px; font-size:11.5px; font-weight:600; padding:3px 10px; border-radius:20px; background:{{ s.statusTint }}; color:{{ s.statusInk }}"><span style="width:6px; height:6px; border-radius:50%; background:{{ s.statusInk }}; display:block"></span>{{ s.statusLabel }}</span>
+                      </div>
+                      <div style="color:#6B7280; font-size:12.5px; margin-top:5px">{{ s.sub }}</div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px; flex:0 0 auto">
+                      <div onClick="{{ s.toggleLog }}" style="border:1px solid #E5E7EB; background:#fff; color:#374151; font-weight:600; font-size:12.5px; padding:8px 14px; border-radius:20px; cursor:pointer" style-hover="background:#F9FAFB">{{ s.logLabel }}</div>
+                      <div style="position:relative">
+                        <div onClick="{{ s.openMenu }}" style="border:1px solid #E5E7EB; background:#fff; color:#6B7280; font-weight:600; font-size:12.5px; padding:8px 13px; border-radius:20px; cursor:pointer" style-hover="background:#F9FAFB"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><circle cx="6" cy="12" r="1.4" fill="currentColor" stroke="none"></circle><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"></circle><circle cx="18" cy="12" r="1.4" fill="currentColor" stroke="none"></circle></svg></div>
+                        <sc-if value="{{ s.menuOpen }}" hint-placeholder-val="{{ false }}">
+                          <div style="position:absolute; top:40px; right:0; z-index:40; width:180px; background:#fff; border:1px solid #E5E7EB; border-radius:12px; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1); padding:6px">
+                            <div onClick="{{ pauseOpenRow }}" style="padding:9px 12px; border-radius:8px; cursor:pointer; font-size:13.5px; color:#374151" style-hover="background:#F9FAFB">{{ s.pauseLabel }}</div>
+                            <div onClick="{{ removeOpenRow }}" style="padding:9px 12px; border-radius:8px; cursor:pointer; font-size:13.5px; color:#B91C1C" style-hover="background:#FEF2F2">Delete</div>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </div>
+                  </div>
+                  <sc-if value="{{ s.logOpen }}" hint-placeholder-val="{{ false }}">
+                    <div style="margin-top:16px; border-top:1px solid #F0F1F3; padding-top:6px">
+                      <div style="display:grid; grid-template-columns:165px 84px 104px 1fr; gap:12px; padding:10px 2px; font-size:11.5px; letter-spacing:0.04em; text-transform:uppercase; color:#9CA3AF; font-weight:600"><div>Run time</div><div>Duration</div><div>Result</div><div>Detail</div></div>
+                      <sc-for list="{{ s.logs }}" as="l" hint-placeholder-count="3">
+                        <div style="display:grid; grid-template-columns:165px 84px 104px 1fr; gap:12px; align-items:center; padding:11px 2px; border-top:1px solid #F0F1F3; font-size:13px">
+                          <div style="color:#374151">{{ l.time }}</div>
+                          <div style="color:#6B7280">{{ l.duration }}</div>
+                          <div><span style="font-size:11.5px; font-weight:600; padding:3px 10px; border-radius:20px; background:{{ l.tint }}; color:{{ l.ink }}">{{ l.status }}</span></div>
+                          <div style="color:#4B5563">{{ l.detail }}</div>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <div style="margin-top:32px; border:1px dashed #E5E7EB; border-radius:14px; padding:24px">
+            <sc-for list="{{ tplSections }}" as="s" hint-placeholder-count="4">
+              <div style="margin-bottom:22px">
+                <div style="font-weight:700; margin-bottom:10px">{{ s.title }}</div>
+                <sc-for list="{{ s.lines }}" as="l" hint-placeholder-count="2">
+                  <div style="color:#6B7280; font-size:13.5px; line-height:1.7">- {{ l.text }}</div>
+                </sc-for>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isChooser }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <div onClick="{{ goSkills }}" style="color:#6B7280; font-size:13px; cursor:pointer; margin-bottom:18px" style-hover="color:#111827"><span style="display:inline-flex; align-items:center; gap:8px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 16px; display:block"><path d="M19 12H5"></path><path d="M10.5 6.5L5 12l5.5 5.5"></path></svg><span>Back to Routines</span></span></div>
+          <h1 style="margin:0 0 6px 0; font-size:26px; font-weight:700; letter-spacing:-0.02em">Create a custom routine</h1>
+          <div style="color:#6B7280; margin-bottom:24px">Describe what you want, or start from the app you want to send meeting data to.</div>
+
+          <div style="border:1px solid #E5E7EB; border-radius:16px; padding:22px; background:linear-gradient(135deg,#E9F0FB 0%,#F2EEFA 45%,#FCEDF3 100%)">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px">
+              <span style="width:26px; height:26px; border-radius:50%; background:linear-gradient(135deg,#8B5CF6 0%,#6103ED 45%,#C026D3 100%); color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M12 3.6l1.8 4.4 4.4 1.8-4.4 1.8L12 16l-1.8-4.4L5.8 9.8l4.4-1.8z"></path><path d="M18.4 15.8l.7 1.7 1.7.7-1.7.7-.7 1.7-.7-1.7-1.7-.7 1.7-.7z"></path></svg></span>
+              <div style="font-weight:700; font-size:15.5px">Describe it in your own words</div>
+            </div>
+            <textarea value="{{ chooserDraft }}" onChange="{{ chooserTyped }}" onKeyDown="{{ chooserKey }}" placeholder="For example: after every customer call, create a lead in Salesforce and email me the action items. Press Enter to start." style="width:100%; min-height:104px; border:1px solid #fff; border-radius:12px; padding:16px; font-size:14px; line-height:1.6; outline:none; resize:vertical; background:#fff" style-focus="border-color:var(--wv-primary-500); box-shadow:0 0 0 3px var(--wv-primary-100)"></textarea>
+            <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-top:14px">
+              <span style="color:#6B7280; font-size:12.5px; font-weight:600">Try:</span>
+              <sc-for list="{{ chooserPrompts }}" as="p" hint-placeholder-count="4">
+                <div onClick="{{ p.send }}" style="border:1px solid #fff; background:rgba(255,255,255,0.75); color:#1B1464; font-size:13px; font-weight:600; padding:8px 14px; border-radius:20px; cursor:pointer" style-hover="background:#fff">{{ p.label }}</div>
+              </sc-for>
+              <div onClick="{{ chooserSend }}" style="margin-left:auto; background:var(--wv-primary-500); color:#fff; font-weight:600; padding:10px 20px; border-radius:24px; cursor:pointer; font-size:13.5px" style-hover="background:var(--wv-primary-600)">Build it</div>
+            </div>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:14px; margin:28px 0 18px 0">
+            <div style="height:1px; background:#F0F1F3; flex:1"></div>
+            <div style="color:#9CA3AF; font-size:12.5px; font-weight:600">Or start from an integration</div>
+            <div style="height:1px; background:#F0F1F3; flex:1"></div>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px">
+            <sc-for list="{{ builderApps }}" as="a" hint-placeholder-count="12">
+              <div onClick="{{ a.pick }}" style="border:1px solid #E5E7EB; border-radius:12px; padding:18px; display:flex; align-items:center; gap:12px; cursor:pointer; background:#fff" style-hover="box-shadow:0 4px 12px rgba(17,24,39,0.07); border-color:#D1D5DB">
+                <div style="width:34px; height:34px; flex:0 0 34px; border-radius:9px; background:#fff; border:1px solid #EFF0F3; display:flex; align-items:center; justify-content:center"><span style="width:21px; height:21px; display:block; flex:0 0 21px; background:url({{ a.icon }}) center/contain no-repeat"></span></div>
+                <div style="font-weight:600; font-size:13.5px">{{ a.name }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isCui }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <div onClick="{{ cuiBack }}" style="color:#6B7280; font-size:13px; cursor:pointer; margin-bottom:18px" style-hover="color:#111827"><span style="display:inline-flex; align-items:center; gap:8px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 16px; display:block"><path d="M19 12H5"></path><path d="M10.5 6.5L5 12l5.5 5.5"></path></svg><span>Back</span></span></div>
+          <div style="border:1px solid #E5E7EB; border-radius:16px; overflow:hidden; background:#fff">
+            <div style="padding:18px 22px; border-bottom:1px solid #F3F4F6; display:flex; align-items:center; gap:11px">
+              <div style="width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,#8B5CF6 0%,#6103ED 45%,#C026D3 100%); color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M12 3.6l1.8 4.4 4.4 1.8-4.4 1.8L12 16l-1.8-4.4L5.8 9.8l4.4-1.8z"></path><path d="M18.4 15.8l.7 1.7 1.7.7-1.7.7-.7 1.7-.7-1.7-1.7-.7 1.7-.7z"></path></svg></div>
+              <div style="font-weight:700">{{ cuiTitle }}</div>
+              <div style="margin-left:auto; font-size:12.5px; color:#6B7280">{{ cuiStepLabel }}</div>
+            </div>
+            <div style="padding:22px; display:flex; flex-direction:column; gap:16px; background:{{ cuiBg }}; min-height:360px">
+              <sc-for list="{{ cuiMessages }}" as="m" hint-placeholder-count="2">
+                <div style="display:flex; justify-content:{{ m.align }}">
+                  <div style="max-width:76%; padding:13px 16px; border-radius:14px; background:{{ m.bg }}; color:{{ m.color }}; border:1px solid {{ m.border }}; line-height:1.55; font-size:13.5px">{{ m.text }}</div>
+                </div>
+              </sc-for>
+              <sc-if value="{{ cuiGenerating }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex; align-items:center; gap:9px; color:#6103ED; font-size:13px; font-weight:600"><span style="width:7px; height:7px; border-radius:50%; background:#6103ED; display:block"></span><span>Generating…</span></div>
+              </sc-if>
+              <sc-if value="{{ cuiHasCard }}" hint-placeholder-val="{{ false }}">
+                <div style="border:1px solid #DDD6FE; border-radius:14px; background:#fff; padding:20px; box-shadow:0 1px 2px rgba(0,0,0,0.05)">
+                  <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px">
+                    <div style="width:36px; height:36px; flex:0 0 36px; border-radius:9px; background:#fff; border:1px solid #EFF0F3; display:flex; align-items:center; justify-content:center"><span style="width:21px; height:21px; display:block; flex:0 0 21px; background:url({{ card.appIcon }}) center/contain no-repeat"></span></div>
+                    <div style="font-weight:700; font-size:15.5px">{{ card.title }}</div>
+                    <div style="margin-left:auto; font-size:11.5px; font-weight:600; color:#6103ED; background:#F5F3FF; border:1px solid #DDD6FE; padding:3px 10px; border-radius:20px">Draft</div>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:10px; font-size:13.5px">
+                    <div style="display:flex; gap:12px"><div style="width:52px; flex:0 0 52px; color:#9CA3AF; font-weight:600">When</div><div style="color:#374151">{{ card.when }}</div></div>
+                    <div style="display:flex; gap:12px"><div style="width:52px; flex:0 0 52px; color:#9CA3AF; font-weight:600">If</div><div style="color:#374151">{{ card.iff }}</div></div>
+                    <div style="display:flex; gap:12px"><div style="width:52px; flex:0 0 52px; color:#9CA3AF; font-weight:600">Then</div><div style="color:#374151">{{ card.then }}</div></div>
+                  </div>
+                  <div style="display:flex; gap:10px; margin-top:20px">
+                    <div onClick="{{ activateGenerated }}" style="background:var(--wv-primary-500); color:#fff; font-weight:600; padding:10px 18px; border-radius:24px; cursor:pointer; font-size:13.5px" style-hover="background:var(--wv-primary-600)">Save and activate</div>
+                    <div onClick="{{ startBuilder }}" style="border:1px solid #E5E7EB; color:#374151; font-weight:600; padding:10px 18px; border-radius:24px; cursor:pointer; font-size:13.5px; background:#fff" style-hover="background:#F9FAFB">Edit in the form</div>
+                  </div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ cuiHasChips }}" hint-placeholder-val="{{ true }}">
+                <div style="display:flex; gap:9px; flex-wrap:wrap">
+                  <sc-for list="{{ cuiChips }}" as="c" hint-placeholder-count="3">
+                    <div onClick="{{ c.send }}" style="border:1px solid #CFDFFF; background:#fff; color:#073899; font-size:13px; font-weight:600; padding:8px 14px; border-radius:20px; cursor:pointer" style-hover="background:#F5F8FF">{{ c.label }}</div>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+            <div style="border-top:1px solid #F3F4F6; padding:14px 18px; display:flex; align-items:center; gap:12px; background:#fff">
+              <input value="{{ cuiDraft }}" onChange="{{ cuiTyped }}" onKeyDown="{{ cuiKey }}" placeholder="Describe what should happen…" style="flex:1; border:1px solid #E5E7EB; border-radius:24px; padding:11px 16px; font-size:13.5px; outline:none" style-focus="border-color:var(--wv-primary-500); box-shadow:0 0 0 3px #CFDFFF" />
+              <div onClick="{{ cuiSend }}" style="background:var(--wv-primary-500); color:#fff; font-weight:600; padding:10px 18px; border-radius:24px; cursor:pointer; font-size:13.5px" style-hover="background:var(--wv-primary-600)">Send</div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isBuilder }}" hint-placeholder-val="{{ false }}">
+        <div>
+          <div onClick="{{ openChooser }}" style="color:#6B7280; font-size:13px; cursor:pointer; margin-bottom:18px" style-hover="color:#111827"><span style="display:inline-flex; align-items:center; gap:8px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 16px; display:block"><path d="M19 12H5"></path><path d="M10.5 6.5L5 12l5.5 5.5"></path></svg><span>Back</span></span></div>
+
+          <sc-if value="{{ onPickApp }}" hint-placeholder-val="{{ true }}">
+            <div>
+              <h1 style="margin:0 0 6px 0; font-size:24px; font-weight:700; letter-spacing:-0.02em">Which app should this routine work with?</h1>
+              <div style="color:#6B7280; margin-bottom:24px">Pick the destination. You can add more steps once the first one works.</div>
+              <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px">
+                <sc-for list="{{ builderApps }}" as="a" hint-placeholder-count="12">
+                  <div onClick="{{ a.pick }}" style="border:1px solid #E5E7EB; border-radius:12px; padding:18px; display:flex; align-items:center; gap:12px; cursor:pointer; background:#fff" style-hover="box-shadow:0 4px 12px rgba(17,24,39,0.07); border-color:#D1D5DB">
+                    <div style="width:34px; height:34px; flex:0 0 34px; border-radius:9px; background:#fff; border:1px solid #EFF0F3; display:flex; align-items:center; justify-content:center"><span style="width:21px; height:21px; display:block; flex:0 0 21px; background:url({{ a.icon }}) center/contain no-repeat"></span></div>
+                    <div style="font-weight:600; font-size:13.5px">{{ a.name }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ onSteps }}" hint-placeholder-val="{{ false }}">
+            <div>
+              <div style="display:flex; align-items:center; justify-content:center; gap:18px; margin-bottom:22px; font-weight:700; font-size:15px">
+                <div onClick="{{ toWhen }}" style="display:flex; align-items:center; gap:7px; color:{{ st1.color }}; border-bottom:2px solid {{ st1.line }}; padding-bottom:7px; cursor:pointer"><span>When</span><span style="color:#10B981">{{ st1.tick }}</span></div>
+                <span style="color:#D1D5DB"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M9.5 6.5L15 12l-5.5 5.5"></path></svg></span>
+                <div style="display:flex; align-items:center; gap:7px; color:{{ st2.color }}; border-bottom:2px solid {{ st2.line }}; padding-bottom:7px"><span>Then</span><span style="color:#10B981">{{ st2.tick }}</span></div>
+                <span style="color:#D1D5DB"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M9.5 6.5L15 12l-5.5 5.5"></path></svg></span>
+                <div style="display:flex; align-items:center; gap:7px; color:{{ st3.color }}; border-bottom:2px solid {{ st3.line }}; padding-bottom:7px"><span>Test</span><span style="color:#10B981">{{ st3.tick }}</span></div>
+              </div>
+
+              <div style="background:#F8F9FE; border-radius:20px; padding:24px">
+                <div style="background:#fff; border-radius:16px; padding:28px; box-shadow:0 1px 2px rgba(0,0,0,0.05); min-height:430px; display:flex; flex-direction:column">
+
+                  <sc-if value="{{ onWhen }}" hint-placeholder-val="{{ true }}">
+                    <div style="flex:1">
+                      <div style="display:flex; align-items:center; gap:12px; margin-bottom:26px">
+                        <div style="width:34px; height:34px; border-radius:9px; background:var(--wv-primary-500); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 16px; display:block"><circle cx="12" cy="6" r="1.4" fill="currentColor" stroke="none"></circle><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"></circle><circle cx="12" cy="18" r="1.4" fill="currentColor" stroke="none"></circle></svg></div>
+                        <div style="font-size:20px; font-weight:700; color:#1B1464">When</div>
+                      </div>
+                      <div style="font-weight:600; margin-bottom:16px">Trigger this routine when:</div>
+                      <div style="display:flex; flex-direction:column; gap:14px; margin-bottom:32px">
+                        <sc-for list="{{ triggers }}" as="t" hint-placeholder-count="3">
+                          <div onClick="{{ t.pick }}" style="display:flex; align-items:center; gap:12px; cursor:{{ t.cursor }}; opacity:{{ t.opacity }}">
+                            <span style="width:18px; height:18px; flex:0 0 18px; border-radius:50%; border:2px solid {{ t.ring }}; display:flex; align-items:center; justify-content:center"><span style="width:8px; height:8px; border-radius:50%; background:{{ t.dot }}; display:block"></span></span>
+                            <span style="color:#1F2340">{{ t.label }}</span>
+                            <sc-if value="{{ t.soon }}" hint-placeholder-val="{{ false }}">
+                              <span style="font-size:11.5px; font-weight:700; color:#4F46E5; background:#EEF0FF; padding:3px 9px; border-radius:6px">Soon!</span>
+                            </sc-if>
+                          </div>
+                        </sc-for>
+                      </div>
+                      <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px">
+                        <span style="font-weight:700; color:#1B1464">If</span>
+                        <select value="{{ condMode }}" onChange="{{ setCondMode }}" style="border:1px solid #E5E7EB; border-radius:8px; padding:7px 10px; font-size:13.5px; font-weight:600; color:#1B1464; background:#fff">
+                          <option value="All">All</option>
+                          <option value="Any">Any</option>
+                        </select>
+                        <span style="font-weight:700; color:#1B1464">conditions are matched</span>
+                        <span style="color:#9CA3AF">(Optional)</span>
+                      </div>
+                      <div style="background:#F8F9FE; border-radius:14px; padding:18px">
+                        <sc-for list="{{ conditions }}" as="c" hint-placeholder-count="0">
+                          <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px; flex-wrap:wrap">
+                            <span style="font-size:13px; color:#6B7280; width:24px">{{ c.prefix }}</span>
+                            <span style="background:#fff; border:1px solid #E5E7EB; border-radius:8px; padding:8px 12px; font-size:13.5px; font-weight:600">{{ c.field }}</span>
+                            <span style="font-size:13.5px; color:#6B7280">{{ c.op }}</span>
+                            <input value="{{ c.value }}" onChange="{{ c.onInput }}" placeholder="{{ c.placeholder }}" style="border:1px solid #E5E7EB; border-radius:8px; padding:8px 12px; font-size:13.5px; outline:none; min-width:200px" style-focus="border-color:var(--wv-primary-500); box-shadow:0 0 0 3px #CFDFFF" />
+                            <span onClick="{{ c.remove }}" style="color:#9CA3AF; cursor:pointer; font-size:16px">×</span>
+                          </div>
+                        </sc-for>
+                        <div onClick="{{ addCondition }}" style="display:inline-flex; align-items:center; gap:8px; background:#fff; border:1px solid #E5E7EB; border-radius:10px; padding:10px 16px; font-weight:700; font-size:13.5px; color:#1B1464; cursor:pointer" style-hover="background:#F9FAFB">Add condition <span style="color:#6B7280"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M12 5.5v13M5.5 12h13"></path></svg></span></div>
+                        <div style="display:flex; align-items:center; gap:10px; margin-top:18px; flex-wrap:wrap">
+                          <span style="color:#6B7280; font-size:13px; font-weight:600">Suggestions:</span>
+                          <sc-for list="{{ condSuggestions }}" as="g" hint-placeholder-count="4">
+                            <div onClick="{{ g.add }}" style="background:#fff; border:1px solid #ECEDF5; border-radius:20px; padding:7px 13px; font-size:12.5px; cursor:pointer; color:#4B5563" style-hover="border-color:#CFDFFF">{{ g.label }}</div>
+                          </sc-for>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="display:flex; justify-content:flex-end; margin-top:24px">
+                      <div onClick="{{ toThen }}" style="background:var(--wv-primary-500); color:#fff; font-weight:700; padding:12px 24px; border-radius:24px; cursor:pointer" style-hover="background:var(--wv-primary-600)">Continue</div>
+                    </div>
+                  </sc-if>
+
+                  <sc-if value="{{ onThen }}" hint-placeholder-val="{{ false }}">
+                    <div style="flex:1">
+                      <div style="display:flex; align-items:center; gap:12px; margin-bottom:26px">
+                        <div style="width:34px; height:34px; border-radius:9px; background:#fff; border:1px solid #EFF0F3; display:flex; align-items:center; justify-content:center"><span style="width:21px; height:21px; display:block; flex:0 0 21px; background:url({{ app.icon }}) center/contain no-repeat"></span></div>
+                        <div style="font-size:20px; font-weight:700; color:#1B1464">Then</div>
+                      </div>
+                      <div style="font-weight:600; margin-bottom:16px">Then do this action:</div>
+                      <div style="display:flex; flex-direction:column; gap:14px; margin-bottom:26px">
+                        <sc-for list="{{ actions }}" as="a" hint-placeholder-count="2">
+                          <div onClick="{{ a.pick }}" style="display:flex; align-items:center; gap:12px; cursor:pointer">
+                            <span style="width:18px; height:18px; flex:0 0 18px; border-radius:50%; border:2px solid {{ a.ring }}; display:flex; align-items:center; justify-content:center"><span style="width:8px; height:8px; border-radius:50%; background:{{ a.dot }}; display:block"></span></span>
+                            <span style="color:#1F2340">{{ a.label }}</span>
+                          </div>
+                        </sc-for>
+                      </div>
+                      <div style="font-size:13.5px; margin-bottom:20px">Account: <a href="#account" style="font-weight:600">{{ account }}</a> <span style="color:#9CA3AF"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 16px; display:block"><circle cx="12" cy="6" r="1.4" fill="currentColor" stroke="none"></circle><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"></circle><circle cx="12" cy="18" r="1.4" fill="currentColor" stroke="none"></circle></svg></span></div>
+                      <div style="font-weight:600; margin-bottom:10px; white-space:nowrap">{{ destLabel }} <span style="color:#9CA3AF; font-size:12px"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 14px; display:block"><circle cx="12" cy="12" r="8.2"></circle><path d="M12 11v5.2M12 8.2v.01"></path></svg></span></div>
+                      <select value="{{ dest }}" onChange="{{ setDest }}" style="width:100%; border:1px solid #E5E7EB; border-radius:10px; padding:13px 44px 13px 14px; font-size:14px; margin-bottom:26px; outline:none; appearance:none; background-color:#F8F9FE; background-image:url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M7%2010l5%205%205-5%22%20fill%3D%22none%22%20stroke%3D%22%25236B7280%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E); background-repeat:no-repeat; background-position:right 14px center; background-size:18px">
+                        <sc-for list="{{ destOptions }}" as="o" hint-placeholder-count="3">
+                          <option value="{{ o.value }}">{{ o.label }}</option>
+                        </sc-for>
+                      </select>
+                      <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:10px">
+                        <div style="font-weight:600">Content — what should be added?</div>
+                        <div onClick="{{ togglePrompt }}" style="display:flex; align-items:center; gap:9px; background:#F8F9FE; border-radius:20px; padding:7px 12px; cursor:pointer; font-size:13px; font-weight:600; color:#1B1464">
+                          <span style="color:#6103ED"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M12 3.6l1.8 4.4 4.4 1.8-4.4 1.8L12 16l-1.8-4.4L5.8 9.8l4.4-1.8z"></path><path d="M18.4 15.8l.7 1.7 1.7.7-1.7.7-.7 1.7-.7-1.7-1.7-.7 1.7-.7z"></path></svg></span><span>Custom prompt</span>
+                          <span style="width:34px; height:19px; border-radius:12px; background:{{ promptTrack }}; position:relative; display:block"><span style="position:absolute; top:2px; left:{{ promptKnob }}; width:15px; height:15px; border-radius:50%; background:#fff; transition:left 150ms ease"></span></span>
+                        </div>
+                      </div>
+                      <div style="background:#F8F9FE; border-radius:12px; padding:16px; min-height:104px">
+                        <sc-if value="{{ promptOn }}" hint-placeholder-val="{{ false }}">
+                          <textarea value="{{ promptText }}" onChange="{{ setPromptText }}" placeholder="Summarise the call in five bullets, then list the agreed next steps with owners." style="width:100%; min-height:78px; border:1px solid #E5E7EB; border-radius:10px; padding:12px; font-size:13.5px; outline:none; resize:vertical; background:#fff"></textarea>
+                        </sc-if>
+                        <sc-if value="{{ promptOff }}" hint-placeholder-val="{{ true }}">
+                          <div style="display:flex; gap:9px; flex-wrap:wrap">
+                            <sc-for list="{{ contentChips }}" as="c" hint-placeholder-count="4">
+                              <div style="display:flex; align-items:center; gap:8px; background:#fff; border:1px solid #E5E7EB; border-radius:8px; padding:7px 11px; font-size:13px; color:#1B1464"><span>{{ c.label }}</span><span onClick="{{ c.remove }}" style="color:#9CA3AF; cursor:pointer"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 16px; display:block"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"></path></svg></span></div>
+                            </sc-for>
+                          </div>
+                        </sc-if>
+                      </div>
+                      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; position:relative">
+                        <sc-for list="{{ quickData }}" as="d" hint-placeholder-count="4">
+                          <div onClick="{{ d.add }}" style="display:flex; align-items:center; gap:8px; border:1px solid #ECEDF5; background:#fff; border-radius:20px; padding:8px 14px; font-size:13px; cursor:pointer; color:#1B1464" style-hover="border-color:#CFDFFF">{{ d.label }} <span style="color:#6B7280"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M12 5.5v13M5.5 12h13"></path></svg></span></div>
+                        </sc-for>
+                        <div onClick="{{ toggleMore }}" style="display:flex; align-items:center; gap:8px; border:1px solid #ECEDF5; background:#F8F9FE; border-radius:20px; padding:8px 14px; font-size:13px; cursor:pointer; color:#1B1464; font-weight:600">More data <span style="display:flex; align-items:center; transform:rotate({{ moreRot }}deg); transition:transform 150ms ease"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:block"><path d="M6.5 9.5L12 15l5.5-5.5"></path></svg></span></div>
+                        <sc-if value="{{ moreOpen }}" hint-placeholder-val="{{ false }}">
+                          <div style="position:absolute; bottom:46px; right:0; z-index:30; width:284px; background:#fff; border-radius:12px; box-shadow:0 8px 24px rgba(17,24,39,0.14); padding:6px">
+                            <sc-for list="{{ allData }}" as="d" hint-placeholder-count="6">
+                              <div onClick="{{ d.add }}" style="display:flex; align-items:center; justify-content:space-between; padding:11px 14px; border-radius:8px; cursor:pointer; font-size:13.5px; color:#1B1464" style-hover="background:#F8F9FE"><span>{{ d.label }}</span><span style="color:#6B7280"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M12 5.5v13M5.5 12h13"></path></svg></span></div>
+                            </sc-for>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; margin-top:26px">
+                      <div onClick="{{ toWhen }}" style="border:1px solid #E5E7EB; color:#1B1464; font-weight:700; padding:12px 22px; border-radius:24px; cursor:pointer; background:#fff" style-hover="background:#F9FAFB"><span style="display:inline-flex; align-items:center; gap:8px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 16px; display:block"><path d="M19 12H5"></path><path d="M10.5 6.5L5 12l5.5 5.5"></path></svg><span>Back</span></span></div>
+                      <div onClick="{{ toTest }}" style="background:var(--wv-primary-500); color:#fff; font-weight:700; padding:12px 24px; border-radius:24px; cursor:pointer" style-hover="background:var(--wv-primary-600)">Continue</div>
+                    </div>
+                  </sc-if>
+
+                  <sc-if value="{{ onTest }}" hint-placeholder-val="{{ false }}">
+                    <div style="flex:1">
+                      <div style="display:flex; align-items:center; gap:12px; margin-bottom:26px">
+                        <div style="width:34px; height:34px; border-radius:9px; background:#EEF0FF; color:#1B1464; display:flex; align-items:center; justify-content:center; font-weight:700"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 20px; display:block"><path d="M4.5 7h11M4.5 12h11M4.5 17h7"></path><path d="M17.5 15.5l1.6 1.6 2.4-2.6"></path></svg></div>
+                        <div style="font-size:20px; font-weight:700; color:#1B1464">Test</div>
+                      </div>
+                      <div style="font-weight:600; margin-bottom:16px">Test this routine with a recent meeting:</div>
+                      <div style="display:flex; flex-direction:column; gap:10px">
+                        <sc-for list="{{ meetings }}" as="m" hint-placeholder-count="3">
+                          <div onClick="{{ m.pick }}" style="display:flex; align-items:center; gap:14px; border:1px solid {{ m.border }}; background:{{ m.bg }}; border-radius:12px; padding:15px 16px; cursor:pointer">
+                            <span style="width:18px; height:18px; flex:0 0 18px; border-radius:50%; border:2px solid {{ m.ring }}; display:flex; align-items:center; justify-content:center"><span style="width:8px; height:8px; border-radius:50%; background:{{ m.dot }}; display:block"></span></span>
+                            <div style="flex:1; min-width:0">
+                              <div style="font-weight:600; font-size:13.5px">{{ m.title }}</div>
+                              <div style="color:#6B7280; font-size:12.5px; margin-top:3px">{{ m.meta }}</div>
+                            </div>
+                          </div>
+                        </sc-for>
+                      </div>
+                      <sc-if value="{{ testRunning }}" hint-placeholder-val="{{ false }}">
+                        <div style="margin-top:20px; background:#F8F9FE; border-radius:12px; padding:18px; color:#4F46E5; font-weight:600; font-size:13.5px">Running test…</div>
+                      </sc-if>
+                      <sc-if value="{{ testDone }}" hint-placeholder-val="{{ false }}">
+                        <div style="margin-top:20px; border:1px solid #A7F3D0; background:#ECFDF5; border-radius:12px; padding:18px">
+                          <div style="font-weight:700; color:#047857; margin-bottom:8px">{{ testSummary }}</div>
+                          <div style="color:#065F46; font-size:13.5px; line-height:1.6">{{ testDetail }}</div>
+                          <a href="#result" style="display:inline-block; margin-top:12px; font-weight:600; font-size:13.5px">{{ testLink }}</a>
+                        </div>
+                      </sc-if>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:26px; gap:12px">
+                      <div onClick="{{ toThen }}" style="border:1px solid #E5E7EB; color:#1B1464; font-weight:700; padding:12px 22px; border-radius:24px; cursor:pointer; background:#fff" style-hover="background:#F9FAFB"><span style="display:inline-flex; align-items:center; gap:8px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 16px; display:block"><path d="M19 12H5"></path><path d="M10.5 6.5L5 12l5.5 5.5"></path></svg><span>Back</span></span></div>
+                      <div style="display:flex; gap:12px">
+                        <div onClick="{{ runTest }}" style="border:1px solid #E5E7EB; color:{{ testBtnColor }}; font-weight:700; padding:12px 22px; border-radius:24px; cursor:pointer; background:#fff" style-hover="background:#F9FAFB">Test routine</div>
+                        <div onClick="{{ activateWorkflow }}" style="background:{{ activateBg }}; color:#fff; font-weight:700; padding:12px 24px; border-radius:24px; cursor:pointer" style-hover="filter:brightness(0.94)">Activate routine</div>
+                      </div>
+                    </div>
+                  </sc-if>
+
+                </div>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ modalOn }}" hint-placeholder-val="{{ false }}">
+        <div style="position:fixed; inset:0; z-index:70; background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center; padding:40px">
+          <div style="width:100%; max-width:900px; height:80vh; display:flex; flex-direction:column; overflow:hidden; background:#fff; border-radius:16px; box-shadow:0 20px 50px rgba(0,0,0,0.25)">
+            <div style="display:flex; align-items:center; gap:14px; padding:20px 24px; border-bottom:1px solid #F0F1F3; position:sticky; top:0; background:#fff">
+              <sc-if value="{{ mShowBack }}" hint-placeholder-val="{{ false }}">
+                <div onClick="{{ mBack }}" style="color:#6B7280; cursor:pointer; font-size:15px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M19 12H5"></path><path d="M10.5 6.5L5 12l5.5 5.5"></path></svg></div>
+              </sc-if>
+              <div style="font-weight:700; font-size:17px; flex:1">{{ mTitle }}</div>
+              <div onClick="{{ closeModal }}" style="width:30px; height:30px; border-radius:50%; border:1px solid #E5E7EB; color:#6B7280; display:flex; align-items:center; justify-content:center; cursor:pointer" style-hover="background:#F9FAFB"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 16px; display:block"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"></path></svg></div>
+            </div>
+
+            <div style="padding:24px; flex:1; overflow:auto">
+              <sc-if value="{{ mOnPacks }}" hint-placeholder-val="{{ true }}">
+                <div>
+                  <div style="color:#9CA3AF; font-size:11.5px; letter-spacing:0.04em; text-transform:uppercase; font-weight:600; margin-bottom:10px">Suggested for this note</div>
+                  <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:26px">
+                    <sc-for list="{{ mSuggested }}" as="s" hint-placeholder-count="3">
+                      <div onClick="{{ s.pick }}" style="display:flex; align-items:center; gap:14px; border:1px solid #E5E7EB; border-radius:12px; padding:14px 16px; cursor:pointer" style-hover="border-color:#CFDFFF; background:#FCFDFF">
+                        <span style="width:32px; height:32px; flex:0 0 32px; border-radius:8px; border:1px solid #EFF0F3; background:url({{ s.appIcon }}) center/19px no-repeat; display:block"></span>
+                        <div style="flex:1; min-width:0">
+                          <div style="font-weight:600; font-size:13.5px">{{ s.name }}</div>
+                          <div style="color:#6B7280; font-size:12.5px; margin-top:3px">{{ s.action }}</div>
+                        </div>
+                        <span style="color:#9CA3AF"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M9.5 6.5L15 12l-5.5 5.5"></path></svg></span>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div onClick="{{ mStartCui }}" style="display:flex; align-items:center; gap:12px; border:1px solid #DDD6FE; border-radius:12px; padding:16px; cursor:pointer; background:linear-gradient(135deg,#E9F0FB 0%,#F2EEFA 45%,#FCEDF3 100%)" style-hover="box-shadow:0 4px 12px rgba(17,24,39,0.08)">
+                    <span style="width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,#8B5CF6 0%,#6103ED 45%,#C026D3 100%); color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M12 3.6l1.8 4.4 4.4 1.8-4.4 1.8L12 16l-1.8-4.4L5.8 9.8l4.4-1.8z"></path><path d="M18.4 15.8l.7 1.7 1.7.7-1.7.7-.7 1.7-.7-1.7-1.7-.7 1.7-.7z"></path></svg></span>
+                    <div style="flex:1">
+                      <div style="font-weight:700; font-size:14px">Create a custom routine</div>
+                      <div style="color:#4B5563; font-size:12.5px; margin-top:3px">Describe what you want, or start from an integration</div>
+                    </div>
+                    <span style="color:var(--wv-primary-500); font-weight:600; font-size:13px">Start</span>
+                  </div>
+                  <div style="height:24px"></div>
+                  <div style="color:#9CA3AF; font-size:11.5px; letter-spacing:0.04em; text-transform:uppercase; font-weight:600; margin-bottom:10px">Routine packs</div>
+                  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:26px">
+                    <sc-for list="{{ mPacks }}" as="p" hint-placeholder-count="6">
+                      <div onClick="{{ p.open }}" style="position:relative; border:1px solid #E5E7EB; border-radius:12px; padding:16px; cursor:pointer" style-hover="border-color:#D1D5DB; background:#FCFDFF">
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px">
+                          <span style="width:30px; height:30px; border-radius:8px; background:{{ p.tint }}; display:block; background-image:url({{ p.icon }}); background-size:18px; background-position:center; background-repeat:no-repeat"></span>
+                          <div style="font-weight:600; font-size:13.5px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap">{{ p.name }}</div>
+                          <div title="{{ p.tooltip }}" style="margin-left:auto; flex:0 0 auto; white-space:nowrap; font-size:11.5px; font-weight:{{ p.usersWeight }}; color:{{ p.usersInk }}; background:{{ p.usersBg }}; padding:2px 8px; border-radius:20px; opacity:{{ p.usersOpacity }}">🔥 {{ p.users }}</div>
+                        </div>
+                        <div style="color:#6B7280; font-size:12px">{{ p.countLabel }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ mOnPack }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex; flex-direction:column; gap:10px">
+                  <sc-for list="{{ mPackSkills }}" as="s" hint-placeholder-count="5">
+                    <div onClick="{{ s.pick }}" style="display:flex; align-items:center; gap:14px; border:1px solid #E5E7EB; border-radius:12px; padding:14px 16px; cursor:pointer" style-hover="border-color:#CFDFFF; background:#FCFDFF">
+                      <span style="width:32px; height:32px; flex:0 0 32px; border-radius:8px; border:1px solid #EFF0F3; background:url({{ s.appIcon }}) center/19px no-repeat; display:block"></span>
+                      <div style="flex:1; min-width:0">
+                        <div style="font-weight:600; font-size:13.5px">{{ s.name }}</div>
+                        <div style="color:#6B7280; font-size:12.5px; margin-top:3px">{{ s.action }}</div>
+                      </div>
+                      <span style="color:#9CA3AF"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 18px; display:block"><path d="M9.5 6.5L15 12l-5.5 5.5"></path></svg></span>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ mOnConfig }}" hint-placeholder-val="{{ false }}">
+                <div>
+                  <div style="display:flex; align-items:center; gap:14px; margin-bottom:24px">
+                    <span style="width:40px; height:40px; flex:0 0 40px; border-radius:10px; border:1px solid #EFF0F3; background:url({{ mSkill.appIcon }}) center/23px no-repeat; display:block"></span>
+                    <div>
+                      <div style="font-weight:700; font-size:15.5px">{{ mSkill.name }}</div>
+                      <div style="color:#6B7280; font-size:12.5px; margin-top:4px">{{ mSkill.action }} · {{ mSkill.appName }}</div>
+                    </div>
+                  </div>
+
+                  <div style="border:1px solid #F0F1F3; border-radius:12px; padding:18px; margin-bottom:16px">
+                    <div style="font-weight:600; font-size:13.5px; margin-bottom:12px; white-space:nowrap">{{ mSkill.destLabel }}</div>
+                    <select value="{{ mSkill.dest }}" onChange="{{ mSetDest }}" style="width:100%; border:1px solid #E5E7EB; border-radius:10px; padding:12px 14px; font-size:14px; background:#F8F9FE; outline:none">
+                      <sc-for list="{{ mSkill.destOptions }}" as="o" hint-placeholder-count="3">
+                        <option value="{{ o.value }}">{{ o.label }}</option>
+                      </sc-for>
+                    </select>
+                  </div>
+
+                  <div style="border:1px solid #F0F1F3; border-radius:12px; padding:16px 18px">
+                    <div onClick="{{ mToggleFuture }}" style="display:flex; align-items:center; gap:12px; cursor:pointer">
+                      <div style="flex:1">
+                        <div style="font-size:13.5px; font-weight:600">Also keep running on future notes <span style="color:#9CA3AF; font-weight:400">(optional)</span></div>
+                        <div style="color:#6B7280; font-size:12.5px; margin-top:4px">Set the conditions a note has to match.</div>
+                      </div>
+                      <span style="width:42px; height:24px; flex:0 0 42px; border-radius:14px; background:{{ mFutureTrack }}; position:relative; display:block; transition:background-color 150ms ease">
+                        <span style="position:absolute; top:2px; left:{{ mFutureKnob }}; width:20px; height:20px; border-radius:50%; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,0.2); transition:left 150ms ease"></span>
+                      </span>
+                    </div>
+                    <sc-if value="{{ mFuture }}" hint-placeholder-val="{{ false }}">
+                      <div style="margin-top:16px; background:#F8F9FE; border-radius:12px; padding:16px">
+                        <sc-for list="{{ mConds }}" as="c" hint-placeholder-count="1">
+                          <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px; flex-wrap:wrap">
+                            <span style="font-size:12.5px; color:#6B7280; width:26px">{{ c.prefix }}</span>
+                            <span style="background:#fff; border:1px solid #E5E7EB; border-radius:8px; padding:8px 12px; font-size:13px; font-weight:600">{{ c.field }}</span>
+                            <span style="font-size:13px; color:#6B7280">{{ c.op }}</span>
+                            <input value="{{ c.value }}" onChange="{{ c.onInput }}" placeholder="Enter a value" style="border:1px solid #E5E7EB; border-radius:8px; padding:8px 12px; font-size:13px; outline:none; min-width:180px" style-focus="border-color:var(--wv-primary-500); box-shadow:0 0 0 3px var(--wv-primary-100)" />
+                            <span onClick="{{ c.remove }}" style="color:#9CA3AF; cursor:pointer">×</span>
+                          </div>
+                        </sc-for>
+                        <div onClick="{{ mAddCond }}" style="display:inline-flex; align-items:center; gap:8px; background:#fff; border:1px solid #E5E7EB; border-radius:10px; padding:9px 14px; font-weight:600; font-size:13px; cursor:pointer" style-hover="background:#F9FAFB">Add condition +</div>
+                        <div style="display:flex; align-items:center; gap:9px; margin-top:14px; flex-wrap:wrap">
+                          <span style="color:#6B7280; font-size:12.5px; font-weight:600">Suggestions:</span>
+                          <sc-for list="{{ mCondSuggestions }}" as="g" hint-placeholder-count="4">
+                            <div onClick="{{ g.add }}" style="background:#fff; border:1px solid #ECEDF5; border-radius:20px; padding:6px 12px; font-size:12.5px; cursor:pointer; color:#4B5563" style-hover="border-color:#CFDFFF">{{ g.label }}</div>
+                          </sc-for>
+                        </div>
+                      </div>
+                    </sc-if>
+                  </div>
+
+                  <sc-if value="{{ mRunning }}" hint-placeholder-val="{{ false }}">
+                    <div style="margin-top:18px; background:#F8F9FE; border-radius:12px; padding:16px; color:#4F46E5; font-weight:600; font-size:13.5px">Running…</div>
+                  </sc-if>
+                  <sc-if value="{{ mRunDone }}" hint-placeholder-val="{{ false }}">
+                    <div style="margin-top:18px; border:1px solid #A7F3D0; background:#ECFDF5; border-radius:12px; padding:16px; color:#065F46; font-size:13.5px; font-weight:600">{{ mRunResult }}</div>
+                  </sc-if>
+
+                  <div style="display:flex; justify-content:flex-end; gap:12px; margin-top:24px">
+                    <div onClick="{{ closeModal }}" style="border:1px solid #E5E7EB; color:#374151; font-weight:600; padding:11px 20px; border-radius:24px; cursor:pointer; background:#fff" style-hover="background:#F9FAFB">Close</div>
+                    <div onClick="{{ mDoRun }}" style="background:var(--wv-primary-500); color:#fff; font-weight:600; padding:11px 22px; border-radius:24px; cursor:pointer" style-hover="background:var(--wv-primary-600)">{{ mRunLabel }}</div>
+                  </div>
+                </div>
+              </sc-if>
+
+              <sc-if value="{{ mOnCui }}" hint-placeholder-val="{{ false }}">
+                <div>
+                  <div style="border:1px solid #E5E7EB; border-radius:14px; overflow:hidden">
+                    <div style="padding:20px; display:flex; flex-direction:column; gap:14px; background:{{ cuiBg }}; min-height:280px">
+                      <sc-for list="{{ cuiMessages }}" as="m" hint-placeholder-count="2">
+                        <div style="display:flex; justify-content:{{ m.align }}">
+                          <div style="max-width:78%; padding:12px 15px; border-radius:14px; background:{{ m.bg }}; color:{{ m.color }}; border:1px solid {{ m.border }}; line-height:1.55; font-size:13.5px">{{ m.text }}</div>
+                        </div>
+                      </sc-for>
+                      <sc-if value="{{ cuiGenerating }}" hint-placeholder-val="{{ false }}">
+                        <div style="display:flex; align-items:center; gap:9px; color:#6103ED; font-size:13px; font-weight:600"><span style="width:7px; height:7px; border-radius:50%; background:#6103ED; display:block"></span><span>Generating…</span></div>
+                      </sc-if>
+                      <sc-if value="{{ cuiHasCard }}" hint-placeholder-val="{{ false }}">
+                        <div style="border:1px solid #DDD6FE; border-radius:14px; background:#fff; padding:18px">
+                          <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px">
+                            <span style="width:32px; height:32px; flex:0 0 32px; border-radius:8px; border:1px solid #EFF0F3; background:url({{ card.appIcon }}) center/19px no-repeat; display:block"></span>
+                            <div style="font-weight:700; font-size:14.5px">{{ card.title }}</div>
+                          </div>
+                          <div style="display:flex; flex-direction:column; gap:9px; font-size:13px">
+                            <div style="display:flex; gap:12px"><div style="width:48px; flex:0 0 48px; color:#9CA3AF; font-weight:600">When</div><div style="color:#374151">{{ card.when }}</div></div>
+                            <div style="display:flex; gap:12px"><div style="width:48px; flex:0 0 48px; color:#9CA3AF; font-weight:600">If</div><div style="color:#374151">{{ card.iff }}</div></div>
+                            <div style="display:flex; gap:12px"><div style="width:48px; flex:0 0 48px; color:#9CA3AF; font-weight:600">Then</div><div style="color:#374151">{{ card.then }}</div></div>
+                          </div>
+                          <div onClick="{{ activateGenerated }}" style="display:inline-block; margin-top:16px; background:var(--wv-primary-500); color:#fff; font-weight:600; padding:9px 18px; border-radius:24px; cursor:pointer; font-size:13px" style-hover="background:var(--wv-primary-600)">Save and activate</div>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ cuiHasChips }}" hint-placeholder-val="{{ true }}">
+                        <div style="display:flex; gap:9px; flex-wrap:wrap">
+                          <sc-for list="{{ cuiChips }}" as="c" hint-placeholder-count="3">
+                            <div onClick="{{ c.send }}" style="border:1px solid #CFDFFF; background:#fff; color:#073899; font-size:13px; font-weight:600; padding:8px 14px; border-radius:20px; cursor:pointer" style-hover="background:#F5F8FF">{{ c.label }}</div>
+                          </sc-for>
+                        </div>
+                      </sc-if>
+                    </div>
+                    <div style="border-top:1px solid #F3F4F6; padding:12px 16px; display:flex; align-items:center; gap:12px; background:#fff">
+                      <input value="{{ cuiDraft }}" onChange="{{ cuiTyped }}" onKeyDown="{{ cuiKey }}" placeholder="Describe what should happen…" style="flex:1; border:1px solid #E5E7EB; border-radius:24px; padding:10px 15px; font-size:13.5px; outline:none" style-focus="border-color:var(--wv-primary-500); box-shadow:0 0 0 3px var(--wv-primary-100)" />
+                      <div onClick="{{ cuiSend }}" style="background:var(--wv-primary-500); color:#fff; font-weight:600; padding:9px 17px; border-radius:24px; cursor:pointer; font-size:13.5px" style-hover="background:var(--wv-primary-600)">Send</div>
+                    </div>
+                  </div>
+                  <div style="display:flex; align-items:center; gap:14px; margin:22px 0 14px 0">
+                    <div style="height:1px; background:#F0F1F3; flex:1"></div>
+                    <div style="color:#9CA3AF; font-size:12.5px; font-weight:600">Or start from an integration</div>
+                    <div style="height:1px; background:#F0F1F3; flex:1"></div>
+                  </div>
+                  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px">
+                    <sc-for list="{{ mPickApp }}" as="a" hint-placeholder-count="12">
+                      <div onClick="{{ a.pick }}" style="border:1px solid #E5E7EB; border-radius:12px; padding:14px; display:flex; align-items:center; gap:10px; cursor:pointer" style-hover="border-color:#D1D5DB; background:#FCFDFF">
+                        <span style="width:28px; height:28px; flex:0 0 28px; border-radius:8px; border:1px solid #EFF0F3; background:url({{ a.icon }}) center/17px no-repeat; display:block"></span>
+                        <div style="font-weight:600; font-size:13px">{{ a.name }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ toastOn }}" hint-placeholder-val="{{ false }}">
+        <div style="position:fixed; right:28px; bottom:28px; z-index:80; background:#111827; color:#fff; padding:14px 20px; border-radius:12px; box-shadow:0 8px 24px rgba(17,24,39,0.24); font-size:13.5px; font-weight:600">{{ toastText }}</div>
+      </sc-if>
+
+    </div>
+  </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:940}}">
+function svgURI(inner){ return "data:image/svg+xml,"+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">'+inner+'</svg>'); }
+const APP_ICON = {
+  slack: svgURI('<rect x="9.2" y="1" width="4" height="13" rx="2" fill="#36C5F0"/><rect x="11" y="9.2" width="12" height="4" rx="2" fill="#2EB67D"/><rect x="10.8" y="10.8" width="4" height="12.2" rx="2" fill="#ECB22E"/><rect x="1" y="10.8" width="12" height="4" rx="2" fill="#E01E5A"/>'),
+  zoomchat: svgURI('<rect x="1" y="1" width="22" height="22" rx="6" fill="#0B5CFF"/><path d="M5.5 9.2h7.3c1.1 0 2 .9 2 2v3.6c0 1.1-.9 2-2 2H7.5c-1.1 0-2-.9-2-2V9.2z" fill="#fff"/><path d="M15.8 12.4l3.7-2.8v6.8l-3.7-2.8z" fill="#fff"/>'),
+  workvivo: "assets/workvivo-mark.png",
+  gmail: svgURI('<rect x="1.6" y="5" width="20.8" height="14" rx="2.4" fill="#fff" stroke="#DADCE0"/><path d="M2.4 6.4L12 13.6l9.6-7.2" fill="none" stroke="#EA4335" stroke-width="2.4"/><path d="M1.6 7.4v10.2c0 .8.6 1.4 1.4 1.4h2.2V9.6z" fill="#4285F4"/><path d="M22.4 7.4v10.2c0 .8-.6 1.4-1.4 1.4h-2.2V9.6z" fill="#34A853"/>'),
+  salesforce: svgURI('<path d="M8.6 19.4a4.9 4.9 0 0 1-.5-9.78A6 6 0 0 1 20.4 10.9a4.3 4.3 0 0 1-1.3 8.5z" fill="#00A1E0"/>'),
+  hubspot: svgURI('<circle cx="17" cy="6.6" r="3.2" fill="#FF7A59"/><circle cx="8.6" cy="16.4" r="4.6" fill="none" stroke="#FF7A59" stroke-width="2.6"/><path d="M14.6 8.9l-3.4 4M17 9.8v2.4" stroke="#FF7A59" stroke-width="2.4" stroke-linecap="round"/>'),
+  gdrive: svgURI('<path d="M9.4 2.4h5.2L22.6 16h-5.2z" fill="#FFBA00"/><path d="M9.4 2.4L1.4 16l2.6 4.4L14.6 2.4z" fill="#0DA960"/><path d="M1.6 16h21l-2.6 4.4H4.2z" fill="#2684FC"/>'),
+  onedrive: svgURI('<path d="M7.4 18.6a4.1 4.1 0 0 1 .3-8.16A5.6 5.6 0 0 1 18.4 11.2a3.7 3.7 0 0 1-.4 7.4z" fill="#0364B8"/><path d="M11.4 18.6h6.8a3.6 3.6 0 0 0 .3-7.2 5 5 0 0 0-3.4-2.6" fill="#28A8EA" opacity=".85"/>'),
+  notion: svgURI('<rect x="2.2" y="2.2" width="19.6" height="19.6" rx="3" fill="#fff" stroke="#111827" stroke-width="1.6"/><path d="M8 17.4V7.6l8 9.4V7.6" fill="none" stroke="#111827" stroke-width="1.8" stroke-linejoin="round"/>'),
+  jira: svgURI('<path d="M12 1.6l9.2 9.2-3.8 3.8L12 9.2 6.6 14.6 2.8 10.8z" fill="#2684FF"/><path d="M12 12.4l4.6 4.6L12 21.6 7.4 17z" fill="#0052CC"/>'),
+  asana: svgURI('<circle cx="12" cy="6.8" r="3.6" fill="#F06A6A"/><circle cx="6.4" cy="16.2" r="3.6" fill="#F06A6A"/><circle cx="17.6" cy="16.2" r="3.6" fill="#F06A6A"/>'),
+  sheets: svgURI('<path d="M6 2h8.4L19.6 7.2V22H6z" fill="#0F9D58"/><path d="M14.4 2l5.2 5.2h-5.2z" fill="#0B8043"/><rect x="8.6" y="10.4" width="8.6" height="8" fill="#fff"/><path d="M8.6 13.2h8.6M8.6 15.8h8.6M12.9 10.4v8" stroke="#0F9D58" stroke-width="1.1"/>'),
+  webhook: svgURI('<path d="M9 6.6L4.4 12 9 17.4M15 6.6L19.6 12 15 17.4" fill="none" stroke="#374151" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>')
+};
+const DS_ICON = {
+  sales:"ReportCentreIcon", marketing:"SocialAdvocacyIcon", product:"RocketLaunchIcon", design:"WriteIcon",
+  finance:"Wallet", hr:"PersonIcon", engineering:"WebIcon", cs:"TelephoneIcon", legal:"PadlockIcon",
+  it:"CogIcon", exec:"StarIcon", general:"LayerIcon",
+  bulb:"ForYouIcon", target:"SegmentsIcon", one:"ChatBubbleVideoIcon", play:"VideoIcon",
+  chat:"ChatBubbleOvalIcon", doc:"FileDoubleIcon", tag:"BookmarkIcon"
+};
+function packIcon(color,kind){
+  if(DS_ICON[kind]) return "assets/icons/"+DS_ICON[kind]+".svg";
+  return packIconDrawn(color,kind);
+}
+function packIconDrawn(color,kind){
+  const P={
+    sales:'<path d="M4 18l5-5 3.5 3L20 8" fill="none" stroke="C" stroke-width="2.2" stroke-linecap="round"/><path d="M15 7.6h5.2v5" fill="none" stroke="C" stroke-width="2.2" stroke-linecap="round"/>',
+    marketing:'<path d="M4 10.4l10-4.6v12.4L4 13.6z" fill="none" stroke="C" stroke-width="2" stroke-linejoin="round"/><path d="M14 8.4c2.6 0 4.4 1.6 4.4 3.6S16.6 15.6 14 15.6" fill="none" stroke="C" stroke-width="2"/><path d="M6.6 13.6v4.8h3v-3.9" fill="none" stroke="C" stroke-width="2" stroke-linejoin="round"/>',
+    product:'<path d="M12 3l8 4.4v9.2L12 21l-8-4.4V7.4z" fill="none" stroke="C" stroke-width="2" stroke-linejoin="round"/><path d="M4 7.4l8 4.4 8-4.4M12 11.8V21" fill="none" stroke="C" stroke-width="2"/>',
+    design:'<path d="M4 20l1-4.4L15.6 5a2.2 2.2 0 0 1 3.1 3.1L8.4 19z" fill="none" stroke="C" stroke-width="2" stroke-linejoin="round"/><path d="M14 6.6l3.4 3.4" stroke="C" stroke-width="2"/>',
+    finance:'<circle cx="12" cy="12" r="8.4" fill="none" stroke="C" stroke-width="2"/><path d="M14.6 9.2c-.6-1-1.6-1.4-2.8-1.4-1.6 0-2.8.8-2.8 2.1s1.2 1.8 2.8 2.1c1.6.3 2.8.8 2.8 2.1s-1.2 2.1-2.8 2.1c-1.3 0-2.3-.5-2.9-1.5M12 6.2v11.6" fill="none" stroke="C" stroke-width="1.9" stroke-linecap="round"/>',
+    hr:'<circle cx="12" cy="8.4" r="3.6" fill="none" stroke="C" stroke-width="2"/><path d="M5.2 20c.6-3.6 3.4-5.6 6.8-5.6s6.2 2 6.8 5.6" fill="none" stroke="C" stroke-width="2" stroke-linecap="round"/>',
+    engineering:'<path d="M9.4 7.6L4.6 12l4.8 4.4M14.6 7.6L19.4 12l-4.8 4.4" fill="none" stroke="C" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>',
+    cs:'<path d="M5 13.6v-1.4a7 7 0 0 1 14 0v1.4" fill="none" stroke="C" stroke-width="2" stroke-linecap="round"/><rect x="3.2" y="13.2" width="3.6" height="5.4" rx="1.6" fill="none" stroke="C" stroke-width="2"/><rect x="17.2" y="13.2" width="3.6" height="5.4" rx="1.6" fill="none" stroke="C" stroke-width="2"/>',
+    legal:'<path d="M12 4v15M6 19h12M5 9h14M5 9l-2.4 5.2h4.8zM19 9l2.4 5.2h-4.8z" fill="none" stroke="C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+    it:'<rect x="3.6" y="4.4" width="16.8" height="6" rx="2" fill="none" stroke="C" stroke-width="2"/><rect x="3.6" y="13.6" width="16.8" height="6" rx="2" fill="none" stroke="C" stroke-width="2"/><path d="M7 7.4h.01M7 16.6h.01" stroke="C" stroke-width="2.4" stroke-linecap="round"/>',
+    exec:'<path d="M12 3.6l2.6 5.4 5.8.8-4.2 4.1 1 5.9-5.2-2.9-5.2 2.9 1-5.9-4.2-4.1 5.8-.8z" fill="none" stroke="C" stroke-width="2" stroke-linejoin="round"/>',
+    general:'<rect x="4" y="4" width="7" height="7" rx="1.8" fill="none" stroke="C" stroke-width="2"/><rect x="13" y="4" width="7" height="7" rx="1.8" fill="none" stroke="C" stroke-width="2"/><rect x="4" y="13" width="7" height="7" rx="1.8" fill="none" stroke="C" stroke-width="2"/><rect x="13" y="13" width="7" height="7" rx="1.8" fill="none" stroke="C" stroke-width="2"/>',
+    bulb:'<path d="M9 17.4h6M10 20.4h4M12 3.6a5.6 5.6 0 0 1 3.4 10v1.2H8.6V13.6A5.6 5.6 0 0 1 12 3.6z" fill="none" stroke="C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+    target:'<circle cx="12" cy="12" r="8.4" fill="none" stroke="C" stroke-width="2"/><circle cx="12" cy="12" r="4.4" fill="none" stroke="C" stroke-width="2"/><circle cx="12" cy="12" r="1.4" fill="C"/>',
+    one:'<rect x="3.2" y="5" width="11" height="9" rx="2.4" fill="none" stroke="C" stroke-width="2"/><path d="M6.6 17.4v-3.4" stroke="C" stroke-width="2" stroke-linecap="round"/><rect x="10.6" y="10.6" width="10.2" height="8.4" rx="2.4" fill="none" stroke="C" stroke-width="2"/>',
+    play:'<rect x="3.2" y="4.6" width="17.6" height="12.8" rx="2.4" fill="none" stroke="C" stroke-width="2"/><path d="M10.4 8.8l4.6 2.8-4.6 2.8z" fill="C"/><path d="M8.4 20.4h7.2" stroke="C" stroke-width="2" stroke-linecap="round"/>',
+    chat:'<path d="M4 6.4A2.4 2.4 0 0 1 6.4 4h11.2A2.4 2.4 0 0 1 20 6.4v7.2a2.4 2.4 0 0 1-2.4 2.4H9.6L5 19.6v-3.6H6.4A2.4 2.4 0 0 1 4 13.6z" fill="none" stroke="C" stroke-width="2" stroke-linejoin="round"/><path d="M9 10h.01M12 10h.01M15 10h.01" stroke="C" stroke-width="2.4" stroke-linecap="round"/>',
+    doc:'<path d="M6.4 3.6h7.2l4.8 4.8v12H6.4z" fill="none" stroke="C" stroke-width="2" stroke-linejoin="round"/><path d="M13.2 3.6v5h5M9.2 12.4h6M9.2 15.6h6" fill="none" stroke="C" stroke-width="2" stroke-linecap="round"/>',
+    tag:'<path d="M11 3.6h6.8a2.6 2.6 0 0 1 2.6 2.6V13L12.6 20.8a2 2 0 0 1-2.8 0L3.2 14.2a2 2 0 0 1 0-2.8z" fill="none" stroke="C" stroke-width="2" stroke-linejoin="round"/><circle cx="16.4" cy="7.6" r="1.6" fill="C"/>'
+  };
+  return svgURI((P[kind]||P.general).split("C").join(color));
+}
+const APPS = {
+  slack:{name:"Slack",short:"Sl",color:"#4A154B",kind:"chat"},
+  zoomchat:{name:"Zoom Team Chat",short:"Zm",color:"#0B5CFF",kind:"chat"},
+  workvivo:{name:"Workvivo",short:"Wv",color:"#6103ED",kind:"chat"},
+  gmail:{name:"Gmail / Outlook",short:"Ml",color:"#C5221F",kind:"chat"},
+  salesforce:{name:"Salesforce",short:"SF",color:"#00A1E0",kind:"crm"},
+  hubspot:{name:"HubSpot",short:"Hs",color:"#FF7A59",kind:"crm"},
+  gdrive:{name:"Google Drive",short:"GD",color:"#1A73E8",kind:"storage"},
+  onedrive:{name:"OneDrive",short:"OD",color:"#0364B8",kind:"storage"},
+  notion:{name:"Notion",short:"No",color:"#111827",kind:"docs"},
+  jira:{name:"Jira",short:"Ji",color:"#2684FF",kind:"tasks"},
+  asana:{name:"Asana",short:"As",color:"#F06A6A",kind:"tasks"},
+  sheets:{name:"Google Sheets",short:"Sh",color:"#0F9D58",kind:"table"},
+  webhook:{name:"Webhook",short:"{}",color:"#374151",kind:"dev"}
+};
+const KIND_ALTS = {
+  chat:["slack","zoomchat","workvivo","gmail"],
+  crm:["salesforce","hubspot"],
+  storage:["gdrive","onedrive","notion"],
+  docs:["notion","gdrive","onedrive"],
+  tasks:["jira","asana","notion"],
+  table:["sheets","notion"],
+  dev:["webhook"]
+};
+const ACTIONS = {
+  slack:["Send notes to a specific channel","Send notes as a direct message"],
+  zoomchat:["Send notes to a Team Chat channel","Send notes as a direct message"],
+  workvivo:["Post a summary to a space","Send a shoutout"],
+  gmail:["Email a recap to participants","Email a recap to myself"],
+  salesforce:["Create a new lead","Log an activity on an existing record"],
+  hubspot:["Create a contact note","Log a meeting on the deal"],
+  gdrive:["Save notes and recording to a folder","Save the transcript only"],
+  onedrive:["Save notes and recording to a folder","Save the transcript only"],
+  notion:["Create a page in a database","Append to an existing page"],
+  jira:["Create an issue per action item","Comment on a linked issue"],
+  asana:["Create tasks from action items","Add a comment to a project"],
+  sheets:["Append a row per meeting","Update an existing row"],
+  webhook:["POST the meeting payload to a URL"]
+};
+const DEST = {
+  slack:["Slack channel",["#sales-wins","#product-updates","#design","#general"]],
+  zoomchat:["Team Chat channel",["Sales team","Product team","Design crit"]],
+  workvivo:["Space",["Company news","Sales floor","Design studio"]],
+  gmail:["Recipients",["All participants","Internal participants only","Just me"]],
+  salesforce:["Salesforce object",["Lead","Contact","Opportunity"]],
+  hubspot:["HubSpot record",["Contact","Deal","Company"]],
+  gdrive:["Folder",["My Drive / Meetings","Shared / Sales calls","Shared / Interviews"]],
+  onedrive:["Folder",["OneDrive / Meetings","SharePoint / Sales","SharePoint / HR"]],
+  notion:["Database",["Meeting notes","Customer research","Design decisions"]],
+  jira:["Project",["SALES board","PROD board","DESIGN board"]],
+  asana:["Project",["Go-to-market","Roadmap","Design tasks"]],
+  sheets:["Spreadsheet",["Weekly progress tracker","Pipeline log","Interview scorecards"]],
+  webhook:["Endpoint URL",["https://hooks.internal/meetings","https://hooks.internal/crm"]]
+};
+const DATA_FIELDS = ["Meeting title","AI Notes","Transcript","Participants email","Meeting date","Meeting URL","Participants name","Action items","Next steps","Recording link"];
+const TINTS = [["#EFF6FF","#1D4ED8"],["#ECFDF5","#047857"],["#EEF2FF","#4338CA"],["#FEF3C7","#B45309"],["#FDF2F8","#BE185D"],["#F0FDF4","#15803D"],["#FFF7ED","#C2410C"],["#F5F3FF","#6D28D9"],["#FEF2F2","#B91C1C"],["#F0F9FF","#0369A1"],["#F8FAFC","#334155"],["#F3F4F6","#374151"]];
+
+function sk(id,name,trigger,app,action){ return {id,name,trigger,app,action}; }
+const PACK_USERS = {general:18420,sales:12980,product:9740,hr:7310,cs:6120,engineering:5480,marketing:4930,finance:3260,it:2870,design:2410,exec:1580,legal:940};
+function usersLabel(id){ const n=PACK_USERS[id]||0; return n.toLocaleString("en-US")+" people use this"; }
+function usersCount(id){ return String(PACK_USERS[id]||0); }
+function usersStyle(rank){ return rank<3 ? {ink:"#C2410C",bg:"#FFF7ED",weight:"600",opacity:"1"} : {ink:"#6B7280",bg:"#F3F4F6",weight:"500",opacity:"0.8"}; }
+function usersTooltip(id){ return "This routine pack has been used "+String(PACK_USERS[id]||0)+" times worldwide"; }
+function packsByHeat(){ return PACKS.slice().sort((a,b)=>(PACK_USERS[b.id]||0)-(PACK_USERS[a.id]||0)); }
+const PACKS = [
+  {id:"sales",name:"Sales",letter:"S",desc:"Keep the CRM current without touching it after a call.",skills:[
+    sk("s1","Turn discovery calls into new {app} leads","a call with a new external contact ends","salesforce","Create a new lead"),
+    sk("s2","Log every customer call as a CRM activity","a meeting note is ready","salesforce","Log an activity on the account"),
+    sk("s3","Push agreed next steps to the deal","action items are detected","salesforce","Create tasks on the opportunity"),
+    sk("s4","Post closed-won calls to the sales channel","the title contains \u201csigned\u201d","slack","Send notes to #sales-wins"),
+    sk("s5","Email the recap to the customer","an external meeting ends","gmail","Email a recap to participants")]},
+  {id:"marketing",name:"Marketing",letter:"M",desc:"Turn customer conversations into usable material.",skills:[
+    sk("m1","Save customer quotes to the research library","a customer interview ends","notion","Create a page in Customer research"),
+    sk("m2","Send campaign review notes to the team","a campaign review ends","slack","Send notes to #marketing"),
+    sk("m3","File webinar recordings by campaign","a webinar note is ready","gdrive","Save to Shared / Webinars"),
+    sk("m4","Draft the launch recap post","a launch readout ends","workvivo","Post a summary to Company news")]},
+  {id:"product",name:"Product",letter:"P",desc:"From customer signal to backlog, automatically.",skills:[
+    sk("p1","Turn action items into {app} issues","action items are detected","jira","Create an issue per action item"),
+    sk("p2","Save discovery calls to the research database","a user interview ends","notion","Create a page in Customer research"),
+    sk("p3","Send sprint review notes to the squad","a sprint review ends","slack","Send notes to #squad-updates"),
+    sk("p4","Track PRD review decisions","the title contains \u201cPRD\u201d","notion","Append decisions to the PRD page"),
+    sk("p5","Flag churn-risk language to me","risk phrases are detected","zoomchat","Send a direct message to me")]},
+  {id:"design",name:"Design",letter:"D",desc:"Keep critique decisions where the work lives.",skills:[
+    sk("d1","Log design crit decisions","a design critique ends","notion","Append to Design decisions"),
+    sk("d2","Create follow-ups from crit feedback","action items are detected","asana","Create tasks in Design tasks"),
+    sk("d3","Share research playback with the studio","a research playback ends","slack","Send notes to #design"),
+    sk("d4","Archive usability session recordings","a usability session ends","gdrive","Save to Shared / Research")]},
+  {id:"finance",name:"Finance",letter:"F",desc:"An audit trail for every financial conversation.",skills:[
+    sk("fi1","File audit and board calls","the title contains \u201caudit\u201d","onedrive","Save to SharePoint / Finance"),
+    sk("fi2","Log budget decisions to the tracker","a budget review ends","sheets","Append a row per meeting"),
+    sk("fi3","Send the month-end recap","a close review ends","gmail","Email a recap to the finance team"),
+    sk("fi4","Create follow-up tasks for variances","action items are detected","asana","Create tasks in Finance ops")]},
+  {id:"hr",name:"HR & Recruiting",letter:"H",desc:"Interviews and people conversations, filed and shared.",skills:[
+    sk("h1","Save interview notes to {app}","an interview ends","gdrive","Save to Shared / Interviews"),
+    sk("h2","Fill the interview scorecard","an interview ends","sheets","Append a row per interview"),
+    sk("h3","Send the debrief to the hiring panel","the title contains \u201cdebrief\u201d","slack","Send notes to the panel channel"),
+    sk("h4","Log 1:1 themes privately","a 1:1 ends","notion","Append to my private 1:1 log"),
+    sk("h5","Share onboarding recaps with new joiners","an onboarding session ends","gmail","Email a recap to participants")]},
+  {id:"engineering",name:"Engineering",letter:"E",desc:"Standups and incident calls, straight into the tracker.",skills:[
+    sk("e1","Turn standup blockers into Jira issues","a standup ends","jira","Create an issue per blocker"),
+    sk("e2","Post incident timelines to the channel","the title contains \u201cincident\u201d","slack","Send notes to #incidents"),
+    sk("e3","Save architecture decisions","a design review ends","notion","Append to the ADR database"),
+    sk("e4","Send the meeting payload to our service","a meeting note is ready","webhook","POST the payload to a URL")]},
+  {id:"cs",name:"Customer Success",letter:"C",desc:"Every account conversation, on the record.",skills:[
+    sk("c1","Log QBRs on the account","a QBR ends","salesforce","Log an activity on the account"),
+    sk("c2","Create renewal follow-ups","action items are detected","hubspot","Log a meeting on the deal"),
+    sk("c3","Share escalation notes with support","the title contains \u201cescalation\u201d","slack","Send notes to #support-escalations"),
+    sk("c4","Email the customer their action items","an external meeting ends","gmail","Email a recap to participants")]},
+  {id:"legal",name:"Legal",letter:"L",desc:"Retention-safe records of negotiations and reviews.",skills:[
+    sk("l1","File contract negotiation calls","the title contains \u201ccontract\u201d","onedrive","Save to SharePoint / Legal"),
+    sk("l2","Log review decisions to the matter","a review call ends","notion","Append to the matter page"),
+    sk("l3","Send redline follow-ups to counsel","action items are detected","gmail","Email a recap to counsel")]},
+  {id:"it",name:"IT & Operations",letter:"I",desc:"Change control and vendor calls, documented.",skills:[
+    sk("it1","Log change advisory decisions","a CAB meeting ends","jira","Create an issue per change"),
+    sk("it2","File vendor calls by supplier","a vendor call ends","onedrive","Save to SharePoint / Vendors"),
+    sk("it3","Post maintenance windows to the channel","the title contains \u201cmaintenance\u201d","slack","Send notes to #it-ops"),
+    sk("it4","Push meeting data to the service desk","a meeting note is ready","webhook","POST the payload to a URL")]},
+  {id:"exec",name:"Executive & EA",letter:"X",desc:"Briefings and decisions, summarised for the exec.",skills:[
+    sk("x1","Send a daily digest of my meetings","the day ends","zoomchat","Send a direct message to me"),
+    sk("x2","Track exec decisions in one place","a leadership meeting ends","notion","Append to the decision log"),
+    sk("x3","Share board pre-reads","the title contains \u201cboard\u201d","onedrive","Save to SharePoint / Board"),
+    sk("x4","Post the all-hands recap","an all-hands ends","workvivo","Post a summary to Company news")]},
+  {id:"general",name:"General",letter:"G",desc:"The basics everyone wants on day one.",skills:[
+    sk("g1","Send myself notes after every meeting","a meeting note is ready","zoomchat","Send a direct message to me"),
+    sk("g2","Save every recording to my drive","a meeting note is ready","gdrive","Save to My Drive / Meetings"),
+    sk("g3","Turn my action items into tasks","action items are detected","asana","Create tasks in My work"),
+    sk("g4","Email recaps to participants","an external meeting ends","gmail","Email a recap to participants")]}
+];
+const UPCOMING = [
+  {title:"[My Notes x AI Team] Action Item Extraction Progress Sync",time:"08:30 - 09:00"},
+  {title:"\u8ba8\u8bba\u4e0b Follow-ups \u7684\u4ea7\u54c1\u5f62\u6001\u548c\u8c03\u7814\u76ee\u6807",time:"09:00 - 09:30"},
+  {title:"AI Slides \u9879\u76ee\u7ec4 - \u4f8b\u4f1a",time:"09:00 - 09:30"},
+  {title:"Andrew XX Weekly 1:1",time:"12:00 - 12:30"},
+  {title:"MFU Daily Stand-Up",time:"16:00 - 16:30"}
+];
+const AV = ["#0B5CFF","#10B981","#F59E0B","#EF4444","#8B5CF6","#0EA5E9"];
+function initials(name){ const p=String(name||"").trim().split(/\s+/); return ((p[0]||"?")[0]+((p[1]||"")[0]||"")).toUpperCase(); }
+function avatarsFor(n){
+  const list=(n.names||[]).slice(0,4);
+  return list.map((nm,i)=>({color:AV[i%AV.length],label:initials(nm),name:nm}));
+}
+const NOTES = [
+  {id:"n1",names:["Evan Yang","Xun Xiao","Toki Cai","Sue Wang"],title:"AI \u4f1a\u8bae\u52a9\u624b\u4ea7\u54c1\u8bbe\u8ba1\u8bc4\u5ba1\u4e0e\u4f18\u5316",time:"22:20 - 22:59",host:"Evan Yang",group:"Yesterday",modified:"1 hour ago",people:4,meeting:"Wednesday Sep 2, 22:20-22:59"},
+  {id:"n2",names:["Sue Wang","Xun Xiao"],title:"Sue Wang's Zoom Meeting 2026-09-02 18:21 (GMT+8:00)",time:"18:21 - 18:22",host:"Sue Wang",group:"Yesterday",modified:"6 hours ago",people:2,meeting:"Wednesday Sep 2, 18:21-18:22"},
+  {id:"n3",names:["Toki Cai","Sue Wang","Yuan Bin","Xun Xiao","Evan Yang","Pei Zhang","Russell Lee","Andrew Ma"],title:"PRD Review: From MFU to Slides 2026-09-02 17:00(GMT+8:00)",time:"17:00 - 17:54",host:"Toki Cai",group:"Yesterday",modified:"6 hours ago",people:8,meeting:"Wednesday Sep 2, 17:00-17:54"},
+  {id:"n4",names:["Xun Xiao","Toki Cai","Sue Wang"],title:"Xun Xiao's Zoom Meeting 2026-09-02 17:55 (GMT+8:00)",time:"17:56 - 18:07",host:"me",group:"Yesterday",modified:"6 hours ago",people:3,meeting:"Wednesday Sep 2, 17:56-18:07"},
+  {id:"n5",names:["Sue Wang","Feng Yu","Xun Xiao","Chen Song","Toki Cai","Evan Yang","Pei Zhang"],title:"MFU Daily Stand-Up 2026-09-02 16:00(GMT+8:00)",time:"16:00 - 16:25",host:"Sue Wang",group:"Yesterday",modified:"8 hours ago",people:7,meeting:"Wednesday Sep 2, 16:00-16:25"},
+  {id:"n6",names:["Xun Xiao","Yuan Bin","Sue Wang","Toki Cai","Evan Yang","Russell Lee"],title:"\u8fc7\u4e00\u4e0b chat notification \u4e00\u671f\u7ec8\u7a3f 2026-09-02 14:12(GMT+8:00)",time:"13:46 - 15:08",host:"me",group:"Yesterday",modified:"9 hours ago",people:6,meeting:"Wednesday Sep 2, 13:46-15:08"},
+  {id:"n7",names:["Xun Xiao","Sue Wang"],title:"\u9700\u6c42\u5bf9\u63a5\u6d41\u7a0b\u4f18\u5316\u4e0e AI \u89d2\u8272\u8ba4\u77e5\u5bf9\u9f50",time:"11:40 - 12:10",host:"me",group:"Yesterday",modified:"12 hours ago",people:2,meeting:"Wednesday Sep 2, 11:40-12:10"},
+  {id:"n8",names:["Xun Xiao","Toki Cai","Sue Wang","Pei Zhang","Evan Yang","Yuan Bin","Feng Yu","Chen Song","Russell Lee","Andrew Ma","Kim Lu","Nina Wu","Ray Han","Iris Fan","Leo Ping","Mia Guo","Nick Tao","Olga Shen","Paul Qi","Rita Mo","Sam Ke","Tina Bai","Uma Xie","Vic Cao","Will Ni"],title:"My notes \u4ea7\u54c1\u8bbe\u8ba1\u5468\u4e09\u540c\u6b65 2026-09-02 11:01(GMT+8:00)",time:"11:01 - 11:58",host:"me",group:"Yesterday",modified:"12 hours ago",people:25,meeting:"Wednesday Sep 2, 11:01-11:58"},
+  {id:"n9",names:["Sue Wang","Xun Xiao","Toki Cai","Pei Zhang","Evan Yang","Yuan Bin","Feng Yu","Nina Wu","Ray Han"],title:"my notes & fusion agents 2026-09-02 10:00(GMT+8:00)",time:"10:00 - 10:46",host:"Sue Wang",group:"Yesterday",modified:"14 hours ago",people:9,meeting:"Wednesday Sep 2, 10:00-10:46"},
+  {id:"n10",names:["Evan Yang","Xun Xiao","Toki Cai","Sue Wang","Yuan Bin"],title:"Meeting Summary \u6d41\u7a0b\u4f18\u5316\u4e0e\u529f\u80fd\u5bf9\u9f50\u540c\u6b65\u4f1a",time:"15:00 - 16:00",host:"Evan Yang",group:"Last 7 days",modified:"1 day ago",people:5,meeting:"Tuesday Sep 1, 15:00-16:00"},
+  {id:"n11",names:["Xun Xiao","Sue Wang"],title:"Zoom Follow Up \u529f\u80fd\u7528\u6237\u53cd\u9988\u8c03\u7814",time:"14:00 - 14:40",host:"me",group:"Last 7 days",modified:"1 day ago",people:2,meeting:"Tuesday Sep 1, 14:00-14:40"}
+];
+const FOLLOWUPS = [
+  {text:"\u5411\u76f8\u5173 PM \u67e5\u8be2 summary \u901a\u77e5\u7b56\u7565\u548c\u4f7f\u7528\u6570\u636e",action:"Research",tint:"#FFF7ED",ink:"#C2410C"},
+  {text:"\u5728 Windows \u5927\u7fa4\u53cd\u9988 meeting summary \u4e0e notes summary \u7684\u91cd\u590d\u95ee\u9898",action:"Draft",tint:"#F5F3FF",ink:"#6D28D9"},
+  {text:"\u786e\u5b9a chat notification \u9ed8\u8ba4\u503c\u5e76\u56de\u590d\u8096\u88d5",action:"Draft",tint:"#F5F3FF",ink:"#6D28D9"}
+];
+const TAGS = [
+  {id:"t1",name:"Workflow + My Notes Weekly Sync",count:3},
+  {id:"t2",name:"MFU x AI Team \u2014 Action Items",count:1},
+  {id:"t3",name:"My Notes w/ Russell (2x Weekly)",count:3},
+  {id:"t4",name:"UX Shiproom",count:1},
+  {id:"t5",name:"Docs daily standup",count:1},
+  {id:"t6",name:"Andrew XX Weekly 1:1",count:5},
+  {id:"t7",name:"My notes \u4ea7\u54c1\u8bbe\u8ba1\u5468\u4e09\u540c\u6b65",count:10}
+];
+const TEMPLATES = [
+  {id:"tp1",name:"Brainstorm",sub:"Capture what clicks",glyph:"\u2726",tint:"#FEF3C7",ink:"#B45309",sections:[
+    {title:"1. Topic",lines:["Show the original note in bold, or a concise derived title if there is no note","Frame the brainstorming question or area of exploration"]},
+    {title:"2. Ideas & contributions",lines:["List of ideas from participants","Include the user's ideas or reactions if present","Capture a variety of perspectives, including unfinished or opposing ideas"]},
+    {title:"3. What I found interesting",lines:["The user's perspective on key ideas or promising directions (1-2 points)"]},
+    {title:"4. Action items / follow-ups",lines:["Owner, task, and due date where mentioned"]}]},
+  {id:"tp2",name:"Customer discovery",sub:"Uncover needs clearly",glyph:"\u25C9",tint:"#FFF7ED",ink:"#C2410C",sections:[
+    {title:"1. Account context",lines:["Company, attendees, and roles","Where they are in the buying process"]},
+    {title:"2. Problems and jobs to be done",lines:["Pain points in the customer's own words","Current workarounds"]},
+    {title:"3. Requirements",lines:["Must-haves versus nice-to-haves"]},
+    {title:"4. Next steps",lines:["Agreed follow-ups with owners and dates"]}]},
+  {id:"tp3",name:"one-one",sub:"Structure your one-ones",glyph:"1:1",tint:"#EFF6FF",ink:"#1D4ED8",sections:[
+    {title:"1. Wins since last time",lines:["What went well, in their words"]},
+    {title:"2. Blockers and support needed",lines:["Where they need a decision or air cover"]},
+    {title:"3. Growth and feedback",lines:["Feedback given and received"]},
+    {title:"4. Commitments",lines:["What each of us will do before the next one-one"]}]},
+  {id:"tp4",name:"Lecture note",sub:"Make learning stick",glyph:"\u25B6",tint:"#F5F3FF",ink:"#6D28D9",sections:[
+    {title:"1. Session and speaker",lines:["Topic, speaker, and date"]},
+    {title:"2. Key concepts",lines:["Each concept with a one-line explanation"]},
+    {title:"3. Examples worth keeping",lines:["Concrete examples or demos referenced"]},
+    {title:"4. Questions to follow up on",lines:["Open questions and where to look next"]}]},
+  {id:"tp5",name:"Discussion",sub:"Ideas to decisions",glyph:"\u22EF",tint:"#ECFDF5",ink:"#047857",sections:[
+    {title:"1. What we discussed",lines:["The question on the table"]},
+    {title:"2. Positions and trade-offs",lines:["Each option with its argument for and against"]},
+    {title:"3. Decision",lines:["What we decided, and who decided it"]},
+    {title:"4. Follow-ups",lines:["Owner, task, and due date"]}]},
+  {id:"tp6",name:"General Template",sub:"Insights and follow-ups",glyph:"\u25E7",tint:"#F3F4F6",ink:"#374151",sections:[
+    {title:"1. Summary",lines:["Three to five bullets covering the whole meeting"]},
+    {title:"2. Key points",lines:["Grouped by topic"]},
+    {title:"3. Decisions",lines:["What was agreed"]},
+    {title:"4. Action items",lines:["Owner, task, and due date"]}]}
+];
+const TPL_KIND = {tp1:"bulb",tp2:"target",tp3:"one",tp4:"play",tp5:"chat",tp6:"doc"};
+const TPL_SEED_LOGS = [
+  log("3 Sep, 09:34","3.1s","Success","Brainstorm notes posted to #product-updates"),
+  log("2 Sep, 15:02","2.8s","Success","Brainstorm notes posted to #product-updates"),
+  log("1 Sep, 10:47","\u2014","Failed","Slack channel archived \u2014 retried and passed")
+];
+const TAG_NOTES = [
+  {title:"Workflow + My Notes Weekly Sync 2026-08-28 16:03",meta:"Aug 28, 16:00 - 16:29 \u00b7 Hosted by Yu Xiao"},
+  {title:"Workflow + My Notes Weekly Sync 2026-08-21 15:58",meta:"Aug 21, 15:58 - 16:32 \u00b7 Hosted by Yu Xiao"},
+  {title:"Workflow + My Notes Weekly Sync 2026-08-14 15:59",meta:"Aug 14, 15:59 - 16:48 \u00b7 Hosted by Yu Xiao"}
+];
+const MEETINGS = [
+  {id:"m1",title:"Acme Corp \u2014 intro call",meta:"Yesterday, 14:00 \u00b7 4 participants \u00b7 2 external"},
+  {id:"m2",title:"PRD Review: From MFU to Slides",meta:"2 Sep, 17:00 \u00b7 6 participants \u00b7 internal"},
+  {id:"m3",title:"Design candidate \u2014 portfolio review",meta:"1 Sep, 11:30 \u00b7 3 participants \u00b7 1 external"}
+];
+const OK = ["#ECFDF5","#047857"], FAIL = ["#FEF2F2","#B91C1C"], SKIP = ["#F3F4F6","#4B5563"];
+function log(time,duration,status,detail){ return {time,duration,status,detail}; }
+const SEED_LOGS = {
+  s1:[log("3 Sep, 09:12","4.2s","Success","Lead \u201cAcme Corp \u2014 J. Rivera\u201d created"),
+      log("2 Sep, 16:48","3.8s","Success","Lead \u201cNorthwind \u2014 P. Osei\u201d created"),
+      log("2 Sep, 11:04","\u2014","Failed","Salesforce token expired"),
+      log("1 Sep, 15:20","4.6s","Success","Lead \u201cHelio \u2014 M. Tan\u201d created")],
+  g1:[log("3 Sep, 10:01","1.2s","Success","Notes sent to you in Team Chat"),
+      log("3 Sep, 09:31","1.1s","Success","Notes sent to you in Team Chat"),
+      log("2 Sep, 18:22","1.4s","Success","Notes sent to you in Team Chat")],
+  h1:[log("2 Sep, 12:40","6.1s","Success","Saved to Shared / Interviews / Sep"),
+      log("1 Sep, 10:05","5.4s","Success","Saved to Shared / Interviews / Sep"),
+      log("28 Aug, 14:11","\u2014","Skipped","No recording available")],
+  p1:[log("3 Sep, 09:35","2.9s","Success","3 issues created on PROD board"),
+      log("2 Sep, 17:58","3.1s","Success","5 issues created on PROD board")]
+};
+const TAG_SEED_LOGS = [
+  log("3 Sep, 09:05","2.4s","Success","Summary of 1 new note sent to you"),
+  log("28 Aug, 16:35","2.6s","Success","Summary of 1 new note sent to you"),
+  log("21 Aug, 16:40","\u2014","Failed","Note still processing \u2014 retried and passed")
+];
+
+class Component extends DCLogic {
+  state = {
+    view:"hub", homeTab:"Owned by me", noteId:"n6", notesTab:"Notes", notesFilter:"Owned by me", noteTab:"Follow-ups",
+    modal:false, mStep:"packs", mPackId:null, mSkillId:null, mDest:null, mFuture:false, mConds:[], mRun:"idle",
+    hubTab:"browse", packId:null, tagId:null,
+    active:{s1:true,g1:true,h1:true,p1:true},
+    apps:{}, expanded:{}, menu:null, actFilter:"All", rowMenu:null, removed:{}, noteRuns:[], cuiSkill:null,
+    cfg:{}, cfgOpen:null, cfgQuery:"", chooserDraft:"",
+    tplId:null,
+    tplSkills:{tp1:[{id:"tps0",name:"Apply Brainstorm to every ideation meeting, then post to Slack",app:"slack",status:"running",runs:6,sub:"When a brainstorm meeting ends \u2192 Send the templated notes to #product-updates",logs:TPL_SEED_LOGS,logOpen:false}]},
+    tagSkills:[{id:"tg0",name:"Summarise the latest progress and send it to me",app:"zoomchat",status:"running",runs:9,sub:"When a new note is tagged \u2192 Direct message to me in Zoom Team Chat",logs:TAG_SEED_LOGS,logOpen:false}],
+    cui:{mode:"generic",turn:0,picks:[],msgs:[],generating:false,card:false,draft:""},
+    bStep:"pickApp", bApp:null, trigger:0, condMode:"All", conditions:[],
+    action:0, dest:null, promptOn:false, promptText:"", content:["Meeting title","AI Notes","Transcript","Participants email"], moreOpen:false,
+    testPick:null, testState:"idle", toast:null
+  };
+
+  toast(text){ clearTimeout(this._t); this.setState({toast:text}); this._t=setTimeout(()=>this.setState({toast:null}),2600); }
+  appFor(s){ return this.state.apps[s.id] || s.app; }
+  nameFor(s){ const a=APPS[this.appFor(s)]; return s.name.split("{app}").join(a.name); }
+  actionFor(s){ const id=this.appFor(s); return id===s.app ? s.action : ACTIONS[id][0]; }
+  allSkills(){ const out=[]; PACKS.forEach(p=>p.skills.forEach(s=>out.push(Object.assign({},s,{pack:p.name})))); return out; }
+
+  packById(id){ return PACKS.find(p=>p.id===id); }
+  packActiveCount(p){ return p.skills.filter(s=>this.state.active[s.id]).length; }
+
+  toggleSkill(id){ const a=Object.assign({},this.state.active); a[id]=!a[id]; this.setState({active:a}); this.toast(a[id]?"Routine activated":"Routine paused"); }
+  enableAllIn(p,e){ if(e&&e.stopPropagation) e.stopPropagation(); const a=Object.assign({},this.state.active); const all=this.packActiveCount(p)===p.skills.length; p.skills.forEach(s=>{a[s.id]=!all;}); this.setState({active:a}); this.toast(all?(p.name+" pack paused"):("All "+p.skills.length+" routines in "+p.name+" enabled")); }
+
+  logsFor(id){ return SEED_LOGS[id] || [log("2 Sep, 15:10","2.2s","Success","Delivered"),log("1 Sep, 11:26","2.0s","Success","Delivered"),log("29 Aug, 09:14","\u2014","Failed","Destination unreachable")]; }
+  statusTint(st){ return st==="Success"?OK:st==="Failed"?FAIL:SKIP; }
+
+  // ---------- CUI ----------
+  cuiScript(mode){
+    if(mode==="customize"){ const s=this.state.cuiSkill||{name:"this routine",app:"slack"};
+      return [
+        {ai:"You're customising \u201c"+s.name+"\u201d. What should be different?",chips:["Only run it for external meetings","Send the output somewhere else","Change what gets included"]},
+        {ai:"Got it. Should it still run automatically after every matching meeting?",chips:["Yes, run it automatically","Ask me before it runs","Only run it when I trigger it"]},
+        {ai:"Last one \u2014 anything to add to the output?",chips:["Add the action items","Add the transcript link","Keep it as it is"]}
+      ];
+    }
+    if(mode==="template") return [
+      {ai:"When should this template be applied, and where should the result go?",chips:["Apply it to every ideation meeting, then post to Slack","Apply it when the title contains \u201cdiscovery\u201d, then save to Notion","Apply it to my 1:1s, then keep it in My Notes only"]},
+      {ai:"Anything I should check before applying it?",chips:["Only meetings I host","Only meetings with three or more participants","Apply it to all of them"]},
+      {ai:"And how much of the templated note should be delivered?",chips:["The full templated note","Summary plus action items","Action items only"]}
+    ];
+    if(mode==="tag") return [
+      {ai:"When new notes are added to this tag, what would you like to happen?",chips:["Summarise the latest progress and send it to me","Extract structured info into a spreadsheet","Post the note link to a group chat"]},
+      {ai:"Got it. How often should I run this?",chips:["As soon as a note is added","Daily digest at 09:00","Weekly on Monday morning"]},
+      {ai:"Last one \u2014 how much detail should the output carry?",chips:["Headline progress only","Progress plus open action items","Everything, including decisions"]}
+    ];
+    return [
+      {ai:"Tell me what should happen after a meeting, in your own words.",chips:["Turn sales calls into Salesforce leads","Save interview notes to Google Drive","Post standup notes to Slack"]},
+      {ai:"Which meetings should this apply to?",chips:["Only external meetings","Meetings with \u201cintro\u201d in the title","Every recorded meeting"]},
+      {ai:"And what should go into the record?",chips:["Title, participants, and AI notes","Everything, including the transcript","AI notes only"]}
+    ];
+  }
+  startCuiMode(mode){
+    const sc=this.cuiScript(mode);
+    this.setState({view:"cui",cui:{mode,turn:0,picks:[],msgs:[{who:"ai",text:sc[0].ai}],generating:false,card:false,draft:""}});
+  }
+  cuiAdvance(text){
+    const c=this.state.cui, sc=this.cuiScript(c.mode);
+    const msgs=c.msgs.concat([{who:"me",text}]);
+    const picks=c.picks.concat([text]);
+    const nextTurn=c.turn+1;
+    if(nextTurn<sc.length){
+      msgs.push({who:"ai",text:sc[nextTurn].ai});
+      this.setState({cui:Object.assign({},c,{turn:nextTurn,picks,msgs,draft:""})});
+    } else {
+      this.setState({cui:Object.assign({},c,{turn:nextTurn,picks,msgs,draft:"",generating:true,card:false})});
+      setTimeout(()=>{ const cc=this.state.cui; this.setState({cui:Object.assign({},cc,{generating:false,card:true,msgs:cc.msgs.concat([{who:"ai",text:"Here it is. Check it over and activate when you're happy."}])})}); },1100);
+    }
+  }
+  cardData(){
+    const c=this.state.cui, p=c.picks;
+    if(c.mode==="customize"){
+      const s=this.state.cuiSkill||{name:"Custom routine",app:"slack",trigger:"a meeting note is ready",action:"Send the notes"};
+      const appId=s.app, a=APPS[appId];
+      return {appShort:a.short,appColor:a.color,appIcon:APP_ICON[appId],title:s.name+" \u2014 customised",
+        when:"When "+s.trigger,
+        iff:(p[0]||"Only run it for external meetings")+" \u00b7 "+(p[1]||"Run it automatically"),
+        then:s.action+" via "+a.name+", "+(p[2]||"keep it as it is").toLowerCase()};
+    }
+    if(c.mode==="template"){
+      const first=p[0]||"";
+      const appId = first.indexOf("Notion")>-1 ? "notion" : first.indexOf("My Notes")>-1 ? "zoomchat" : "slack";
+      const a=APPS[appId], t=this.tplObj();
+      return {appShort:a.short,appColor:a.color,appIcon:APP_ICON[appId],title:"Apply "+t.name+" \u2014 "+first.replace("Apply it ","").replace("Apply it, ",""),
+        when:first.indexOf("title contains")>-1 ? "A meeting note with \u201cdiscovery\u201d in the title is ready" : first.indexOf("1:1")>-1 ? "A 1:1 note is ready" : "An ideation meeting note is ready",
+        iff:(p[1]||"Apply it to all of them"),
+        then:"Write the note with the "+t.name+" template, then deliver "+(p[2]||"the full templated note").toLowerCase()+" via "+a.name};
+    }
+    if(c.mode==="tag"){
+      const first=p[0]||"";
+      const appId = first.indexOf("spreadsheet")>-1 ? "sheets" : first.indexOf("group chat")>-1 ? "slack" : "zoomchat";
+      const a=APPS[appId];
+      return {appShort:a.short,appColor:a.color,appIcon:APP_ICON[appId],title:first||"Tag routine",
+        when:"A new note is tagged \u201c"+(this.tagObj()?this.tagObj().name:"")+"\u201d",
+        iff:(p[1]||"As soon as a note is added"),
+        then:first+" \u2014 via "+a.name+", including "+(p[2]||"progress plus open action items").toLowerCase()};
+    }
+    const first=p[0]||"";
+    const appId = first.indexOf("Salesforce")>-1 ? "salesforce" : first.indexOf("Drive")>-1 ? "gdrive" : "slack";
+    const a=APPS[appId];
+    return {appShort:a.short,appColor:a.color,appIcon:APP_ICON[appId],title:first||"Custom routine",
+      when:"A new meeting note is ready",
+      iff:(p[1]||"Every recorded meeting"),
+      then:first+" \u2014 with "+(p[2]||"title, participants, and AI notes").toLowerCase()};
+  }
+  activateFromCui(){
+    const c=this.state.cui, card=this.cardData();
+    if(c.mode==="customize"){
+      const s=this.state.cuiSkill;
+      const a=Object.assign({},this.state.active); if(s) a[s.id]=true;
+      this.setState({active:a,view:"hub",hubTab:"mine",modal:false});
+      this.toast("Customised routine saved and activated");
+      return;
+    }
+    if(c.mode==="template"){
+      const appId = card.appShort==="No"?"notion":card.appShort==="Zm"?"zoomchat":"slack";
+      const id=this.state.tplId||"tp1";
+      const map=Object.assign({},this.state.tplSkills);
+      map[id]=(map[id]||[]).concat([{id:"tps"+Date.now(),name:card.title,app:appId,status:"running",runs:0,sub:card.when+" \u2192 "+APPS[appId].name,logs:[],logOpen:false}]);
+      this.setState({tplSkills:map,view:"template"});
+      this.toast("Routine activated on this template");
+      return;
+    }
+    if(c.mode==="tag"){
+      const appId = card.appShort==="Sh"?"sheets":card.appShort==="Sl"?"slack":"zoomchat";
+      const ts=this.state.tagSkills.concat([{id:"tg"+Date.now(),name:card.title,app:appId,status:"running",runs:0,sub:card.when+" \u2192 "+APPS[appId].name,logs:[],logOpen:false}]);
+      this.setState({tagSkills:ts,view:"tag"});
+      this.toast("Routine activated on this tag");
+    } else {
+      const a=Object.assign({},this.state.active); a["cui_"+Date.now()]=true;
+      this.setState({active:a,view:"hub",hubTab:"mine",modal:false});
+      this.toast("Routine saved and activated");
+    }
+  }
+
+  tagObj(){ return TAGS.find(t=>t.id===this.state.tagId) || TAGS[0]; }
+  tplObj(){ return TEMPLATES.find(t=>t.id===this.state.tplId) || TEMPLATES[0]; }
+  runningVals(list, apply){
+    const self=this;
+    return list.map((s,i)=>{
+      const a=APPS[s.app], running=s.status==="running";
+      return {name:s.name, sub:s.sub, appShort:a.short, appColor:a.color, appIcon:APP_ICON[s.app],
+        menuOpen: self.state.rowMenu===s.id,
+        openMenu:()=>self.setState({rowMenu: self.state.rowMenu===s.id?null:s.id}),
+        border: running?"#CFDFFF":"#E5E7EB", bg: running?"#F7FAFF":"#fff",
+        statusLabel: running?("Running \u00b7 "+s.runs+" runs"):"Paused",
+        statusTint: running?"#ECFDF5":"#F3F4F6", statusInk: running?"#047857":"#6B7280",
+        pauseLabel: running?"Pause":"Resume", logLabel: s.logOpen?"Hide log":"View log", logOpen:!!s.logOpen,
+        togglePause:()=>{ const l=list.slice(); l[i]=Object.assign({},s,{status:running?"paused":"running"}); apply(l); self.setState({rowMenu:null}); self.toast(running?"Routine paused":"Routine resumed"); },
+        toggleLog:()=>{ const l=list.slice(); l[i]=Object.assign({},s,{logOpen:!s.logOpen}); apply(l); },
+        remove:()=>{ apply(list.filter((x,j)=>j!==i)); self.setState({rowMenu:null}); self.toast("Routine deleted"); },
+        logs:(s.logs.length?s.logs:[log("Not run yet","\u2014","Waiting","Will run the next time this applies")]).map(l=>{ const t=self.statusTint(l.status); return {time:l.time,duration:l.duration,status:l.status,detail:l.detail,tint:t[0],ink:t[1]}; })};
+    });
+  }
+
+  // ---------- builder ----------
+  destList(){ const app=this.state.bApp||"slack"; return DEST[app][1]; }
+  runTest(){
+    if(!this.state.testPick){ this.toast("Pick a meeting to test with"); return; }
+    this.setState({testState:"running"});
+    setTimeout(()=>this.setState({testState:"done"}),1300);
+  }
+
+  renderVals(){
+    const S=this.state, self=this;
+    const app = APPS[S.bApp||"slack"];
+    const packObj = this.packById(S.packId) || PACKS[0];
+    const cui=S.cui;
+
+    // sidebar tags
+    const tags = TAGS.map(t=>({
+      name:t.name, count:t.count, open:()=>self.setState({view:"tag",tagId:t.id}),
+      bg: (S.view==="tag"&&S.tagId===t.id)?"#F3F4F6":"transparent",
+      color:(S.view==="tag"&&S.tagId===t.id)?"#111827":"#4B5563",
+      hasSkill: t.id==="t1" && S.tagSkills.length>0
+    }));
+
+    // hub tabs
+    const listed = this.allSkills().filter(s=>(s.id in S.active) && !S.removed[s.id]);
+    listed.sort((x,y)=>(S.active[y.id]?1:0)-(S.active[x.id]?1:0));
+    const mine = listed.map(s=>{
+      const a=APPS[self.appFor(s)], lg=self.logsFor(s.id);
+      const okCount=lg.filter(l=>l.status==="Success").length;
+      const rate=Math.round(okCount/lg.length*100)+"%";
+      return {
+        name:self.nameFor(s), sub:"When "+s.trigger+" \u2192 "+self.actionFor(s)+" in "+a.name, appShort:a.short, appColor:a.color, appIcon:APP_ICON[self.appFor(s)],
+        runs:lg.length*7, rate, rateColor: okCount===lg.length?"#047857":"#B45309",
+        lastRun:lg[0].time, expanded:!!S.expanded[s.id], caretRot:S.expanded[s.id]?"180":"0",
+        trackBg:S.active[s.id]?"var(--wv-primary-500)":"#D1D5DB", knobX:S.active[s.id]?"20px":"2px",
+        rowOpacity:S.active[s.id]?"1":"0.62",
+        menuOpen:S.rowMenu===("my_"+s.id),
+        openMenu:(ev)=>{ if(ev&&ev.stopPropagation) ev.stopPropagation(); self.setState({rowMenu:S.rowMenu===("my_"+s.id)?null:("my_"+s.id)}); },
+        remove:(ev)=>{ if(ev&&ev.stopPropagation) ev.stopPropagation(); const r=Object.assign({},S.removed); r[s.id]=true; self.setState({removed:r,rowMenu:null}); self.toast("Routine removed from My routines"); },
+        toggleExpand:()=>{ const e=Object.assign({},S.expanded); e[s.id]=!e[s.id]; self.setState({expanded:e}); },
+        toggle:(ev)=>{ if(ev&&ev.stopPropagation) ev.stopPropagation(); self.toggleSkill(s.id); },
+        logs: lg.map(l=>{ const t=self.statusTint(l.status); return {time:l.time,duration:l.duration,status:l.status,detail:l.detail,tint:t[0],ink:t[1],
+          act:()=>self.toast(l.status==="Failed"?"Re-running this routine\u2026":"Opening the record\u2026"), actLabel:l.status==="Failed"?"Retry":"Open \u2197"}; })
+      };
+    });
+    const allLogs=[];
+    this.allSkills().filter(s=>S.active[s.id]).forEach(s=>{
+      const a=APPS[self.appFor(s)];
+      self.logsFor(s.id).forEach(l=>allLogs.push({name:self.nameFor(s),appShort:a.short,appColor:a.color,appIcon:APP_ICON[self.appFor(s)],detail:l.detail,time:l.time,duration:l.duration,status:l.status}));
+    });
+    const filtered = allLogs.filter(r=> S.actFilter==="All" ? true : S.actFilter==="Failed" ? r.status==="Failed" : S.actFilter==="Success" ? r.status==="Success" : true);
+
+    const runsTotal = mine.reduce((n,m)=>n+m.runs,0);
+    const failTotal = allLogs.filter(r=>r.status==="Failed").length;
+    const okTotal = allLogs.filter(r=>r.status==="Success").length;
+
+    const hubTabDefs=[["browse","Browse packs"],["mine","My routines \u00b7 "+listed.filter(s=>S.active[s.id]).length],["activity","Activity"]];
+
+    const triggerDefs=[["A new meeting note is ready",false],["A new scheduled report is ready",true],["A new speaker analysis is ready",true]];
+    const actionList=ACTIONS[S.bApp||"slack"];
+    const destPair=DEST[S.bApp||"slack"];
+    const suggestions=[["meeting title","contains"],["meeting type","is"],["participants email","is"],["role","is"]];
+
+    const inSkills = ["hub","pack","chooser","cui","builder"].indexOf(S.view)>-1;
+    const card=this.cardData();
+    const tagSkills=this.runningVals(S.tagSkills, l=>self.setState({tagSkills:l}));
+    const tplObj=this.tplObj();
+    const tplList=(S.tplSkills[tplObj.id]||[]);
+    const tplSkills=this.runningVals(tplList, l=>{ const m=Object.assign({},S.tplSkills); m[tplObj.id]=l; self.setState({tplSkills:m}); });
+
+    return {
+      removeOpenRow:()=>{
+        const id=S.rowMenu; if(!id) return;
+        if(id.indexOf("my_")===0){ const r=Object.assign({},S.removed); r[id.slice(3)]=true; self.setState({removed:r,rowMenu:null}); self.toast("Routine removed from My routines"); return; }
+        const tg=S.tagSkills.filter(x=>x.id!==id);
+        if(tg.length!==S.tagSkills.length){ self.setState({tagSkills:tg,rowMenu:null}); self.toast("Routine deleted"); return; }
+        const m=Object.assign({},S.tplSkills); let hit=false;
+        Object.keys(m).forEach(k=>{ const l=m[k].filter(x=>x.id!==id); if(l.length!==m[k].length){ hit=true; m[k]=l; } });
+        if(hit){ self.setState({tplSkills:m,rowMenu:null}); self.toast("Routine deleted"); }
+      },
+      pauseOpenRow:()=>{
+        const id=S.rowMenu; if(!id) return;
+        const flip=(x)=>Object.assign({},x,{status:x.status==="running"?"paused":"running"});
+        const tg=S.tagSkills.map(x=>x.id===id?flip(x):x);
+        if(S.tagSkills.some(x=>x.id===id)){ const was=S.tagSkills.find(x=>x.id===id).status==="running"; self.setState({tagSkills:tg,rowMenu:null}); self.toast(was?"Routine paused":"Routine resumed"); return; }
+        const m=Object.assign({},S.tplSkills); let was=null;
+        Object.keys(m).forEach(k=>{ m[k]=m[k].map(x=>{ if(x.id===id){ was=x.status==="running"; return flip(x); } return x; }); });
+        if(was!==null){ self.setState({tplSkills:m,rowMenu:null}); self.toast(was?"Routine paused":"Routine resumed"); }
+      },
+      isHome:S.view==="home", isAllNotes:S.view==="allnotes", isNote:S.view==="note",
+      navHomeBg:S.view==="home"?"#F3F4F6":"transparent", navHomeWeight:S.view==="home"?"600":"400",
+      navAllBg:S.view==="allnotes"?"#F3F4F6":"transparent", navAllWeight:S.view==="allnotes"?"600":"400",
+      goHome:()=>self.setState({view:"home"}), goAllNotes:()=>self.setState({view:"allnotes"}),
+      upcoming:UPCOMING,
+      homeTabs:["Owned by me","Shared with me","Starred"].map(t=>({label:t,pick:()=>self.setState({homeTab:t}),
+        color:S.homeTab===t?"#111827":"#6B7280", weight:S.homeTab===t?"700":"500"})),
+      notesFilters:["Owned by me","Shared with me","Starred"].map(t=>({label:t,pick:()=>self.setState({notesFilter:t}),
+        bg:S.notesFilter===t?"#EFF3FF":"#F3F4F6", color:S.notesFilter===t?"var(--wv-primary-500)":"#4B5563"})),
+      notesTabs:["Notes","Note recordings"].map(t=>({label:t,pick:()=>self.setState({notesTab:t}),
+        color:S.notesTab===t?"#111827":"#6B7280", weight:S.notesTab===t?"700":"500"})),
+      noteGroups:["Yesterday","Last 7 days"].map(g=>({label:g,
+        notes:NOTES.filter(n=>n.group===g).map(n=>({title:n.title,time:n.time,host:n.host,modified:n.modified,
+          meta:n.time+" \u00b7 Hosted by "+n.host,
+          avatars:avatarsFor(n),
+          extra:n.people>4?("+"+(n.people-4)):"",
+          open:()=>self.setState({view:"note",noteId:n.id})}))})),
+      note:(function(){ const n=NOTES.find(x=>x.id===S.noteId)||NOTES[5];
+        return {title:n.title,meeting:n.meeting,people:n.people,
+          avatars:avatarsFor(n),
+          extra:n.people>4?("+"+(n.people-4)):""}; })(),
+      noteTabs:["Notes","Transcript","Follow-ups"].map(t=>({label:t,pick:()=>self.setState({noteTab:t}),
+        color:S.noteTab===t?"#111827":"#6B7280", line:S.noteTab===t?"#111827":"transparent"})),
+      onNoteFollowups:S.noteTab==="Follow-ups", onNoteNotes:S.noteTab==="Notes", onNoteTranscript:S.noteTab==="Transcript",
+      followups:FOLLOWUPS,
+      openRunSkill:()=>self.setState({modal:true,mStep:"packs",mPackId:null,mSkillId:null,mRun:"idle",mFuture:false,mConds:[]}),
+      closeModal:()=>self.setState({modal:false}),
+      modalOn:S.modal,
+      mOnPacks:S.mStep==="packs", mOnPack:S.mStep==="pack", mOnConfig:S.mStep==="config", mOnCui:S.mStep==="cui", mOnApps:S.mStep==="apps",
+      mTitle:S.mStep==="config"?"Run this routine":S.mStep==="cui"?"Build a custom routine":S.mStep==="pack"?(self.packById(S.mPackId)||PACKS[0]).name:"New routine",
+      mBack:()=>self.setState({mStep:S.mStep==="pack"?"packs":S.mStep==="config"?(S.mPackId?"pack":"packs"):"packs"}),
+      mShowBack:S.mStep!=="packs",
+      mPacks:packsByHeat().map((p,rank)=>{ const t=TINTS[PACKS.indexOf(p)%TINTS.length], us=usersStyle(rank);
+        return {name:p.name,desc:p.desc,tint:t[0],ink:t[1],icon:packIcon(t[1],p.id),countLabel:p.skills.length+" routines",users:usersCount(p.id),tooltip:usersTooltip(p.id),usersInk:us.ink,usersBg:us.bg,usersWeight:us.weight,usersOpacity:us.opacity,
+          open:()=>self.setState({mStep:"pack",mPackId:p.id})}; }),
+      mPackSkills:((self.packById(S.mPackId)||PACKS[0]).skills).map(s=>{ const a=APPS[self.appFor(s)];
+        return {name:self.nameFor(s),action:self.actionFor(s),appIcon:APP_ICON[self.appFor(s)],
+          pick:()=>self.setState({mStep:"config",mSkillId:s.id,mDest:DEST[self.appFor(s)][1][0],mRun:"idle"})}; }),
+      mSuggested:[PACKS[11].skills[0],PACKS[2].skills[0],PACKS[0].skills[1]].map(s=>{ const a=APPS[self.appFor(s)];
+        return {name:self.nameFor(s),action:self.actionFor(s),appIcon:APP_ICON[self.appFor(s)],
+          pick:()=>self.setState({mStep:"config",mSkillId:s.id,mPackId:null,mDest:DEST[self.appFor(s)][1][0],mRun:"idle"})}; }),
+      mSkill:(function(){ const s=self.allSkills().find(x=>x.id===S.mSkillId)||PACKS[0].skills[0]; const appId=self.appFor(s); const dp=DEST[appId];
+        return {name:self.nameFor(s),action:self.actionFor(s),appIcon:APP_ICON[appId],appName:APPS[appId].name,
+          destLabel:dp[0],dest:S.mDest||dp[1][0],destOptions:dp[1].map(v=>({value:v,label:v}))}; })(),
+      mSetDest:(e)=>self.setState({mDest:e.target.value}),
+      mFuture:S.mFuture, mFutureOff:!S.mFuture,
+      mFutureTrack:S.mFuture?"var(--wv-primary-500)":"#D1D5DB", mFutureKnob:S.mFuture?"20px":"2px",
+      mToggleFuture:()=>self.setState({mFuture:!S.mFuture,mConds:(!S.mFuture&&S.mConds.length===0)?[{field:"meeting title",op:"contains",value:""}]:S.mConds}),
+      mConds:S.mConds.map((c,i)=>({prefix:i===0?"If":"and",field:c.field,op:c.op,value:c.value,
+        onInput:(e)=>{ const cs=S.mConds.slice(); cs[i]=Object.assign({},c,{value:e.target.value}); self.setState({mConds:cs}); },
+        remove:()=>self.setState({mConds:S.mConds.filter((x,j)=>j!==i)})})),
+      mAddCond:()=>self.setState({mConds:S.mConds.concat([{field:"participants email",op:"is external",value:""}])}),
+      mCondSuggestions:[["meeting title","contains"],["participants email","is"],["meeting type","is"],["tag","is"]].map(([field,op])=>({label:"if \u2018"+field+"\u2019 "+op,
+        add:()=>self.setState({mConds:S.mConds.concat([{field,op,value:""}])})})),
+      mRunIdle:S.mRun==="idle", mRunning:S.mRun==="running", mRunDone:S.mRun==="done",
+      mRunLabel:S.mFuture?"Run now and save as a routine":"Run on this note",
+      mDoRun:()=>{
+        const s=self.allSkills().find(x=>x.id===S.mSkillId)||PACKS[0].skills[0];
+        const appId=self.appFor(s), runId="run_"+Date.now();
+        const item={id:runId,name:self.nameFor(s),appIcon:APP_ICON[appId],dest:S.mDest||DEST[appId][1][0],status:"running"};
+        const a=Object.assign({},S.active); if(S.mFuture) a[s.id]=true;
+        self.setState({noteRuns:S.noteRuns.concat([item]),modal:false,mRun:"idle",active:a,noteTab:"Follow-ups"});
+        self.toast(S.mFuture?"Running \u2014 also saved as a routine for future notes":"Running on this note");
+        setTimeout(()=>{ const rs=self.state.noteRuns.map(r=>r.id===runId?Object.assign({},r,{status:"done"}):r); self.setState({noteRuns:rs}); },5000);
+      },
+      noteRuns:S.noteRuns.map(r=>({name:r.name,appIcon:r.appIcon,
+        destLabel:"Sent to "+r.dest,
+        running:r.status==="running", done:r.status==="done",
+        btnLabel:r.status==="running"?"In progress":"View result",
+        btnBg:r.status==="running"?"#F8F9FE":"#ECFDF5", btnColor:r.status==="running"?"#4F46E5":"#047857"})),
+      mRunResult:"Done \u2014 sent to "+(S.mDest||"the destination")+(S.mFuture?". Saved as an active routine for future notes that match.":"."),
+      mStartCui:()=>{ self.startCuiMode("generic"); self.setState({view:S.view,modal:true,mStep:"cui"}); },
+      mPickApp:(function(){ return Object.keys(APPS).map(id=>({name:APPS[id].name,icon:APP_ICON[id],
+        pick:()=>self.setState({modal:false,view:"builder",bApp:id,bStep:"when",action:0,dest:DEST[id][1][0],testState:"idle",testPick:null})})); })(),
+      navSkillsBg: inSkills?"#EFF3FF":"transparent",
+      navSkillsColor: inSkills?"var(--wv-primary-700)":"#4B5563",
+      navSkillsWeight: inSkills?"600":"400",
+      tags,
+      isHub:S.view==="hub", isPack:S.view==="pack", isTag:S.view==="tag", isChooser:S.view==="chooser", isCui:S.view==="cui", isBuilder:S.view==="builder",
+      goSkills:()=>self.setState({view:"hub",menu:null}),
+      openChooser:()=>self.setState({view:"chooser"}),
+      startCui:()=>self.startCuiMode("generic"),
+      startBuilder:()=>self.setState({view:"builder",bStep:"pickApp"}),
+
+      hubTabs:hubTabDefs.map(([id,label])=>({label,pick:()=>self.setState({hubTab:id}),color:S.hubTab===id?"#111827":"#6B7280",line:S.hubTab===id?"#0B5CFF":"transparent"})),
+      onBrowse:S.hubTab==="browse", onMine:S.hubTab==="mine", onActivity:S.hubTab==="activity",
+      packs:packsByHeat().map((p,rank)=>{
+        const i=PACKS.indexOf(p), n=self.packActiveCount(p), t=TINTS[i%TINTS.length], us=usersStyle(rank);
+        return {name:p.name,letter:p.letter,desc:p.desc,tint:t[0],ink:t[1],icon:packIcon(t[1],p.id),users:usersCount(p.id),tooltip:usersTooltip(p.id),usersInk:us.ink,usersBg:us.bg,usersWeight:us.weight,usersOpacity:us.opacity,
+          countLabel:n?(n+" of "+p.skills.length+" active"):(p.skills.length+" routines"),
+          enableLabel:"View",
+          open:()=>self.setState({view:"pack",packId:p.id,menu:null}),
+          enableAll:()=>self.setState({view:"pack",packId:p.id,menu:null})};
+      }),
+      activeTotal:listed.filter(s=>S.active[s.id]).length, runsTotal, successRate: allLogs.length?Math.round(okTotal/allLogs.length*100)+"%":"\u2014", failTotal,
+      noneActive:mine.length===0, mySkills:mine,
+      activityFilters:["All","Success","Failed"].map(f=>({label:f,pick:()=>self.setState({actFilter:f}),
+        border:S.actFilter===f?"#CFDFFF":"#E5E7EB", bg:S.actFilter===f?"#F5F8FF":"#fff", color:S.actFilter===f?"#0B5CFF":"#4B5563"})),
+      activityRows:filtered.map(r=>{ const t=self.statusTint(r.status); return Object.assign({},r,{tint:t[0],ink:t[1],
+        act:()=>self.toast(r.status==="Failed"?"Re-running this routine\u2026":"Opening the record\u2026"), actLabel:r.status==="Failed"?"Retry":"Open \u2197"}); }),
+
+      pack:{name:packObj.name,letter:packObj.letter,desc:packObj.desc,
+        tint:TINTS[PACKS.indexOf(packObj)%TINTS.length][0], ink:TINTS[PACKS.indexOf(packObj)%TINTS.length][1],
+        icon:packIcon(TINTS[PACKS.indexOf(packObj)%TINTS.length][1],packObj.id),
+        countLabel:self.packActiveCount(packObj)+" of "+packObj.skills.length+" active",
+        enableLabel:self.packActiveCount(packObj)===packObj.skills.length?"Pause all routines":"Enable all routines",
+        enableAll:(e)=>self.enableAllIn(packObj,e)},
+      packSkills:packObj.skills.map(s=>{
+        const appId=self.appFor(s), a=APPS[appId], on=!!S.active[s.id];
+        const alts=(KIND_ALTS[APPS[s.app].kind]||[s.app]).map(id=>({name:APPS[id].name,short:APPS[id].short,color:APPS[id].color,icon:APP_ICON[id],
+          check:id===appId?"\u2713":"",
+          pick:(e)=>{ if(e&&e.stopPropagation) e.stopPropagation(); const ap=Object.assign({},S.apps); ap[s.id]=id; self.setState({apps:ap,menu:null}); self.toast("Switched to "+APPS[id].name); }}));
+        const dp=DEST[appId], cfgVal=S.cfg[s.id]||dp[1][0], q=(S.cfgOpen===s.id?S.cfgQuery:"");
+        return {name:self.nameFor(s),trigger:s.trigger,action:self.actionFor(s),
+          appShort:a.short,appColor:a.color,appIcon:APP_ICON[appId],rowBg:on?"#FCFDFF":"#fff",
+          showCfg:on, cfgLabel:dp[0], cfgValue:cfgVal, cfgOpen:S.cfgOpen===s.id, cfgQuery:q,
+          customize:()=>{ self.setState({cuiSkill:{id:s.id,name:self.nameFor(s),app:appId,trigger:s.trigger,action:self.actionFor(s)}}); self.startCuiMode("customize"); },
+          openCfg:()=>self.setState({cfgOpen:S.cfgOpen===s.id?null:s.id,cfgQuery:""}),
+          onCfgQuery:(e)=>self.setState({cfgQuery:e.target.value}),
+          cfgOptions:dp[1].filter(v=>v.toLowerCase().indexOf(q.toLowerCase())>-1).map(v=>({label:v,check:v===cfgVal?"\u2713":"",
+            pick:()=>{ const c=Object.assign({},S.cfg); c[s.id]=v; self.setState({cfg:c,cfgOpen:null,cfgQuery:""}); self.toast("Destination set to "+v); }})),
+          stateLabel:on?"Active":"Inactive", stateColor:on?"#0B5CFF":"#9CA3AF",
+          trackBg:on?"#0B5CFF":"#D1D5DB", knobX:on?"20px":"2px",
+          toggle:()=>self.toggleSkill(s.id),
+          menuOpen:S.menu===s.id, alts,
+          openMenu:(e)=>{ if(e&&e.stopPropagation) e.stopPropagation(); self.setState({menu:S.menu===s.id?null:s.id}); }};
+      }),
+
+      navTplBg: (S.view==="templates"||S.view==="template")?"#EFF3FF":"transparent",
+      navTplColor: (S.view==="templates"||S.view==="template")?"var(--wv-primary-700)":"#4B5563",
+      navTplWeight: (S.view==="templates"||S.view==="template")?"600":"400",
+      goTemplates:()=>self.setState({view:"templates"}),
+      isTemplates:S.view==="templates", isTemplate:S.view==="template",
+      templates:TEMPLATES.map(t=>{
+        const n=(S.tplSkills[t.id]||[]).length;
+        return {name:t.name,sub:t.sub,glyph:t.glyph,icon:packIcon(t.ink,TPL_KIND[t.id]),tint:t.tint,ink:t.ink,hasSkill:n>0,
+          skillLabel:n===1?"1 routine running":(n+" routines running"),
+          open:()=>self.setState({view:"template",tplId:t.id})};
+      }),
+      tpl:{name:tplObj.name,sub:tplObj.sub,glyph:tplObj.glyph,icon:packIcon(tplObj.ink,TPL_KIND[tplObj.id]),tint:tplObj.tint,ink:tplObj.ink},
+      tplSections:tplObj.sections.map(s=>({title:s.title,lines:s.lines.map(text=>({text}))})),
+      tplSkills, tplHasSkills:tplSkills.length>0,
+      buildTplSkill:()=>self.startCuiMode("template"),
+
+      tag:{name:self.tagObj().name,count:self.tagObj().count,icon:packIcon("#6B7280","tag")},
+      tagNotes:TAG_NOTES, tagSkills, tagHasSkills:tagSkills.length>0,
+      buildTagSkill:()=>self.startCuiMode("tag"),
+
+      cuiTitle: cui.mode==="tag" ? "Build a routine for this tag" : cui.mode==="template" ? ("Build a routine for the "+tplObj.name+" template") : cui.mode==="customize" ? "Customise this routine" : "Build a routine with the assistant",
+      cuiStepLabel: cui.card?"Ready":("Step "+Math.min(cui.turn+1,3)+" of 3"),
+      cuiBg: (cui.turn>0||cui.generating||cui.card) ? "linear-gradient(135deg,#E9F0FB 0%,#F2EEFA 45%,#FCEDF3 100%)" : "#fff",
+      cuiMessages: cui.msgs.map(m=>({text:m.text, align:m.who==="me"?"flex-end":"flex-start",
+        bg:m.who==="me"?"#0B5CFF":"#fff", color:m.who==="me"?"#fff":"#374151", border:m.who==="me"?"#0B5CFF":"#E5E7EB"})),
+      cuiGenerating:cui.generating, cuiHasCard:cui.card, card,
+      cuiHasChips: !cui.card && !cui.generating && cui.turn < 3,
+      cuiChips: (this.cuiScript(cui.mode)[cui.turn]||{chips:[]}).chips.map(c=>({label:c,send:()=>self.cuiAdvance(c)})),
+      cuiDraft:cui.draft,
+      cuiTyped:(e)=>self.setState({cui:Object.assign({},cui,{draft:e.target.value})}),
+      cuiKey:(e)=>{ if(e.key==="Enter"&&cui.draft.trim()) self.cuiAdvance(cui.draft.trim()); },
+      cuiSend:()=>{ if(cui.draft.trim()) self.cuiAdvance(cui.draft.trim()); },
+      cuiBack:()=>self.setState({view: cui.mode==="tag" ? "tag" : cui.mode==="template" ? "template" : cui.mode==="customize" ? "pack" : "chooser"}),
+      activateGenerated:()=>self.activateFromCui(),
+
+      onPickApp:S.bStep==="pickApp", onSteps:S.bStep!=="pickApp",
+      onWhen:S.bStep==="when", onThen:S.bStep==="then", onTest:S.bStep==="test",
+      builderApps:Object.keys(APPS).map(id=>({name:APPS[id].name,short:APPS[id].short,color:APPS[id].color,icon:APP_ICON[id],
+        pick:()=>self.setState({view:"builder",bApp:id,bStep:"when",action:0,dest:DEST[id][1][0],testState:"idle",testPick:null})})),
+      app:{name:app.name,short:app.short,color:app.color,icon:APP_ICON[S.bApp||"slack"]},
+      chooserDraft:S.chooserDraft,
+      chooserTyped:(e)=>self.setState({chooserDraft:e.target.value}),
+      chooserKey:(e)=>{ if(e.key==="Enter"&&S.chooserDraft.trim()){ const v=S.chooserDraft.trim(); self.startCuiMode("generic"); setTimeout(()=>self.cuiAdvance(v),0); } },
+      chooserSend:()=>{ if(S.chooserDraft.trim()){ const v=S.chooserDraft.trim(); self.startCuiMode("generic"); setTimeout(()=>self.cuiAdvance(v),0); } },
+      chooserPrompts:["Turn sales calls into Salesforce leads","Save interview notes to Google Drive","Post standup notes to Slack","Email a recap to everyone who joined"].map(label=>({label,
+        send:()=>{ self.startCuiMode("generic"); setTimeout(()=>self.cuiAdvance(label),0); }})),
+      st1:{color:S.bStep==="when"?"#0B5CFF":"#6B7280", line:S.bStep==="when"?"#0B5CFF":"transparent", tick:"\u2713"},
+      st2:{color:S.bStep==="then"?"#0B5CFF":"#6B7280", line:S.bStep==="then"?"#0B5CFF":"transparent", tick:(S.bStep==="test")?"\u2713":""},
+      st3:{color:S.bStep==="test"?"#0B5CFF":"#9CA3AF", line:S.bStep==="test"?"#0B5CFF":"transparent", tick:S.testState==="done"?"\u2713":""},
+      toWhen:()=>self.setState({bStep:"when"}), toThen:()=>self.setState({bStep:"then"}), toTest:()=>self.setState({bStep:"test"}),
+      triggers:triggerDefs.map(([label,soon],i)=>({label,soon,
+        ring:S.trigger===i?"#0B5CFF":"#C7CBDA", dot:S.trigger===i?"#0B5CFF":"transparent",
+        cursor:soon?"not-allowed":"pointer", opacity:soon?"0.55":"1",
+        pick:()=>{ if(!soon) self.setState({trigger:i}); }})),
+      condMode:S.condMode, setCondMode:(e)=>self.setState({condMode:e.target.value}),
+      conditions:S.conditions.map((c,i)=>({prefix:i===0?"If":S.condMode.toLowerCase(),field:c.field,op:c.op,value:c.value,
+        placeholder:"Enter a value",
+        onInput:(e)=>{ const cs=S.conditions.slice(); cs[i]=Object.assign({},c,{value:e.target.value}); self.setState({conditions:cs}); },
+        remove:()=>self.setState({conditions:S.conditions.filter((x,j)=>j!==i)})})),
+      addCondition:()=>self.setState({conditions:S.conditions.concat([{field:"meeting title",op:"contains",value:""}])}),
+      condSuggestions:suggestions.map(([field,op])=>({label:"if \u2018"+field+"\u2019 "+op,
+        add:()=>self.setState({conditions:S.conditions.concat([{field,op,value:""}])})})),
+
+      actions:actionList.map((label,i)=>({label,ring:S.action===i?"#0B5CFF":"#C7CBDA",dot:S.action===i?"#0B5CFF":"transparent",
+        pick:()=>self.setState({action:i})})),
+      account:"Xun",
+      destLabel:destPair[0], dest:S.dest||destPair[1][0],
+      destOptions:destPair[1].map(v=>({value:v,label:v})),
+      setDest:(e)=>self.setState({dest:e.target.value}),
+      promptOn:S.promptOn, promptOff:!S.promptOn,
+      promptTrack:S.promptOn?"#6103ED":"#D1D5DB", promptKnob:S.promptOn?"17px":"2px",
+      togglePrompt:()=>self.setState({promptOn:!S.promptOn}),
+      promptText:S.promptText, setPromptText:(e)=>self.setState({promptText:e.target.value}),
+      contentChips:S.content.map((label,i)=>({label,remove:()=>self.setState({content:S.content.filter((x,j)=>j!==i)})})),
+      quickData:DATA_FIELDS.slice(0,4).map(label=>({label,
+        add:()=>{ if(S.content.indexOf(label)<0) self.setState({content:S.content.concat([label])}); }})),
+      moreOpen:S.moreOpen, moreRot:S.moreOpen?"180":"0",
+      toggleMore:()=>self.setState({moreOpen:!S.moreOpen}),
+      allData:DATA_FIELDS.map(label=>({label,
+        add:()=>{ const c=S.content.indexOf(label)<0?S.content.concat([label]):S.content; self.setState({content:c,moreOpen:false}); }})),
+
+      meetings:MEETINGS.map(m=>({title:m.title,meta:m.meta,
+        ring:S.testPick===m.id?"#0B5CFF":"#C7CBDA", dot:S.testPick===m.id?"#0B5CFF":"transparent",
+        border:S.testPick===m.id?"#CFDFFF":"#ECEDF5", bg:S.testPick===m.id?"#F7FAFF":"#fff",
+        pick:()=>self.setState({testPick:m.id,testState:"idle"})})),
+      testRunning:S.testState==="running", testDone:S.testState==="done",
+      testSummary:"Test passed \u2014 "+app.name+" accepted the record",
+      testDetail:"Sent "+(S.promptOn?"a custom-prompt summary":S.content.join(", "))+" to "+(S.dest||destPair[1][0])+".",
+      testLink:"View in "+app.name+" \u2197",
+      runTest:()=>self.runTest(),
+      testBtnColor:S.testPick?"#1B1464":"#9CA3AF",
+      activateBg:S.testState==="done"?"#0B5CFF":"#7C93FF",
+      activateWorkflow:()=>{ const a=Object.assign({},S.active); a["custom_"+Date.now()]=true; self.setState({active:a,view:"hub",hubTab:"mine"}); self.toast("Routine activated"); },
+
+      scenes:[
+        ["center","Routine center",()=>self.setState({view:"hub",hubTab:"browse",modal:false,menu:null})],
+        ["create","Create routine",()=>self.setState({view:"chooser",modal:false,menu:null})],
+        ["tag","Routine in Tag",()=>self.setState({view:"tag",tagId:"t1",modal:false,menu:null})],
+        ["template","Routine in Template",()=>self.setState({view:"templates",modal:false,menu:null})],
+        ["note","Routine in Note",()=>self.setState({view:"note",noteId:"n6",modal:false,menu:null})]
+      ].map(([id,label,go])=>{
+        const on = id==="center" ? (S.view==="hub"||S.view==="pack")
+          : id==="create" ? (S.view==="chooser"||S.view==="builder"||S.view==="cui")
+          : id==="tag" ? S.view==="tag"
+          : id==="template" ? (S.view==="template"||S.view==="templates")
+          : S.view==="note";
+        return {label,go,bg:on?"#EFF3FF":"#fff",border:on?"var(--wv-primary-500)":"#E5E7EB",
+          ink:on?"var(--wv-primary-700)":"#4B5563",weight:on?"600":"400"};
+      }),
+
+      toastOn:!!S.toast, toastText:S.toast||""
+    };
+  }
+}
+</script>
+</body>
+</html>

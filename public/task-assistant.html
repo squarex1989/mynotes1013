@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ZoomMate</title>
+    <style>
+      :root { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #22252b; background: #fff; }
+      * { box-sizing: border-box; }
+      body { margin: 0; height: 100vh; overflow: hidden; }
+      button, input { font: inherit; }
+      button { cursor: pointer; }
+      .app { height: 100vh; display: flex; flex-direction: column; }
+      header { height: 70px; flex: none; border-bottom: 1px solid #e8eaee; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 0 29px; }
+      .header-title { min-width: 0; display: flex; align-items: center; gap: 11px; }
+      .header-title svg { color: #386ff4; flex: none; }
+      h1 { margin: 0; font-size: 18px; font-weight: 650; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      .header-actions { display: flex; align-items: center; gap: 6px; flex: none; }
+      .header-actions button { border: 0; background: transparent; color: #697380; padding: 9px; border-radius: 8px; }
+      .header-actions button:hover { background: #f3f5f8; color: #2d3540; }
+      .header-actions .open-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; padding: 9px 12px; }
+      .divider { width: 1px; height: 18px; background: #e5e8ec; margin: 0 5px; }
+      .icon { width: 18px; height: 18px; display: block; }
+      main { flex: 1; min-height: 0; overflow: auto; scroll-behavior: smooth; }
+      .thread { width: min(780px, calc(100% - 44px)); margin: 0 auto; padding: 30px 0 24px; }
+      .bubble-row { display: flex; justify-content: flex-end; margin-bottom: 34px; }
+      .user-bubble { max-width: 86%; background: #f0f6ff; border-radius: 21px 21px 5px 21px; padding: 16px 20px; font-size: 15px; line-height: 1.55; color: #29313b; }
+      .meeting-chip { display: flex; align-items: center; gap: 6px; width: max-content; max-width: 86%; margin: 8px 0 0 auto; border: 1px solid #e9ebee; color: #4b5663; padding: 7px 10px; border-radius: 10px; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .meeting-chip svg { color: #0b6deb; flex: none; }
+      .answer { display: flex; gap: 14px; margin: 0 0 28px; }
+      .spark { width: 28px; height: 28px; flex: none; display: grid; place-items: center; color: #3d7cf7; font-size: 25px; line-height: 1; }
+      .answer-body { flex: 1; min-width: 0; padding-top: 2px; }
+      .answer-body > p { margin: 0 0 15px; font-size: 14px; line-height: 1.6; color: #394450; }
+      .result-card { border: 1px solid #e5e8ed; border-radius: 15px; padding: 19px 21px; box-shadow: 0 5px 20px rgba(34, 48, 69, .04); }
+      .result-overline { color: #667b9d; font-weight: 650; font-size: 11px; letter-spacing: .07em; text-transform: uppercase; margin-bottom: 8px; }
+      .result-card h2 { margin: 0 0 12px; font-size: 16px; font-weight: 650; }
+      .result-card p { margin: 0 0 10px; color: #4c5866; font-size: 13px; line-height: 1.6; }
+      .result-card ul { margin: 10px 0 0; padding-left: 18px; color: #4c5866; font-size: 13px; line-height: 1.7; }
+      .result-card li + li { margin-top: 4px; }
+      .result-meta { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 15px; }
+      .result-meta span { background: #f5f7fa; color: #687583; padding: 6px 9px; border-radius: 6px; font-size: 11px; }
+      .result-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 17px; }
+      .result-actions button { border: 1px solid #dbe2eb; background: #fff; color: #2d405a; padding: 9px 13px; border-radius: 9px; font-size: 12px; font-weight: 600; }
+      .result-actions button:hover { background: #f7f9fd; }
+      .result-actions button.primary { background: #0b65e8; border-color: #0b65e8; color: white; }
+      .result-actions button.primary:hover { background: #0754c4; }
+      .result-actions button:disabled { background: #eaf4ed; border-color: #d3e8d9; color: #33814d; cursor: default; }
+      .follow-answer { margin-top: 20px; }
+      .composer-wrap { flex: none; padding: 15px 20px 13px; background: linear-gradient(0deg, #fff 75%, rgba(255,255,255,.94)); }
+      .composer { width: min(780px, 100%); height: 55px; margin: 0 auto; border: 1px solid #e4e7ec; box-shadow: 0 3px 15px rgba(26, 39, 62, .06); border-radius: 30px; display: flex; align-items: center; gap: 8px; padding: 5px 8px 5px 15px; }
+      .composer:focus-within { border-color: #8db4fa; box-shadow: 0 0 0 3px #e5efff; }
+      .composer .plus { border: 0; background: transparent; font-size: 23px; line-height: 1; color: #242a32; padding: 5px 8px; }
+      .composer input { flex: 1; min-width: 0; height: 40px; outline: 0; border: 0; color: #29313b; font-size: 14px; }
+      .composer input::placeholder { color: #99a2ad; }
+      .composer .send { width: 39px; height: 39px; border: 0; background: #0b65e8; color: white; border-radius: 50%; display: grid; place-items: center; }
+      .composer .send:disabled { background: #d6e3f7; cursor: default; }
+      .disclaimer { margin: 9px 0 0; text-align: center; color: #a7adb5; font-size: 11px; }
+      @media (max-width: 650px) { header { height: 60px; padding: 0 12px; gap: 6px; } h1 { font-size: 14px; } .header-actions .open-link { display: none; } .thread { width: calc(100% - 28px); padding-top: 20px; } .answer { gap: 7px; } .spark { width: 22px; } .result-card { padding: 15px; } .composer-wrap { padding: 10px; } }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        <div class="header-title">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 2 1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2Z"/><path d="m19 17 .7 2.3L22 20l-2.3.7L19 23l-.7-2.3L16 20l2.3-.7L19 17Z"/></svg>
+          <h1 id="title"></h1>
+        </div>
+        <div class="header-actions">
+          <button class="open-link" id="open" title="Open in ZoomMate">Open in ZoomMate ↗</button>
+          <span class="divider"></span>
+          <button id="expand" title="Expand" aria-label="Expand"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3H3v5M16 21h5v-5M3 3l6 6M21 21l-6-6"/></svg></button>
+          <button id="close" title="Close" aria-label="Close"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 5l14 14M19 5 5 19"/></svg></button>
+        </div>
+      </header>
+      <main id="scroll"><div class="thread" id="thread"></div></main>
+      <div class="composer-wrap">
+        <form class="composer" id="form">
+          <button class="plus" type="button" id="attach" title="Add context">+</button>
+          <input id="input" autocomplete="off" aria-label="Ask a follow-up" placeholder="Ask a follow-up or tell ZoomMate what to change" />
+          <button class="send" type="submit" id="send" aria-label="Send" disabled><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m5 12 7-7 7 7M12 5v14"/></svg></button>
+        </form>
+        <p class="disclaimer">AI can make mistakes. Review for accuracy.</p>
+      </div>
+    </div>
+    <script>
+      const params = new URLSearchParams(location.search);
+      const task = Object.fromEntries(params.entries());
+      const title = task.title || "Complete follow-up";
+      const meeting = task.meeting || "Meeting";
+      let saved = task.state === "completed";
+      const thread = document.querySelector("#thread");
+      const scroll = document.querySelector("#scroll");
+      const post = (action, extra = {}) => window.parent.postMessage({ channel: "my-notes-task-ai", action, id: task.id, origin: task.origin, ...extra }, location.origin);
+      document.querySelector("#title").textContent = title;
+      document.title = `${title} · ZoomMate`;
+      document.querySelector("#close").onclick = () => post("close");
+      document.querySelector("#expand").onclick = () => post("expand");
+      document.querySelector("#open").onclick = () => window.open(location.href, "_blank", "noopener");
+      const el = (tag, className, content) => { const node = document.createElement(tag); if (className) node.className = className; if (content != null) node.textContent = content; return node; };
+      const addUser = (message, source) => {
+        const row = el("div", "bubble-row");
+        const body = el("div");
+        body.append(el("div", "user-bubble", message));
+        if (source) {
+          const chip = el("div", "meeting-chip");
+          chip.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18"/></svg>';
+          chip.append(document.createTextNode(source));
+          body.append(chip);
+        }
+        row.append(body); thread.append(row); scroll.scrollTop = scroll.scrollHeight;
+      };
+      const addAnswer = (message, card) => {
+        const row = el("div", "answer");
+        row.append(el("div", "spark", "✦"));
+        const body = el("div", "answer-body");
+        body.append(el("p", "", message));
+        if (card) body.append(card);
+        row.append(body); thread.append(row); scroll.scrollTop = scroll.scrollHeight;
+      };
+      const content = (() => {
+        switch (task.id) {
+          case "summary": return { intro: saved ? "The approved summary is ready in Google Docs." : "I prepared a summary from the meeting. Please review it before I save it to Google Docs.", label: "Meeting summary", heading: "Acme Corp QBR · Summary", lines: ["The team agreed on a phased rollout, starting with Customer Success and expanding to Sales one week later.", "Jordan will provide sandbox access for SSO validation tomorrow.", "Xun will share a revised Enterprise pricing proposal before Thursday’s procurement review."], action: "Approve & save", done: "Summary approved and saved" };
+          case "email": return { intro: "The follow-up email was sent to 5 attendees. Here is the message and its source.", label: "Sent email", heading: "Subject: Acme QBR recap and next steps", lines: ["Thanks for today’s discussion. We agreed to phase the rollout, validate SSO in the sandbox, and review revised pricing on Thursday.", "Next steps: Ava to confirm the rollout sequence, Jordan to provide sandbox access, and Xun to send the proposal."], action: "Save result", done: "Result saved" };
+          case "recap": return { intro: "I drafted a personal recap for Ava. You can refine it here before sending.", label: "Email draft", heading: "Subject: QBR recap and rollout sequence", lines: ["Hi Ava, thanks for walking through the rollout plan today. Can you confirm that Customer Success should go first, followed by Sales one week later?", "I’ll send the revised Enterprise pricing before Thursday’s procurement review. Jordan will provide the SSO sandbox access tomorrow."], action: "Save draft", done: "Draft saved" };
+          case "message": return { intro: "Here is a concise message to confirm the rollout order with Ava.", label: "Message draft", heading: "To: Ava Brooks", lines: ["Hi Ava — can you confirm that Customer Success launches first and Sales follows one week later? Once you confirm, we’ll lock the rollout plan."], action: "Save draft", done: "Draft saved" };
+          case "staffing": return { intro: "I turned the meeting’s owner decisions into a checklist.", label: "Checklist", heading: "Rollout owners", lines: ["Ava · Confirm the Customer Success and Sales rollout sequence", "Jordan · Provide SSO sandbox access by tomorrow", "Xun · Share the revised Enterprise pricing by Thursday"], action: "Create checklist", done: "Checklist created" };
+          case "share-summary": return { intro: "The meeting summary is ready to share with the attendees.", label: "Share preview", heading: "Acme Corp QBR · Summary", lines: ["Recipients: Ava Brooks, Jordan Lee, Priya Shah, Marcus Reed, and you", "Includes decisions, owners, next steps, and a link to the meeting note."], action: "Share summary", done: "Summary shared" };
+          case "schedule-followup": return { intro: "I prepared a follow-up meeting with the participants and an agenda.", label: "Calendar draft", heading: "Acme rollout and pricing follow-up", lines: ["Invitees: QBR attendees", "Agenda: Confirm phased rollout, review SSO validation, and finalize the Enterprise proposal."], action: "Create meeting", done: "Meeting created" };
+          case "t1": return { intro: "I drafted a confirmation message for Ava using the decision from 14:23.", label: "Message draft", heading: "To: Ava Brooks · Rollout sequence", lines: ["Hi Ava — thanks for confirming that Customer Success can go first. Can you confirm that Sales will follow one week later?", "Once you confirm, we’ll update the rollout plan and share the sequence with the team."], action: "Save draft", done: "Draft saved" };
+          case "t2": return { intro: "Here is an access handoff Jordan can use to complete the SSO validation setup.", label: "Access checklist", heading: "SSO sandbox access", lines: ["Confirm Jordan has the sandbox administrator invitation.", "Share the test tenant link and the SSO configuration guide.", "Ask Jordan to verify sign-in and report any blockers by tomorrow."], action: "Save checklist", done: "Checklist saved" };
+          case "t3": return { intro: "I prepared the structure for the revised pricing proposal based on the QBR discussion.", label: "Proposal draft", heading: "Acme · Revised Enterprise proposal", lines: ["Offer a phased seat ramp aligned to the Customer Success launch and the later Sales rollout.", "Include the revised pricing table, deployment milestones, and SSO validation support.", "Send the proposal to Ava before Thursday’s procurement review."], action: "Save draft", done: "Proposal draft saved" };
+          case "t4": return { intro: "I pulled together the review owners mentioned in Product Leadership Sync.", label: "Owner checklist", heading: "Q4 design review", lines: ["Priya Shah · Confirm the review schedule and decision owners.", "Design leads · Prepare the open decisions and latest prototypes.", "Product leads · Sign off on the review agenda by Friday."], action: "Save checklist", done: "Checklist saved" };
+          case "t5": return { intro: "I drafted the release readiness checklist for the product team.", label: "Checklist draft", heading: "Release readiness", lines: ["Confirm feature scope and outstanding product decisions.", "Complete QA, accessibility, and performance checks.", "Assign launch communications and support owners before Friday."], action: "Save checklist", done: "Checklist saved" };
+          case "t6": return { intro: "I drafted a sandbox testing plan you can send to Jordan.", label: "Plan draft", heading: "SSO sandbox testing plan", lines: ["Verify account provisioning and role mapping in the test tenant.", "Run SSO sign-in, sign-out, and recovery scenarios.", "Record blockers and share the results with the Acme team tomorrow."], action: "Save draft", done: "Testing plan saved" };
+          default: return { intro: saved ? "Here is the result for this task." : "I found this task in the meeting. Here is a first draft you can review and refine.", label: "Task draft", heading: title, lines: [task.detail || `Prepare the next step for ${title.toLowerCase()}.`, task.source ? `From ${task.source}.` : `From ${meeting}.`, task.owner ? `Owner: ${task.owner}${task.due ? ` · Due: ${task.due}` : ""}` : "Review the details before saving."], action: "Save result", done: "Result saved" };
+        }
+      })();
+      const card = el("section", "result-card");
+      card.append(el("div", "result-overline", content.label), el("h2", "", content.heading));
+      if (content.lines.length === 1) card.append(el("p", "", content.lines[0]));
+      else { const list = el("ul"); content.lines.forEach(line => list.append(el("li", "", line))); card.append(list); }
+      const meta = el("div", "result-meta");
+      meta.append(el("span", "", meeting));
+      if (task.due) meta.append(el("span", "", `Due ${task.due}`));
+      card.append(meta);
+      const actions = el("div", "result-actions");
+      const primary = el("button", "primary", saved ? "Saved ✓" : content.action);
+      primary.type = "button"; primary.disabled = saved;
+      primary.onclick = () => { saved = true; primary.disabled = true; primary.textContent = "Saved ✓"; post("complete", { message: content.done }); addAnswer(content.done + ". You can keep asking me to refine it."); };
+      actions.append(primary);
+      const copy = el("button", "", "Copy"); copy.type = "button";
+      copy.onclick = async () => { try { await navigator.clipboard.writeText([content.heading, ...content.lines].join("\n")); copy.textContent = "Copied ✓"; } catch { copy.textContent = "Select to copy"; } };
+      actions.append(copy); card.append(actions);
+      addUser(task.detail || `Help me complete this task: ${title}.`, meeting);
+      addAnswer(content.intro, card);
+      const input = document.querySelector("#input");
+      const send = document.querySelector("#send");
+      input.oninput = () => { send.disabled = !input.value.trim(); };
+      document.querySelector("#form").onsubmit = event => {
+        event.preventDefault();
+        const message = input.value.trim(); if (!message) return;
+        input.value = ""; send.disabled = true; addUser(message);
+        const lower = message.toLowerCase();
+        const reply = lower.includes("short") || lower.includes("简短") ? "Here is a shorter version: " + content.lines[0] : lower.includes("source") || lower.includes("来源") ? `This came from ${meeting}${task.source ? `, ${task.source}` : ""}. You can check the meeting note for the full context.` : lower.includes("owner") || lower.includes("谁") ? task.owner ? `${task.owner} owns this next step${task.due ? `, due ${task.due}` : ""}.` : "The owner is listed in the meeting note. I can add one to this draft." : `I can update this ${content.label.toLowerCase()} with that direction. ${content.lines[0]}`;
+        window.setTimeout(() => addAnswer(reply), 350);
+      };
+      document.querySelector("#attach").onclick = () => { input.focus(); input.placeholder = "Mention a meeting note or ask a follow-up"; };
+    </script>
+  </body>
+</html>

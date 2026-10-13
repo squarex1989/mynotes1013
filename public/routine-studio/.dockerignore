@@ -1,0 +1,6 @@
+.git
+.gitignore
+.thumbnail
+Dockerfile
+.dockerignore
+github.md

@@ -1,0 +1,31 @@
+/* Workvivo AI components — shared styles. Pair with colors_and_type.css */
+.wvai-card { background:#fff; border:1px solid var(--wv-grey-200); border-radius:16px; box-shadow:0 8px 30px -8px rgba(0,0,0,0.18); font-family:var(--font-web); color:var(--fg-primary); box-sizing:border-box; }
+.wvai-grad { background:var(--wvai-gradient-soft); }
+.wvai-head { display:flex; align-items:center; gap:10px; }
+.wvai-head .spark { width:24px; height:24px; color:var(--wvai-purple); display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
+.wvai-title { font-weight:700; font-size:20px; line-height:26px; letter-spacing:-0.01em; }
+.wvai-x { margin-left:auto; width:28px;height:28px; border:none;background:none;cursor:pointer; color:var(--wv-grey-500); display:inline-flex;align-items:center;justify-content:center; }
+.wvai-body { font-size:16px; line-height:24px; color:var(--fg-primary); }
+.wvai-disclaimer { font-size:14px; line-height:20px; color:var(--wv-grey-500); }
+.wvai-disclaimer b { color:var(--wv-grey-600); font-weight:600; }
+/* chips */
+.wvai-chip { display:inline-flex; align-items:center; padding:11px 20px; border-radius:9999px; background:#fff; box-shadow:0 1px 4px rgba(0,0,0,0.10); color:var(--wvai-purple); font-weight:600; font-size:15px; border:none; cursor:pointer; text-align:left; }
+.wvai-chip:hover { background:var(--wv-primary-50); }
+/* buttons */
+.wvai-btn { border:none; border-radius:9999px; font-family:var(--font-web); font-weight:600; font-size:15px; cursor:pointer; padding:11px 24px; }
+.wvai-btn-primary { background:var(--wv-primary-500); color:#fff; }
+.wvai-btn-primary:hover { background:var(--wv-primary-700); }
+.wvai-btn-primary:disabled, .wvai-btn-primary.disabled { background:#C4A2F5; cursor:default; }
+.wvai-btn-ghost { background:transparent; color:var(--wvai-purple); }
+.wvai-btn-outline { background:#fff; color:var(--wvai-purple); box-shadow:0 1px 4px rgba(0,0,0,0.12); display:inline-flex; align-items:center; gap:8px; }
+/* input */
+.wvai-input { width:100%; box-sizing:border-box; border:1px solid var(--wv-grey-300); border-radius:12px; padding:14px 16px; font-family:var(--font-web); font-size:16px; color:var(--fg-primary); resize:none; outline:none; }
+.wvai-input::placeholder { color:var(--wv-grey-400); }
+.wvai-send { width:40px;height:40px; border-radius:10px; background:var(--wv-primary-500); color:#fff; border:none; cursor:pointer; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
+/* thumbs */
+.wvai-thumbs { display:flex; gap:14px; color:var(--wv-grey-500); }
+.wvai-thumbs button { background:none;border:none;cursor:pointer;color:inherit; padding:0; display:inline-flex; }
+/* gradient ring (large summary) */
+.wvai-ring { border-radius:9999px; background:var(--wvai-gradient); display:inline-flex; align-items:center; justify-content:center; color:#fff; }
+.wvai-ring-outline { border-radius:9999px; padding:2px; background:var(--wvai-gradient); display:inline-flex; }
+.wvai-ring-outline > .inner { background:#fff; border-radius:9999px; width:100%; height:100%; display:inline-flex; align-items:center; justify-content:center; }
