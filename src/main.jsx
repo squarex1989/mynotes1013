@@ -351,17 +351,29 @@ function App() {
             ["tasks", "Tasks"],
             ["tags", "Tags"],
             ["people", "People"],
+            ["connectors", "Connectors"],
           ].map(([key, label]) => (
             <button
               key={key}
               className={
-                page === key || (key === "note" && page === "note")
+                (settingsOpen && settingsTab === "Connectors"
+                  ? key === "connectors"
+                  : page === key)
                   ? "selected"
                   : ""
               }
-              onClick={() =>
-                key === "note" ? note("acme", "Notes", "post") : go(key)
-              }
+              aria-haspopup={key === "connectors" ? "dialog" : undefined}
+              aria-expanded={key === "connectors" ? settingsOpen && settingsTab === "Connectors" : undefined}
+              onClick={() => {
+                if (key === "connectors") {
+                  setSettingsTab("Connectors");
+                  setSettingsOpen(true);
+                } else if (key === "note") {
+                  note("acme", "Notes", "post");
+                } else {
+                  go(key);
+                }
+              }}
             >
               {label}
             </button>
