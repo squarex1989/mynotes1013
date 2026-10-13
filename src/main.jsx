@@ -44,6 +44,7 @@ import {
   BriefcaseBusiness,
   Paperclip,
   RotateCcw,
+  LayoutTemplate,
 } from "lucide-react";
 import {
   meetings,
@@ -140,6 +141,7 @@ function App() {
   const [taskAiStatus, setTaskAiStatus] = useState({});
   const [taskConversation, setTaskConversation] = useState(null);
   const [taskFrameExpanded, setTaskFrameExpanded] = useState(false);
+  const [templatesEntryKey, setTemplatesEntryKey] = useState(0);
   const [aiOpen, setAiOpen] = useState(true);
   const [aiText, setAiText] = useState("");
   const [aiMessages, setAiMessages] = useState([
@@ -211,6 +213,7 @@ function App() {
     };
   }, []);
   const go = (dest) => {
+    if (dest === "templates") setTemplatesEntryKey((value) => value + 1);
     window.location.hash = `/${dest}`;
     setPage(dest);
     document.querySelector(".workspace-scroll")?.scrollTo(0, 0);
@@ -292,6 +295,7 @@ function App() {
   const navItems = [
     ["home", "Home", House],
     ["notes", "All notes", NotebookPen],
+    ["templates", "Templates", LayoutTemplate],
   ];
   const powerItems = [
     ["routines", "Routine", Zap],
@@ -347,6 +351,7 @@ function App() {
             ["home", "Home · Calendar"],
             ["note", "Note detail"],
             ["meeting", "In meeting"],
+            ["templates", "Templates"],
             ["power", "Power-Up"],
             ["tasks", "Tasks"],
             ["tags", "Tags"],
@@ -520,11 +525,12 @@ function App() {
         <main
           className={`workspace ${page === "meeting" ? "meeting-workspace" : ""}`}
         >
-          {page === "routines" ? (
+          {["routines", "templates"].includes(page) ? (
             <div className="routine-shell">
               <iframe
-                title="Routine studio"
-                src="/routine-studio/My%20Notes%20-%20Skills.dc.html"
+                key={page === "templates" ? `templates-${templatesEntryKey}` : "routines"}
+                title={page === "templates" ? "Templates" : "Routine studio"}
+                src={`/routine-studio/My%20Notes%20-%20Skills.dc.html${page === "templates" ? "?view=templates" : ""}`}
               />
             </div>
           ) : (

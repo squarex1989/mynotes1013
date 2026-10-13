@@ -1425,7 +1425,7 @@ const TAG_SEED_LOGS = [
 
 class Component extends DCLogic {
   state = {
-    view:"hub", homeTab:"Owned by me", noteId:"n6", notesTab:"Notes", notesFilter:"Owned by me", noteTab:"Follow-ups",
+    view:new URLSearchParams(window.location.search).get("view")==="templates"?"templates":"hub", homeTab:"Owned by me", noteId:"n6", notesTab:"Notes", notesFilter:"Owned by me", noteTab:"Follow-ups",
     modal:false, mStep:"packs", mPackId:null, mSkillId:null, mDest:null, mFuture:false, mConds:[], mRun:"idle",
     hubTab:"browse", packId:null, tagId:null,
     active:{s1:true,g1:true,h1:true,p1:true},
