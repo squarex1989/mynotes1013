@@ -338,14 +338,6 @@ function App() {
   return (
     <div className="app">
       <header className="scenario-bar">
-        <div className="scenario-brand">
-          <span className="brand-star">
-            <Sparkles size={15} />
-          </span>
-          <strong>My Notes</strong>
-          <span className="scenario-divider" />{" "}
-          <span className="scenario-label">Journey</span>
-        </div>
         <nav aria-label="Prototype scenes">
           {[
             ["home", "Home · Calendar"],
