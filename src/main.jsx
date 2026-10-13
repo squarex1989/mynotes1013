@@ -58,6 +58,21 @@ import {
 import "./styles.css";
 
 const iconMap = { FileText, Mail, MessageSquare, ListChecks };
+const connectorServices = [
+  { name: "Google", initial: "G", description: "Including Google Calendar and Gmail", color: "#4285f4", background: "#f1f6ff" },
+  { name: "Microsoft Outlook", initial: "O", color: "#287acb", background: "#eaf4ff" },
+  { name: "Microsoft Teams", initial: "T", color: "#6459bd", background: "#f0efff" },
+  { name: "Slack", initial: "S", color: "#559887", background: "#eff8f4" },
+  { name: "Zoom Team Chat", initial: "Z", color: "#0b5cff", background: "#edf3ff" },
+  { name: "Workvivo", initial: "W", color: "#6103ed", background: "#f3edff" },
+  { name: "Salesforce", initial: "Sf", color: "#00a1e0", background: "#e9f9ff" },
+  { name: "HubSpot", initial: "H", color: "#ff7a59", background: "#fff1ec" },
+  { name: "Google Drive", initial: "D", color: "#34a853", background: "#edf8f0" },
+  { name: "OneDrive", initial: "Od", color: "#0364b8", background: "#e9f3ff" },
+  { name: "Notion", initial: "N", color: "#20242a", background: "#f1f2f3" },
+  { name: "Jira", initial: "J", color: "#2684ff", background: "#eaf3ff" },
+  { name: "Asana", initial: "A", color: "#e75b67", background: "#fff0f1" },
+];
 const initialPage = () =>
   window.location.hash.replace("#/", "").split("/")[0] || "home";
 const avatars = (names) =>
@@ -1910,19 +1925,14 @@ function App() {
                 <>
                   <h3>Third-party services</h3>
                   <div className="connector-list">
-                    {[
-                      ["Google", "Including Google Calendar and Gmail", "G"],
-                      ["Microsoft Outlook", "Calendar and email", "O"],
-                      ["Microsoft Teams", "Meetings and chat", "T"],
-                      ["Slack", "Channels and messages", "S"],
-                    ].map(([name, description, initial]) => (
+                    {connectorServices.map(({ name, description, initial, color, background }) => (
                       <div className="connector-row" key={name}>
-                        <span className={`connector-icon connector-${initial}`}>
+                        <span className="connector-icon" style={{ color, background }}>
                           {initial}
                         </span>
                         <span className="connector-copy">
                           <strong>{name}</strong>
-                          {name === "Google" && <small>{description}</small>}
+                          {description && <small>{description}</small>}
                         </span>
                         {connected.includes(name) ? (
                           <span className="connected">
