@@ -1086,7 +1086,6 @@ function App() {
                           setExpanded={setFollowExpanded}
                           openConversation={openTaskConversation}
                           meeting={currentMeeting.title}
-                          showToast={showToast}
                         />
                       )}
                     </div>
@@ -2188,48 +2187,12 @@ function FollowupBoard({
   setExpanded,
   openConversation,
   meeting,
-  showToast,
 }) {
   const state = (item) => followStatus[item.id] || item.state;
   const action = (item) =>
     openConversation(item, { meeting, state: state(item) });
   return (
     <div className="follow-board">
-      <div className="follow-intro">
-        <h2>Follow-ups</h2>
-        <p>Review results and move on the next steps from this meeting.</p>
-      </div>
-      <div className="quick-actions">
-        <button onClick={() => openConversation({ id: "share-summary", title: "Share meeting summary", detail: "Share the QBR decisions and next steps with 5 attendees.", state: "suggested" }, { meeting })}>
-          <Share2 size={18} />
-          <span>
-            <strong>Share summary</strong>
-            <small>With 5 attendees</small>
-          </span>
-        </button>
-        <button onClick={() => openConversation({ id: "schedule-followup", title: "Schedule follow-up meeting", detail: "Find a time with the attendees to review the rollout and pricing.", state: "suggested" }, { meeting })}>
-          <CalendarDays size={18} />
-          <span>
-            <strong>Schedule follow-up</strong>
-            <small>Invitees pre-filled</small>
-          </span>
-        </button>
-        <button onClick={() => showToast("Transcript downloaded")}>
-          <Download size={18} />
-          <span>
-            <strong>Download transcript</strong>
-            <small>.txt · .vtt</small>
-          </span>
-        </button>
-        <button onClick={() => showToast("Recording downloaded")}>
-          <Video size={18} />
-          <span>
-            <strong>Download recording</strong>
-            <small>.mp4 · 214 MB</small>
-          </span>
-        </button>
-      </div>
-      <h3>Automations</h3>
       <div className="follow-items">
         {items
           .filter((x) => x.kind === "Workflow")
