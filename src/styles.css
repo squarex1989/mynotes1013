@@ -87,6 +87,30 @@ p {
 }
 .scenario-end {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.global-ai-trigger {
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  color: #8456c5;
+  background: transparent;
+  cursor: pointer;
+  flex: none;
+}
+.global-ai-trigger:hover,
+.global-ai-trigger.active {
+  background: #eee8fb;
+  color: #713cb7;
+}
+.global-ai-trigger:focus-visible {
+  outline: 2px solid #0b5cff;
+  outline-offset: 2px;
 }
 .prototype-chip {
   border: 1px solid #dce3ef;
@@ -1158,6 +1182,15 @@ p {
   top: 0;
   height: calc(100vh - 58px);
   background: #fff;
+}
+.global-assistant {
+  position: fixed;
+  top: 58px;
+  right: 0;
+  bottom: 0;
+  height: auto;
+  z-index: 30;
+  box-shadow: -12px 0 32px #1d2b461c;
 }
 .assistant-head {
   height: 65px;
@@ -2709,7 +2742,9 @@ p {
   .note-assistant {
     display: none;
   }
-  .home-assistant {
+  .home-assistant,
+  .note-layout .note-assistant,
+  .global-assistant {
     display: flex;
     position: fixed;
     top: 58px;
@@ -2745,7 +2780,9 @@ p {
   .scenario-bar {
     height: 50px;
   }
-  .home-assistant {
+  .home-assistant,
+  .note-layout .note-assistant,
+  .global-assistant {
     top: 50px;
   }
   .scenario-bar nav button {

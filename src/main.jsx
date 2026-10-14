@@ -152,7 +152,7 @@ function App() {
       text: "I can help with this meeting. Ask a question or choose a suggestion.",
     },
   ]);
-  const [homeAiOpen, setHomeAiOpen] = useState(true);
+  const [homeAiOpen, setHomeAiOpen] = useState(initialPage() === "home");
   const [homeAiText, setHomeAiText] = useState("");
   const [homeAiMessages, setHomeAiMessages] = useState([
     {
@@ -326,6 +326,15 @@ function App() {
     setHomeAiText("");
     setHomeAiOpen(true);
   };
+  const toggleGlobalAi = () => {
+    if (page === "note") {
+      setAiOpen((open) => !open);
+    } else if (page === "meeting") {
+      setLiveTab("Ask AI");
+    } else {
+      setHomeAiOpen((open) => !open);
+    }
+  };
   const navItems = [
     ["home", "Home", House],
     ["notes", "All notes", NotebookPen],
@@ -369,6 +378,11 @@ function App() {
       (peopleFilter === "All people" || peopleFilter === p.type),
   );
   const activeTag = tags.find((t) => t.id === selectedTag) || tags[0];
+  const globalAiActive = page === "note"
+    ? aiOpen
+    : page === "meeting"
+      ? liveTab === "Ask AI"
+      : homeAiOpen;
   return (
     <div className="app">
       <header className="scenario-bar">
@@ -412,6 +426,15 @@ function App() {
         </nav>
         <div className="scenario-end">
           <span className="prototype-chip">Prototype</span>
+          <button
+            className={`global-ai-trigger ${globalAiActive ? "active" : ""}`}
+            onClick={toggleGlobalAi}
+            aria-label="Ask AI"
+            aria-pressed={globalAiActive}
+            title="Ask AI"
+          >
+            <Sparkles size={19} />
+          </button>
         </div>
       </header>
       <div className="shell">
@@ -574,11 +597,6 @@ function App() {
                       </p>
                     </div>
                     <div className="home-heading-actions">
-                      {!homeAiOpen && (
-                        <button className="soft-btn" onClick={() => setHomeAiOpen(true)}>
-                          <Sparkles size={16} /> Ask AI
-                        </button>
-                      )}
                       <button className="soft-btn" onClick={() => go("tasks")}>
                         <ListChecks size={16} /> View tasks
                       </button>
@@ -710,41 +728,7 @@ function App() {
                     ))}
                   </div>
                   </div>
-                  {homeAiOpen && (
-                    <aside className="note-assistant home-assistant" aria-label="Ask AI">
-                      <div className="assistant-head">
-                        <span className="assistant-spark"><Sparkles size={18} /></span>
-                        <div>
-                          <strong>Ask AI</strong>
-                          <small>Across your workspace</small>
-                        </div>
-                        <button className="icon-btn" onClick={() => setHomeAiOpen(false)} aria-label="Close Ask AI">
-                          <X size={17} />
-                        </button>
-                      </div>
-                      <div className="assistant-messages" aria-live="polite">
-                        {homeAiMessages.map((message, index) => (
-                          <div className={`ai-message ${message.role}`} key={index}>
-                            {message.role === "assistant" && (
-                              <span className="assistant-spark tiny"><Sparkles size={13} /></span>
-                            )}
-                            <p>{message.text}</p>
-                          </div>
-                        ))}
-                      </div>
-                      <div className="assistant-composer">
-                        <div className="prompt-chips">
-                          {["What needs my attention?", "Prepare for my next meeting", "Find action items"].map((prompt) => (
-                            <button key={prompt} onClick={() => askHome(prompt)}>{prompt}</button>
-                          ))}
-                        </div>
-                        <form onSubmit={(event) => { event.preventDefault(); askHome(homeAiText); }}>
-                          <input value={homeAiText} onChange={(event) => setHomeAiText(event.target.value)} placeholder="Ask across your meetings…" aria-label="Ask AI across your workspace" />
-                          <button type="submit" aria-label="Send to Ask AI"><ArrowUp size={18} /></button>
-                        </form>
-                      </div>
-                    </aside>
-                  )}
+                  {homeAiOpen && <WorkspaceAskAI className="home-assistant" messages={homeAiMessages} text={homeAiText} setText={setHomeAiText} onAsk={askHome} onClose={() => setHomeAiOpen(false)} />}
                 </div>
               )}
               {page === "notes" && (
@@ -976,13 +960,6 @@ function App() {
                         >
                           <Link2 size={18} />
                         </button>
-                        <button
-                          className="icon-btn"
-                          onClick={() => setAiOpen(!aiOpen)}
-                          aria-label="Toggle note assistant"
-                        >
-                          <Sparkles size={18} />
-                        </button>
                       </div>
                     </div>
                     <div className="note-document">
@@ -1169,19 +1146,19 @@ function App() {
                     </div>
                   </div>
                   {aiOpen && (
-                    <aside className="note-assistant">
+                    <aside className="note-assistant" aria-label="Ask AI">
                       <div className="assistant-head">
                         <span className="assistant-spark">
                           <Sparkles size={18} />
                         </span>
                         <div>
-                          <strong>Note assistant</strong>
+                          <strong>Ask AI</strong>
                           <small>This meeting</small>
                         </div>
                         <button
                           className="icon-btn"
                           onClick={() => setAiOpen(false)}
-                          aria-label="Close assistant"
+                          aria-label="Close Ask AI"
                         >
                           <X size={17} />
                         </button>
@@ -1984,6 +1961,9 @@ function App() {
           )}
         </main>
       </div>
+      {homeAiOpen && page !== "home" && page !== "note" && page !== "meeting" && (
+        <WorkspaceAskAI className="global-assistant" messages={homeAiMessages} text={homeAiText} setText={setHomeAiText} onAsk={askHome} onClose={() => setHomeAiOpen(false)} />
+      )}
       {settingsOpen && (
         <div
           className="modal-backdrop"
@@ -2241,6 +2221,39 @@ function App() {
         </div>
       )}
     </div>
+  );
+}
+function WorkspaceAskAI({ className, messages, text, setText, onAsk, onClose }) {
+  return (
+    <aside className={`note-assistant ${className}`} aria-label="Ask AI">
+      <div className="assistant-head">
+        <span className="assistant-spark"><Sparkles size={18} /></span>
+        <div>
+          <strong>Ask AI</strong>
+          <small>Across your workspace</small>
+        </div>
+        <button className="icon-btn" onClick={onClose} aria-label="Close Ask AI"><X size={17} /></button>
+      </div>
+      <div className="assistant-messages" aria-live="polite">
+        {messages.map((message, index) => (
+          <div className={`ai-message ${message.role}`} key={index}>
+            {message.role === "assistant" && <span className="assistant-spark tiny"><Sparkles size={13} /></span>}
+            <p>{message.text}</p>
+          </div>
+        ))}
+      </div>
+      <div className="assistant-composer">
+        <div className="prompt-chips">
+          {["What needs my attention?", "Prepare for my next meeting", "Find action items"].map((prompt) => (
+            <button key={prompt} onClick={() => onAsk(prompt)}>{prompt}</button>
+          ))}
+        </div>
+        <form onSubmit={(event) => { event.preventDefault(); onAsk(text); }}>
+          <input value={text} onChange={(event) => setText(event.target.value)} placeholder="Ask across your meetings…" aria-label="Ask AI across your workspace" />
+          <button type="submit" aria-label="Send to Ask AI"><ArrowUp size={18} /></button>
+        </form>
+      </div>
+    </aside>
   );
 }
 function Brief({ items = briefItems, onSource }) {
