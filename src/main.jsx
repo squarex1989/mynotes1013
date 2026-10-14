@@ -74,8 +74,10 @@ const connectorServices = [
   { name: "Jira", initial: "J", color: "#2684ff", background: "#eaf3ff" },
   { name: "Asana", initial: "A", color: "#e75b67", background: "#fff0f1" },
 ];
-const initialPage = () =>
-  window.location.hash.replace("#/", "").split("/")[0] || "home";
+const initialPage = () => {
+  const route = window.location.hash.replace("#/", "").split("/")[0] || "home";
+  return route === "power" ? "apps" : route;
+};
 const avatars = (names) =>
   names.map((n, i) => (
     <span
@@ -150,8 +152,21 @@ function App() {
       text: "I can help with this meeting. Ask a question or choose a suggestion.",
     },
   ]);
+  const [homeAiOpen, setHomeAiOpen] = useState(true);
+  const [homeAiText, setHomeAiText] = useState("");
+  const [homeAiMessages, setHomeAiMessages] = useState([
+    {
+      role: "assistant",
+      text: "Good afternoon, Xun. What would you like to know about your meetings and notes?",
+    },
+  ]);
   const [liveText, setLiveText] = useState("");
-  const [liveMessages, setLiveMessages] = useState([]);
+  const [liveMessages, setLiveMessages] = useState([
+    {
+      role: "assistant",
+      text: "I can help with this meeting as it happens. What would you like to know?",
+    },
+  ]);
   const [liveNotes, setLiveNotes] = useState([
     "Ava confirmed a phased rollout is preferred.",
   ]);
@@ -281,7 +296,7 @@ function App() {
         { role: "assistant", text: answer },
       ]);
       setLiveText("");
-      setLiveTab("Live Assist");
+      setLiveTab("Ask AI");
     } else {
       setAiMessages((m) => [
         ...m,
@@ -291,6 +306,25 @@ function App() {
       setAiText("");
       setAiOpen(true);
     }
+  };
+  const askHome = (text) => {
+    const q = text.trim();
+    if (!q) return;
+    const lower = q.toLowerCase();
+    const answer = lower.includes("task") || lower.includes("action") || lower.includes("focus") || lower.includes("attention")
+      ? "You have 3 next steps from the Acme QBR: confirm the rollout sequence with Ava, provide SSO sandbox access, and share revised pricing before Thursday."
+      : lower.includes("meeting") || lower.includes("calendar") || lower.includes("prepare")
+        ? "Your Acme Corp QBR is at 2:00 PM. Ava’s team is reviewing phased-seat pricing; SSO sandbox access and EU data residency are still open."
+        : lower.includes("note") || lower.includes("recent")
+          ? "Your recent notes include the Acme QBR, Product Leadership Sync, Jordan’s 1:1, and Design critique. The Acme note has a Quick brief and follow-ups ready."
+          : "Across your notes, the most active themes are Acme’s phased rollout, Enterprise pricing, and SSO validation. Ask me about a meeting, person, or next step.";
+    setHomeAiMessages((messages) => [
+      ...messages,
+      { role: "user", text: q },
+      { role: "assistant", text: answer },
+    ]);
+    setHomeAiText("");
+    setHomeAiOpen(true);
   };
   const navItems = [
     ["home", "Home", House],
@@ -344,7 +378,7 @@ function App() {
             ["note", "Note detail"],
             ["meeting", "In meeting"],
             ["templates", "Templates"],
-            ["power", "Power-Up"],
+            ["apps", "Apps"],
             ["tasks", "Tasks"],
             ["tags", "Tags"],
             ["people", "People"],
@@ -422,7 +456,7 @@ function App() {
             <button
               className={
                 [
-                  "power",
+                  "apps",
                   "routines",
                   "tasks",
                   "tags",
@@ -434,11 +468,11 @@ function App() {
               }
               onClick={() => {
                 setPowerOpen(!powerOpen);
-                go("power");
+                go("apps");
               }}
             >
               <Sparkles size={18} />
-              <span>Power-Up</span>
+              <span>Apps</span>
               <ChevronDown
                 size={15}
                 className={`nav-chevron ${powerOpen ? "open" : ""}`}
@@ -528,7 +562,8 @@ function App() {
           ) : (
             <div className="workspace-scroll">
               {page === "home" && (
-                <div className="content home-page">
+                <div className="home-layout">
+                  <div className="content home-page">
                   <div className="page-heading">
                     <div>
                       <p className="eyebrow">Tuesday, October 13</p>
@@ -538,9 +573,16 @@ function App() {
                         review.
                       </p>
                     </div>
-                    <button className="soft-btn" onClick={() => go("tasks")}>
-                      <ListChecks size={16} /> View tasks
-                    </button>
+                    <div className="home-heading-actions">
+                      {!homeAiOpen && (
+                        <button className="soft-btn" onClick={() => setHomeAiOpen(true)}>
+                          <Sparkles size={16} /> Ask AI
+                        </button>
+                      )}
+                      <button className="soft-btn" onClick={() => go("tasks")}>
+                        <ListChecks size={16} /> View tasks
+                      </button>
+                    </div>
                   </div>
                   <section className="home-tips">
                     <div className="tips-icon">
@@ -553,8 +595,8 @@ function App() {
                         review.
                       </p>
                     </div>
-                    <button onClick={() => go("power")}>
-                      Open Power-Up <ArrowRight size={15} />
+                    <button onClick={() => go("apps")}>
+                      Open Apps <ArrowRight size={15} />
                     </button>
                   </section>
                   <div className="section-heading">
@@ -667,6 +709,42 @@ function App() {
                       </button>
                     ))}
                   </div>
+                  </div>
+                  {homeAiOpen && (
+                    <aside className="note-assistant home-assistant" aria-label="Ask AI">
+                      <div className="assistant-head">
+                        <span className="assistant-spark"><Sparkles size={18} /></span>
+                        <div>
+                          <strong>Ask AI</strong>
+                          <small>Across your workspace</small>
+                        </div>
+                        <button className="icon-btn" onClick={() => setHomeAiOpen(false)} aria-label="Close Ask AI">
+                          <X size={17} />
+                        </button>
+                      </div>
+                      <div className="assistant-messages" aria-live="polite">
+                        {homeAiMessages.map((message, index) => (
+                          <div className={`ai-message ${message.role}`} key={index}>
+                            {message.role === "assistant" && (
+                              <span className="assistant-spark tiny"><Sparkles size={13} /></span>
+                            )}
+                            <p>{message.text}</p>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="assistant-composer">
+                        <div className="prompt-chips">
+                          {["What needs my attention?", "Prepare for my next meeting", "Find action items"].map((prompt) => (
+                            <button key={prompt} onClick={() => askHome(prompt)}>{prompt}</button>
+                          ))}
+                        </div>
+                        <form onSubmit={(event) => { event.preventDefault(); askHome(homeAiText); }}>
+                          <input value={homeAiText} onChange={(event) => setHomeAiText(event.target.value)} placeholder="Ask across your meetings…" aria-label="Ask AI across your workspace" />
+                          <button type="submit" aria-label="Send to Ask AI"><ArrowUp size={18} /></button>
+                        </form>
+                      </div>
+                    </aside>
+                  )}
                 </div>
               )}
               {page === "notes" && (
@@ -725,12 +803,12 @@ function App() {
                   </div>
                 </div>
               )}
-              {page === "power" && (
+              {page === "apps" && (
                 <div className="content power-page">
                   <div className="page-heading">
                     <div>
                       <p className="eyebrow">MY NOTES</p>
-                      <h1>Power-Up</h1>
+                      <h1>Apps</h1>
                       <p className="subtext">
                         Keep work moving after the meeting.
                       </p>
@@ -1156,7 +1234,7 @@ function App() {
                 <div className="content tasks-page">
                   <div className="page-heading">
                     <div>
-                      <p className="eyebrow">POWER-UP</p>
+                      <p className="eyebrow">APPS</p>
                       <h1>Tasks</h1>
                       <p className="subtext">
                         Recommended next steps from your meetings.
@@ -1289,7 +1367,7 @@ function App() {
                 <div className="content tags-page">
                   <div className="page-heading">
                     <div>
-                      <p className="eyebrow">POWER-UP</p>
+                      <p className="eyebrow">APPS</p>
                       <h1>Tags</h1>
                       <p className="subtext">
                         Follow the themes and projects in your notes.
@@ -1371,7 +1449,7 @@ function App() {
                   </button>
                   <div className="page-heading">
                     <div>
-                      <p className="eyebrow">POWER-UP / TAGS</p>
+                      <p className="eyebrow">APPS / TAGS</p>
                       <h1>{activeTag.name}</h1>
                       <p className="subtext">
                         {activeTag.count} notes · Private · {activeTag.updated}
@@ -1483,7 +1561,7 @@ function App() {
                 <div className="content people-page">
                   <div className="page-heading">
                     <div>
-                      <p className="eyebrow">POWER-UP</p>
+                      <p className="eyebrow">APPS</p>
                       <h1>People</h1>
                     </div>
                   </div>
@@ -1712,6 +1790,12 @@ function App() {
                           Note
                         </button>
                         <button
+                          className={liveTab === "Ask AI" ? "active" : ""}
+                          onClick={() => setLiveTab("Ask AI")}
+                        >
+                          Ask AI
+                        </button>
+                        <button
                           className={liveTab === "Live Assist" ? "active" : ""}
                           onClick={() => setLiveTab("Live Assist")}
                         >
@@ -1740,6 +1824,39 @@ function App() {
                                 }
                               }}
                             />
+                          </div>
+                        ) : liveTab === "Ask AI" ? (
+                          <div className="meeting-ai">
+                            <div className="meeting-ai-messages" aria-live="polite">
+                              {liveMessages.map((message, index) => (
+                                <div className={`live-message ${message.role}`} key={index}>
+                                  {message.role === "assistant" && <Sparkles size={14} />}
+                                  <span>{message.text}</span>
+                                </div>
+                              ))}
+                            </div>
+                            <div className="meeting-ai-bottom">
+                              <div className="meeting-ai-prompts">
+                                {["Summarize discussion", "List action items", "What changed?"].map((prompt) => (
+                                  <button key={prompt} onClick={() => ask(prompt, "live")}>{prompt}</button>
+                                ))}
+                              </div>
+                              <form
+                                className="meeting-ai-composer"
+                                onSubmit={(event) => {
+                                  event.preventDefault();
+                                  ask(liveText, "live");
+                                }}
+                              >
+                                <input
+                                  value={liveText}
+                                  onChange={(event) => setLiveText(event.target.value)}
+                                  placeholder="Ask AI about this meeting…"
+                                  aria-label="Ask AI about this meeting"
+                                />
+                                <button type="submit" aria-label="Send question"><ArrowUp size={18} /></button>
+                              </form>
+                            </div>
                           </div>
                         ) : (
                           <div className="assist-feed">
@@ -1826,31 +1943,9 @@ function App() {
                                   </div>
                                 </div>
                               ))}
-                            {liveMessages.map((m, i) => (
-                              <div className={`live-message ${m.role}`} key={i}>
-                                {m.text}
-                              </div>
-                            ))}
                           </div>
                         )}
                       </div>
-                      <form
-                        className="live-composer"
-                        onSubmit={(e) => {
-                          e.preventDefault();
-                          ask(liveText, "live");
-                        }}
-                      >
-                        <Sparkles size={17} />
-                        <input
-                          value={liveText}
-                          onChange={(e) => setLiveText(e.target.value)}
-                          placeholder="Ask AI about this meeting…"
-                        />
-                        <button type="submit" aria-label="Send question">
-                          <ArrowUp size={18} />
-                        </button>
-                      </form>
                     </aside>
                   </div>
                   <div className="meeting-toolbar">
