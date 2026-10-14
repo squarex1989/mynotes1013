@@ -87,9 +87,6 @@ p {
 }
 .scenario-end {
   margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 12px;
 }
 .global-ai-trigger {
   width: 34px;
@@ -356,6 +353,11 @@ p {
   margin: 0;
 }
 .home-heading-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.heading-actions {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -929,6 +931,16 @@ p {
 .routine-shell {
   height: 100%;
   min-height: 0;
+  position: relative;
+}
+.routine-ai-trigger {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  z-index: 2;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px #14213d19;
 }
 .routine-shell iframe {
   width: 100%;
@@ -1972,6 +1984,15 @@ p {
   gap: 10px;
   color: #aaaeb9;
   font-size: 10px;
+}
+.meeting-topbar .global-ai-trigger {
+  color: #c7a2ff;
+  margin-right: -8px;
+}
+.meeting-topbar .global-ai-trigger:hover,
+.meeting-topbar .global-ai-trigger.active {
+  background: #343041;
+  color: #e2d1ff;
 }
 .recording-dot {
   width: 7px;

@@ -383,6 +383,17 @@ function App() {
     : page === "meeting"
       ? liveTab === "Ask AI"
       : homeAiOpen;
+  const aiTrigger = (
+    <button
+      className={`global-ai-trigger ${globalAiActive ? "active" : ""}`}
+      onClick={toggleGlobalAi}
+      aria-label="Ask AI"
+      aria-pressed={globalAiActive}
+      title="Ask AI"
+    >
+      <Sparkles size={19} />
+    </button>
+  );
   return (
     <div className="app">
       <header className="scenario-bar">
@@ -426,15 +437,6 @@ function App() {
         </nav>
         <div className="scenario-end">
           <span className="prototype-chip">Prototype</span>
-          <button
-            className={`global-ai-trigger ${globalAiActive ? "active" : ""}`}
-            onClick={toggleGlobalAi}
-            aria-label="Ask AI"
-            aria-pressed={globalAiActive}
-            title="Ask AI"
-          >
-            <Sparkles size={19} />
-          </button>
         </div>
       </header>
       <div className="shell">
@@ -576,6 +578,7 @@ function App() {
         >
           {["routines", "templates"].includes(page) ? (
             <div className="routine-shell">
+              <div className="routine-ai-trigger">{aiTrigger}</div>
               <iframe
                 key={page === "templates" ? `templates-${templatesEntryKey}` : "routines"}
                 title={page === "templates" ? "Templates" : "Routine studio"}
@@ -600,6 +603,7 @@ function App() {
                       <button className="soft-btn" onClick={() => go("tasks")}>
                         <ListChecks size={16} /> View tasks
                       </button>
+                      {aiTrigger}
                     </div>
                   </div>
                   <section className="home-tips">
@@ -741,12 +745,15 @@ function App() {
                         Meetings, decisions, and next steps in one place.
                       </p>
                     </div>
-                    <button
-                      className="primary-btn"
-                      onClick={() => note("acme")}
-                    >
-                      <Plus size={16} /> New note
-                    </button>
+                    <div className="heading-actions">
+                      <button
+                        className="primary-btn"
+                        onClick={() => note("acme")}
+                      >
+                        <Plus size={16} /> New note
+                      </button>
+                      {aiTrigger}
+                    </div>
                   </div>
                   <div className="list-toolbar">
                     <button className="tab-lite active">All notes</button>
@@ -797,6 +804,7 @@ function App() {
                         Keep work moving after the meeting.
                       </p>
                     </div>
+                    {aiTrigger}
                   </div>
                   <section className="power-banner">
                     <div className="power-banner-icon">
@@ -960,6 +968,7 @@ function App() {
                         >
                           <Link2 size={18} />
                         </button>
+                        {aiTrigger}
                       </div>
                     </div>
                     <div className="note-document">
@@ -1217,12 +1226,15 @@ function App() {
                         Recommended next steps from your meetings.
                       </p>
                     </div>
-                    <button
-                      className="soft-btn"
-                      onClick={() => showToast("Tasks are up to date")}
-                    >
-                      <RotateCcw size={15} /> Refresh
-                    </button>
+                    <div className="heading-actions">
+                      <button
+                        className="soft-btn"
+                        onClick={() => showToast("Tasks are up to date")}
+                      >
+                        <RotateCcw size={15} /> Refresh
+                      </button>
+                      {aiTrigger}
+                    </div>
                   </div>
                   <div className="filter-row">
                     {["All", "Recommended", "Completed"].map((f) => (
@@ -1350,12 +1362,15 @@ function App() {
                         Follow the themes and projects in your notes.
                       </p>
                     </div>
-                    <button
-                      className="primary-btn"
-                      onClick={() => showToast("New tag created")}
-                    >
-                      <Plus size={16} /> New tag
-                    </button>
+                    <div className="heading-actions">
+                      <button
+                        className="primary-btn"
+                        onClick={() => showToast("New tag created")}
+                      >
+                        <Plus size={16} /> New tag
+                      </button>
+                      {aiTrigger}
+                    </div>
                   </div>
                   <section
                     className="tag-highlight"
@@ -1432,15 +1447,18 @@ function App() {
                         {activeTag.count} notes · Private · {activeTag.updated}
                       </p>
                     </div>
-                    <button
-                      className={`soft-btn ${isPinned("tag", activeTag.id) ? "pinned" : ""}`}
-                      onClick={() =>
-                        togglePin("tag", activeTag.id, activeTag.name)
-                      }
-                    >
-                      <Pin size={15} />
-                      {isPinned("tag", activeTag.id) ? "Pinned" : "Pin tag"}
-                    </button>
+                    <div className="heading-actions">
+                      <button
+                        className={`soft-btn ${isPinned("tag", activeTag.id) ? "pinned" : ""}`}
+                        onClick={() =>
+                          togglePin("tag", activeTag.id, activeTag.name)
+                        }
+                      >
+                        <Pin size={15} />
+                        {isPinned("tag", activeTag.id) ? "Pinned" : "Pin tag"}
+                      </button>
+                      {aiTrigger}
+                    </div>
                   </div>
                   <section className="tag-detail-insight">
                     <div className="insight-heading">
@@ -1541,6 +1559,7 @@ function App() {
                       <p className="eyebrow">APPS</p>
                       <h1>People</h1>
                     </div>
+                    {aiTrigger}
                   </div>
                   <div className="section-heading people-heading">
                     <div>
@@ -1674,7 +1693,7 @@ function App() {
                     <div>
                       <ShieldCheck size={17} />
                       <span className="recording-dot" /> REC{" "}
-                      <Sparkles size={17} />
+                      {aiTrigger}
                     </div>
                   </div>
                   <div className="meeting-stage">

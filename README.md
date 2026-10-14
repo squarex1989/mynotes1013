@@ -13,7 +13,7 @@ Open the local URL printed by Vite. `npm run build` creates a static build in `d
 
 ## Journey
 
-Use the top navigation to jump between Home, Note detail, In meeting, Templates, Apps, Tasks, Tags, and People. The ✨ icon at the top right opens Ask AI from every scene; Home has a workspace side panel, while Note detail has a meeting-aware side panel. The calendar also connects the flow: open the Acme Quick Brief, join the meeting, add a Live Assist card to the note, end the meeting, then review Follow-ups. In meeting, Note, Ask AI, and Live Assist have separate tabs. Templates restores the original six-template gallery and detail views. Apps contains the original Routine studio with its existing browsing, creation, and activity interactions.
+Use the top navigation to jump between Home, Note detail, In meeting, Templates, Apps, Tasks, Tags, and People. The ✨ icon in the product workspace opens Ask AI from every scene; Home has a workspace side panel, while Note detail has a meeting-aware side panel. The calendar also connects the flow: open the Acme Quick Brief, join the meeting, add a Live Assist card to the note, end the meeting, then review Follow-ups. In meeting, Note, Ask AI, and Live Assist have separate tabs. Templates restores the original six-template gallery and detail views. Apps contains the original Routine studio with its existing browsing, creation, and activity interactions.
 
 In a note's Follow-ups tab, use **Need action**, **View result**, or a suggested task button to open a ZoomMate conversation in an iframe. The same conversation opens from **Run with AI** in Apps → Tasks. You can review a task-specific result, ask a follow-up, save it, and return to the task list.
 
